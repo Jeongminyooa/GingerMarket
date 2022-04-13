@@ -24,7 +24,7 @@ public class TestController {
 	
 	@GetMapping("/home")
 	public ModelAndView goHome(HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView("content/test");
+		ModelAndView mav = new ModelAndView("content/content_container");
 		return mav;
 	}
 	
