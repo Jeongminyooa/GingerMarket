@@ -7,3 +7,7 @@
 #isDone{
 	background-color : #91A77F;
 }
+.card-img-top{
+	height: 13vw;
+    object-fit: cover;
+}
