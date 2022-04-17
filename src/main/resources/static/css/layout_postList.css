@@ -19,3 +19,8 @@
 	color : white;
 	background-color : #91A77F;
 }
+#search-option, #search-category{
+	border-radius : 5px;
+	height:30px;
+	border-color:grey;
+}
