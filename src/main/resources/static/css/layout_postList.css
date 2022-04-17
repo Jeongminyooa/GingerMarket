@@ -1,6 +1,12 @@
 
 @charset "UTF-8";
 
+#fav-card, #all-card{
+	border-radius : 15px;
+}
+#postList-img{
+	border-radius : 15px 15px 0 0;
+}
 #fav-card{
 	background-color : #EFF2EC;
 }
@@ -10,6 +16,7 @@
 .card-img-top{
 	height: 13vw;
     object-fit: cover;
+    border-radius : 50px 15px 0 0;
 }
 #btn-newPost{
 	border-radius : 10px;
