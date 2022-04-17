@@ -11,3 +11,13 @@
 	height: 13vw;
     object-fit: cover;
 }
+#btn-newPost{
+	border-radius : 10px;
+	border-color:#91A77F;
+	positon:fixed;
+	botton:0;
+}
+#btn-newPost:hover{
+	color : white;
+	background-color : #91A77F;
+}
