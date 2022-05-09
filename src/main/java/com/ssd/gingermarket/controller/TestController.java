@@ -39,4 +39,10 @@ public class TestController {
 	public Integer save(@RequestBody TestDto request) {
 		return testService.insertTest(request);
 	}
+	
+	@GetMapping("/home/viewSharePost")
+	public ModelAndView goViewSharePost(HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView("content/sharePost/ViewSharePost");
+		return mav;
+	}
 }
