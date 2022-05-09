@@ -6,7 +6,7 @@
 	layout:decorate="~{layout/default_layout}">
 	
 <th:block layout:fragment="head">
-		<title>Spring Boot</title>
+		<title>마이페이지</title>
 		<meta charset="utf-8">
 		
 		<!-- css -->
@@ -50,7 +50,7 @@
       					<button type="button" class="w-100 update_btn" data-bs-toggle="modal" data-bs-target="#userUpdateModal">프로필 수정</button>
     				</div>
     				<div class="col col-lg-3 col-md-3 ">
-      					<button type="button" class="w-100 quit_btn">회원탈퇴</button>
+      					<button type="button" class="w-100 quit_btn" data-bs-toggle="modal" data-bs-target="#userQuitModal">회원탈퇴</button>
     				</div>
   				</div>
   				<div class="row pt-3">
@@ -105,6 +105,9 @@
 		<!-- update modal -->
 		<th:block th:include="@{/content/mypage/modal_update}"></th:block>
 
+		<!-- quit modal -->
+		<th:block th:include="@{/content/mypage/modal_quit}"></th:block>
+		
 		<th:block layout:fragment="footer" th:include="@{/fragments/footer}"></th:block>
 	</body>
 </html>
