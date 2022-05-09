@@ -60,6 +60,7 @@
   				</div>
   				<div class="row">
    					<div class="col col-lg-12 text-center alarm pt-3 pb-3" id="main_content">
+   						<!-- thymeleaf 반복문 -->
       					<th:block th:each="num : ${#numbers.sequence(1,2)}">
       						<div th:text="'치약 교체날입니다. 잊지말고 교체해주세요 :)'" th:if="${num % 2 eq 0}">
       						</div>
@@ -99,6 +100,12 @@
     				</div>
   				</div>
   				<div class="row mt-4 border-top"></div>
+  				
+  				<!-- groupList -->
+  				<th:block th:include="@{/content/mypage/mypage_groupList}"></th:block>
+  				
+  				<!-- shareList -->
+  				<th:block th:include="@{/content/mypage/mypage_shareList}"></th:block>
 			</div>
 		</div>
 		
