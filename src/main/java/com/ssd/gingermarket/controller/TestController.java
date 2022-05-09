@@ -32,4 +32,15 @@ public class TestController {
 	public Integer save(@RequestBody TestDto request) {
 		return testService.insertTest(request);
 	}
+	
+	@GetMapping("/mypage")
+	public ModelAndView gomMyPage(HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView("content/mypage/mypage");
+		return mav;
+	}
+	@GetMapping("/modalTest")
+	public ModelAndView test(HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView("content/mypage/modal_update");
+		return mav;
+	}
 }
