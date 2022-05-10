@@ -23,20 +23,12 @@
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
 		crossorigin="anonymous"></script>
 </th:block>
-<script>
-	var myModal = document.getElementById('myModal')
-	var myInput = document.getElementById('myInput')
-
-	myModal.addEventListener('shown.bs.modal', function() {
-		myInput.focus()
-	})
-</script>
 <body>
 
 	<th:block layout:fragment="nav" th:include="@{/fragments/nav}"></th:block>
 
 	<div layout:fragment="content" class="content">
-		<div class="container">
+		<div class="container w-75">
 			<div class="row pt-5">
 				<div class="col bg-white text-center" id="page_title">
 					<b>나눔 포스트 상세조회</b>
@@ -162,7 +154,7 @@
 
 			<!--Send message BTN -->
 			<div class="d-grid gap-2 mt-3">
-				<a class="btn btn-outline-success" width="100%" href="#"
+				<a class="btn btn-outline-success w-auto" href="#"
 					role="button" id="btn-sendMsg">쪽지 보내기</a>
 			</div>
 		</div>
