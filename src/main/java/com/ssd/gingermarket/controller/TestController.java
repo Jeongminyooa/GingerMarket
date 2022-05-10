@@ -28,19 +28,28 @@ public class TestController {
 		return mav;
 	}
 	
+	//postList view 확인용
+	@GetMapping("/home/postList")
+	public ModelAndView goPostList(HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView("content/postList");
+		return mav;
+	}
+	
 	@PostMapping("/post")
 	public Integer save(@RequestBody TestDto request) {
 		return testService.insertTest(request);
 	}
 	
+
 	@GetMapping("/mypage")
 	public ModelAndView gomMyPage(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("content/mypage/mypage");
 		return mav;
 	}
-	@GetMapping("/modalTest")
-	public ModelAndView test(HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView("content/mypage/modal_update");
+	
+	@GetMapping("/home/viewSharePost")
+	public ModelAndView goViewSharePost(HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView("content/sharePost/ViewSharePost");
 		return mav;
 	}
 }
