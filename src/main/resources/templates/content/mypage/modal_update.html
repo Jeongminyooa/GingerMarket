@@ -1,25 +1,37 @@
-<script src="//code.jquery.com/jquery-3.3.1.js"></script>
 <script>
-var cntItem = 0;
+const cntItem = [];
 function handleOnClick(e) {
 	const value = e.innerText;
 	
-	if(cntItem > 2) {
+	for(let i = 0; i < cntItem.length; i++) {
+		if(cntItem[i] == value) {
+			alert('선호 생필품이 중복됩니다.');
+			return;
+		}
+	}
+	
+	if(cntItem.length > 2) {
 		alert('선호 생필품은 최대 3 개까지 등록 가능합니다.');
 		return;
 	}
-	var $selectedTag = $('<span>' + value + '</span>');
+	const $selectedTag = $('<span>' + value + '</span>');
 	$selectedTag.attr("class", "badge me-1");
 	$selectedTag.attr("id", "item");
 	$selectedTag.attr("onclick", "cancelOnClick(this)");
 	$('#selectedItem').append($selectedTag);
 	
-	cntItem++;
+	cntItem.push(value);
 }
 
 function cancelOnClick(e) {
+	const value = e.innerText;
 	e.remove();
-	cntItem--;
+	for(let i = 0; i < cntItem.length; i++) {
+		if(cntItem[i] == value) {
+			cntItem.splice(i, i+1);
+			return;
+		}
+	}
 }
 </script>
 
