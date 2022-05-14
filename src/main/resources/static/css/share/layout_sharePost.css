@@ -1,0 +1,11 @@
+@charset "UTF-8";
+
+#btn-confirm {
+	border-radius: 10px;
+	border-color: #91A77F;
+}
+
+#btn-confirm:hover{
+	color: white;
+	background-color: #91A77F;
+}
