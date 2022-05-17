@@ -48,7 +48,7 @@ public class TestController {
 
 	@GetMapping("/home/viewSharePost")
 	public ModelAndView goViewSharePost(HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView("content/sharePost/ViewSharePost");
+		ModelAndView mav = new ModelAndView("content/sharePost/sharePost_view");
 		return mav;
 	}
 
