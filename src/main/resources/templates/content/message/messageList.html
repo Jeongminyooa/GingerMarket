@@ -46,16 +46,25 @@
 						<img src="/image/yellow.JPG" alt="..." id="img-author"
 							class="rounded-pill">
 					</div>
-					<div class="col-lg-9 text-left ms-5 mt-2">
+					<div class="col-lg-8 text-left ms-5 mt-2">
 						<div class="row">
 							<div class="col-2" id="main_content">
 								<b>김매미</b>
 							</div>
-							<div class="col" id="small_content" >
-								2022/05/18 16:04</div>
+							<div class="col" id="small_content">2022/05/18 16:04</div>
 						</div>
 
 						<p class="mt-1" id="main_content">안녕하세요!</p>
+					</div>
+					<div class="col-lg-1">
+						<!-- <div th:if="${list.is_read==0}"> -->
+						<!-- 읽지 않은 새 메세지 알림 아이콘 -->
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+							fill="#91A77F" class="bi bi-asterisk" viewBox="0 0 16 16">
+  <path
+								d="M8 0a1 1 0 0 1 1 1v5.268l4.562-2.634a1 1 0 1 1 1 1.732L10 8l4.562 2.634a1 1 0 1 1-1 1.732L9 9.732V15a1 1 0 1 1-2 0V9.732l-4.562 2.634a1 1 0 1 1-1-1.732L6 8 1.438 5.366a1 1 0 0 1 1-1.732L7 6.268V1a1 1 0 0 1 1-1z" />
+</svg>
+						<!-- </div> -->
 					</div>
 					<div class="col-lg-1">
 						<a href="#"> <img src="/image/postList.JPG" alt="..."
@@ -65,6 +74,8 @@
 				</div>
 				<hr class="w-75 mx-auto">
 			</th:block>
+
+
 		</div>
 		<!-- container -->
 	</div>
