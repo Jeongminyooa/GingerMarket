@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default_layout}">
+
+<th:block layout:fragment="head">
+	<title>Spring Boot</title>
+	<meta charset="utf-8">
+
+	<!-- css -->
+	<link th:href="@{/css/layout_content.css}" rel="stylesheet" />
+	<link th:href="@{/css/groupBuying/layout_groupPostList.css}" rel="stylesheet" />
+	<!-- Bootstrap CSS -->
+
+	<link
+		href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+		rel="stylesheet"
+		integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+		crossorigin="anonymous">
+
+	<!-- Bootstrap JS -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+		crossorigin="anonymous"></script>
+
+
+</th:block>
+
+<body>
+	<th:block layout:fragment="nav" th:include="@{/fragments/nav}"></th:block>
+
+	<div layout:fragment="content" class="content">
+		<div class="container w-75">
+			<div class="row pt-5">
+				<div class="col bg-white text-center" id="page_title">
+					<b>공구 포스트 전체조회</b>
+				</div>
+			</div>
+
+			<div class="d-flex justify-content-end mt-5">
+				<form class="d-flex me-3">
+				
+					<!--검색 창 -->
+					<input class="form-control" type="search" placeholder="검색어를 입력하세요"
+						aria-label="Search" id="search-option">
+					<button class="btn btn-sm " id="btn-search-option" type="submit">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+							width="15px">
+							<path
+								d="M500.3 443.7l-119.7-119.7c27.22-40.41 40.65-90.9 33.46-144.7C401.8 87.79 326.8 13.32 235.2 1.723C99.01-15.51-15.51 99.01 1.724 235.2c11.6 91.64 86.08 166.7 177.6 178.9c53.8 7.189 104.3-6.236 144.7-33.46l119.7 119.7c15.62 15.62 40.95 15.62 56.57 0C515.9 484.7 515.9 459.3 500.3 443.7zM79.1 208c0-70.58 57.42-128 128-128s128 57.42 128 128c0 70.58-57.42 128-128 128S79.1 278.6 79.1 208z" /></svg>
+					</button>
+				</form>
+
+				<!--카테고리 선택 -->
+				<div class="dropdown">
+					<a class="btn btn-sm dropdown-toggle" href="#" role="button"
+						id="search-category" data-bs-toggle="dropdown"
+						aria-expanded="false"> 카테고리를 선택하세요 </a>
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+						<li><a class="dropdown-item" href="#">가전제품 </a></li>
+						<li><a class="dropdown-item" href="#">욕실용품 </a></li>
+						<li><a class="dropdown-item" href="#">위생용품 </a></li>
+						<li><a class="dropdown-item" href="#">주방용품 </a></li>
+						<li><a class="dropdown-item" href="#">바디/헤어 </a></li>
+						<li><a class="dropdown-item" href="#">청소/세탁용품 </a></li>
+						<li><a class="dropdown-item" href="#">문구 </a></li>
+						<li><a class="dropdown-item" href="#">생활잡화 </a></li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="row pt-5">
+				<p id="main_content">
+					<b>추천 게시물</b>
+				</p>
+			</div>
+
+			<!-- fav-post  -->
+			<th:block th:include="@{/content/groupBuyingPost/groupPost_favPostList}"></th:block>
+
+			<br>
+			<hr>
+
+			<div class="row pt-5">
+				<p id="main_content">
+					<b>전체 게시물</b>
+				</p>
+			</div>
+			<!--  all-post  -->
+			<th:block th:include="@{/content/groupBuyingPost/groupPost_allPostList}"></th:block>
+
+			<!-- 새 글 등록 BTN -->
+			<div class="d-grid gap-2 mt-5">
+				<button class="btn btn-outline-light" id="btn-newPost" >등록</button>
+			</div>
+		</div>
+		<!-- container -->
+	</div>
+	<!-- content -->
+
+	<th:block layout:fragment="footer" th:include="@{/fragments/footer}"></th:block>
+</body>
+</html>
