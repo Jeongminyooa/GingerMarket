@@ -40,13 +40,6 @@ public class TestController {
 		return testService.insertTest(request);
 	}
 	
-
-	@GetMapping("/mypage")
-	public ModelAndView gomMyPage(HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView("content/mypage/mypage");
-		return mav;
-	}
-	
 	@GetMapping("/home/viewSharePost")
 	public ModelAndView goViewSharePost(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("content/sharePost/ViewSharePost");
