@@ -16,33 +16,49 @@ import lombok.*;
 // import lombok.extern.slf4j.Slf4j;
 
 // @Slf4j //로그 
-@RestController //결과값을 JSON 형태로 변환
+@RestController // 결과값을 JSON 형태로 변환
 @RequestMapping("test") // 공통되는 url mapping
-@RequiredArgsConstructor //Autowired 없이 생성자로 주입, 반드시 private final
+@RequiredArgsConstructor // Autowired 없이 생성자로 주입, 반드시 private final
 public class TestController {
 	private final TestService testService;
-	
+
 	@GetMapping("/home")
 	public ModelAndView goHome(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("content/content_container");
 		return mav;
 	}
-	
-	//postList view 확인용
+
+	// postList view 확인용
 	@GetMapping("/home/postList")
 	public ModelAndView goPostList(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("content/postList");
 		return mav;
 	}
-	
+
 	@PostMapping("/post")
 	public Integer save(@RequestBody TestDto request) {
 		return testService.insertTest(request);
 	}
-	
+
 	@GetMapping("/home/viewSharePost")
 	public ModelAndView goViewSharePost(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("content/sharePost/ViewSharePost");
 		return mav;
 	}
+
+	// share post add view 확인용
+	@GetMapping("/share/addPost")
+	public ModelAndView goAddPost(HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView("content/sharePost/sharePost_add");
+		return mav;
+	}
+
+	// share post List 확인용
+	@GetMapping("/share/postList")
+	public ModelAndView goSharePostList(HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView("content/sharePost/sharePostList");
+		return mav;
+	}
+	
+	
 }
