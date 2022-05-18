@@ -21,20 +21,20 @@ import lombok.*;
 @RequiredArgsConstructor // Autowired 없이 생성자로 주입, 반드시 private final
 public class TestController {
 	private final TestService testService;
-	
+
 	@GetMapping("/home")
 	public ModelAndView goHome(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("content/content_container");
 		return mav;
 	}
-	
+  
 	// postList view 확인용
 	@GetMapping("/home/postList")
 	public ModelAndView goPostList(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("content/postList");
 		return mav;
 	}
-	
+
 	@PostMapping("/post")
 	public Integer save(@RequestBody TestDto request) {
 		return testService.insertTest(request);
@@ -45,13 +45,13 @@ public class TestController {
 		ModelAndView mav = new ModelAndView("content/mypage/mypage");
 		return mav;
 	}
-	
+
 	@GetMapping("/home/viewSharePost")
 	public ModelAndView goViewSharePost(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("content/sharePost/ViewSharePost");
 		return mav;
 	}
-	
+
 	// share post add view 확인용
 	@GetMapping("/share/addPost")
 	public ModelAndView goAddPost(HttpServletRequest request) {
@@ -66,6 +66,7 @@ public class TestController {
 		return mav;
 	}
 	
+
 	@GetMapping("/groupBuying/viewGroupPost")
  	public ModelAndView goViewGroupPost(HttpServletRequest request) {
 	  ModelAndView mav = new ModelAndView("content/groupBuyingPost/viewGroupPost");

@@ -28,15 +28,6 @@ table{
 	margin:0 50px 0 -30px;
 }
 
-#btn-sendMsg {
-	border-radius: 10px;
-	border-color: #91A77F;
-}
-
-#btn-sendMsg:hover {
-	color: white;
-	background-color: #91A77F;
-}
 .icon{
 	margin : 0 5px 0 0;
 }
