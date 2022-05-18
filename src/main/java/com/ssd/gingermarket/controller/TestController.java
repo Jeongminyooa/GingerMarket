@@ -66,5 +66,10 @@ public class TestController {
 		return mav;
 	}
 	
-	
+	//message List 확인용
+	@GetMapping("/messages")
+	public ModelAndView goMessageList(HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView("content/message/messageList");
+		return mav;
+	}
 }

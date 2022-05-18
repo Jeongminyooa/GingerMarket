@@ -9,3 +9,7 @@
 	color: white;
 	background-color: #91A77F;
 }
+
+.msg-list:hover{
+	background-color: #F2EAE4;
+}
