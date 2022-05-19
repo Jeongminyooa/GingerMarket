@@ -10,9 +10,8 @@
 
 	<!-- css -->
 	<link th:href="@{/css/layout_content.css}" rel="stylesheet" />
-	<link th:href="@{/css/layout_postList.css}" rel="stylesheet" />
-	<link th:href="@{/css/share/layout_viewSharePost.css}" rel="stylesheet" />
-	<link th:href="@{/css/share/layout_sharePost.css}" rel="stylesheet" />
+	<link th:href="@{/css/sharePost.css}" rel="stylesheet" />
+	<link th:href="@{/css/message.css}" rel="stylesheet" />
 
 	<!-- Bootstrap CSS -->
 	<link
@@ -41,11 +40,16 @@
 
 			<!-- 쪽지함 리스트  -->
 			<th:block th:each="num : ${#numbers.sequence(1,5)}">
-				<div class="row pt-1 w-75 mx-auto msg-list rounded-3">
+			
+				<!--message list -->
+				<div class="row pt-1 w-75 mx-auto msg-list rounded-3 position-relative">
+					<!-- receiver profile -->
 					<div class="col-lg-1">
 						<img src="/image/yellow.JPG" alt="..." id="img-author"
 							class="rounded-pill">
 					</div>
+					
+					<!-- receiver name & last content -->
 					<div class="col-lg-8 text-left ms-5 mt-2">
 						<div class="row">
 							<div class="col-2" id="main_content">
@@ -54,23 +58,23 @@
 							<div class="col" id="small_content">2022/05/18 16:04</div>
 						</div>
 
-						<p class="mt-1" id="main_content">안녕하세요!</p>
+						<div class="mt-1" id="main_content">안녕하세요!</div>
 					</div>
-					<div class="col-lg-1">
+					
+					<!-- post img & alarm -->
+					<div class="col-lg-1 pt-4 ps-5">
 						<!-- <div th:if="${list.is_read==0}"> -->
 						<!-- 읽지 않은 새 메세지 알림 아이콘 -->
-						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-							fill="#91A77F" class="bi bi-asterisk" viewBox="0 0 16 16">
-  <path
-								d="M8 0a1 1 0 0 1 1 1v5.268l4.562-2.634a1 1 0 1 1 1 1.732L10 8l4.562 2.634a1 1 0 1 1-1 1.732L9 9.732V15a1 1 0 1 1-2 0V9.732l-4.562 2.634a1 1 0 1 1-1-1.732L6 8 1.438 5.366a1 1 0 0 1 1-1.732L7 6.268V1a1 1 0 0 1 1-1z" />
-</svg>
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"fill="#91A77F" class="bi bi-asterisk" viewBox="0 0 16 16">
+  							<path d="M8 0a1 1 0 0 1 1 1v5.268l4.562-2.634a1 1 0 1 1 1 1.732L10 8l4.562 2.634a1 1 0 1 1-1 1.732L9 9.732V15a1 1 0 1 1-2 0V9.732l-4.562 2.634a1 1 0 1 1-1-1.732L6 8 1.438 5.366a1 1 0 0 1 1-1.732L7 6.268V1a1 1 0 0 1 1-1z" />
+						</svg>
 						<!-- </div> -->
 					</div>
+					
 					<div class="col-lg-1">
-						<a href="#"> <img src="/image/postList.JPG" alt="..."
-							id="img-author" class="rounded-3">
-						</a>
+						<a href="#" class="stretched-link"> <img src="/image/postList.JPG" alt="..." id="img-post" class="rounded-3"></a>
 					</div>
+					
 				</div>
 				<hr class="w-75 mx-auto">
 			</th:block>
