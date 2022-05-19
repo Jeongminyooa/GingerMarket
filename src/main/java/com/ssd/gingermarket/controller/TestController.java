@@ -72,4 +72,11 @@ public class TestController {
 		ModelAndView mav = new ModelAndView("content/message/messageList");
 		return mav;
 	}
+	
+	//message 상세조회용
+		@GetMapping("/messages/roomIdx")
+		public ModelAndView goMessages(HttpServletRequest request) {
+			ModelAndView mav = new ModelAndView("content/message/messageInfo");
+			return mav;
+		}
 }
