@@ -1,0 +1,42 @@
+@charset "UTF-8";
+.content{
+	margin-top : 150px;
+	margin-bottom:100px;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size:16px;
+    
+}
+div{
+	white-space:nowrap;
+}
+input{
+	width: 300px;
+	height: 48px;
+	outline : #DFDFDF;
+}
+#content{
+	color : #999999;
+}
+
+#btns{
+    width:100%;
+}
+table{
+    text-align:center;
+}
+#login, #signup{
+	width: 300px;
+	height: 50px;
+	line-height: 100%;
+	border: none;
+	border-radius: 10px;
+	font:16px black;
+}
+#login{
+	background-color: #95A583;
+}
+#signup{
+	background-color: #A68D6F;
+}

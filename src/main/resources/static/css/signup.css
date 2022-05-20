@@ -1,0 +1,43 @@
+@charset "UTF-8";
+
+svg{
+	margin-top:10px;
+}
+input{
+	border:none;
+	outline:#DFDFDF solid 1px;
+	width:260px;
+	height:30px;
+}
+#info{
+	margin-left:50px;
+}
+#confirmbtn{
+	width:94px;
+	height:30px;
+	background-color : #91A77F;
+	border: none;
+	border-radius: 10px;
+	margin-left:30px;
+}
+
+#dropdownMenuLink{
+	background-color : white;
+	border: none;
+	color : black;
+}
+#submit, #quit{
+	width:150px;
+	height:30px;
+	border-radius: 10px;
+}
+#submit{
+	background-color : #91A77F;
+	color : white;
+	border: none;
+}
+#quit{
+	background-color : white;
+	color : black;
+	border-color : black;
+}
