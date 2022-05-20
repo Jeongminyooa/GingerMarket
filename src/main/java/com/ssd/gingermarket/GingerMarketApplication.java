@@ -10,5 +10,5 @@ public class GingerMarketApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(GingerMarketApplication.class, args);
 	}
-
+	
 }
