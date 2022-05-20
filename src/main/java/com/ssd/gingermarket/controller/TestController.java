@@ -42,7 +42,7 @@ public class TestController {
 
 	@GetMapping("/home/viewSharePost")
 	public ModelAndView goViewSharePost(HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView("content/sharePost/ViewSharePost");
+		ModelAndView mav = new ModelAndView("content/sharePost/sharePost_view");
 		return mav;
 	}
 
@@ -60,5 +60,17 @@ public class TestController {
 		return mav;
 	}
 	
+	//message List 확인용
+	@GetMapping("/messages")
+	public ModelAndView goMessageList(HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView("content/message/messageList");
+		return mav;
+	}
 	
+	//message 상세조회용
+		@GetMapping("/messages/roomIdx")
+		public ModelAndView goMessages(HttpServletRequest request) {
+			ModelAndView mav = new ModelAndView("content/message/messageInfo");
+			return mav;
+		}
 }
