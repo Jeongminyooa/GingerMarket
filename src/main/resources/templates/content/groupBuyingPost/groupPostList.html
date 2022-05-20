@@ -5,7 +5,7 @@
 	layout:decorate="~{layout/default_layout}">
 
 <th:block layout:fragment="head">
-	<title>Spring Boot</title>
+	<title>공구 전체 포스트 조회</title>
 	<meta charset="utf-8">
 
 	<!-- css -->
@@ -70,7 +70,8 @@
 					</ul>
 				</div>
 			</div>
-
+			
+			<!-- content -->
 			<div class="row pt-5">
 				<p id="main_content">
 					<b>추천 게시물</b>
@@ -96,9 +97,7 @@
 				<button class="btn btn-outline-light" id="btn-newPost" >등록</button>
 			</div>
 		</div>
-		<!-- container -->
 	</div>
-	<!-- content -->
 
 	<th:block layout:fragment="footer" th:include="@{/fragments/footer}"></th:block>
 </body>
