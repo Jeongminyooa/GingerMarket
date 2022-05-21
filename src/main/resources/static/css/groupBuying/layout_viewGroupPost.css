@@ -1,0 +1,44 @@
+@charset "UTF-8";
+#post-img{
+	width : 100%;
+	margin : auto;
+}
+
+#btn-apply {
+	border-radius: 10px;
+	background-color: #735C3F;
+	color: white;
+}
+
+#btn-apply:hover {
+	color: white;
+	border-color: #735C3F;
+}
+
+#img-author{
+	width:30px;
+	height:30px;
+	
+}
+
+#fav-card {
+	background-color: #F2EAE4;
+}
+
+#btn-modalConfirm{
+	background-color: #A68D6F;
+}
+
+.add {
+	border : 1px solid #A68D6F;
+	border-radius : 10px;
+}
+
+#btn-search-option{
+	border-radius: 8px;
+	border-color: grey;
+}
+#btn-search-option:hover {
+	color: white;
+	background-color: #735C3F;
+}

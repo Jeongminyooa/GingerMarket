@@ -1,0 +1,35 @@
+<script src="//code.jquery.com/jquery-3.3.1.js"></script>
+		<div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		    <div class="modal-content"> 
+		      <div class="modal-header">
+		      	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body justify-content-md-center ps-5 pe-5">
+		        <div id="page_title" class="text-center"><b>신청 폼 작성</b></div>
+		       
+		        <form class="ps-5 pe-5">  
+					  <div class="mb-3 pt-5">
+					  	<label for="updateId" class="form-label">아이디</label> <b class="text-danger">*</b>
+					  	<input type="text" class="form-control" id="updateId" placeholder="아이디 입력">
+					  </div>
+					  
+					   <div class="mb-3">
+					  	<label for="updatePhone" class="form-label">전화번호</label> <b class="text-danger">*</b>
+					  	<input type="text" class="form-control" id="updatePhone" placeholder="전화번호 입력">
+					  </div>
+					  
+					   <div class="mb-3">
+					  	<label for="sendMsg" class="form-label">메시지</label>
+					  	 <textarea class="form-control" aria-label="With textarea" id="sendMsg"
+						placeholder="공구게시판에 올릴 게시글 내용을 작성해주세요." rows="5"></textarea>	
+						</div>
+	
+					<div class="mb-1 pt-3 text-center">
+						<button type="button" class="apply_btn w-75">신청하기</button>
+					</div>
+		        </form>
+		      </div> 
+		    </div>
+		  </div>
+		</div>

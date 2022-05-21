@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default_layout}">
+	
+<th:block layout:fragment="head">
+		<title>공구 포스트 상세 조회</title>
+		<meta charset="utf-8">
+		
+		<!-- css -->
+		<link th:href="@{/css/layout_content.css}" rel="stylesheet" />
+		<link th:href="@{/css/groupBuying/layout_viewGroupPost.css}" rel="stylesheet" />
+		<link th:href="@{/css/groupBuying/layout_applyGroupPost.css}" rel="stylesheet" />
+		<!-- Bootstrap CSS -->
+    	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+		<!-- Bootstrap JS -->
+		<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+		crossorigin="anonymous"></script>
+		
+</th:block>
+
+<body>
+		<th:block layout:fragment="nav" th:include="@{/fragments/nav}"></th:block>
+		
+		<div layout:fragment="content" class="content">
+			<div class="container w-75" >
+  			<div class="row pt-5">
+				<div class="col bg-white text-center" id="page_title">
+					<b>공구 포스트 상세조회</b>
+				</div>
+			</div>
+			
+			<div class="row pt-5">
+				<div class="d-flex justify-content-end">
+				
+					<button type="button" class="btn btn-sm border border-secondary"
+						id="btn-search-option">수정하기</button>&nbsp;
+				
+					<!-- Button trigger modal -->
+					<button type="button" class="btn btn-sm border border-secondary"
+						id="btn-search-option" data-bs-toggle="modal"
+						data-bs-target="#deleteModal">삭제하기</button>
+							
+				</div>
+			</div>
+  				
+  				<div class="row pt-3">
+  					<div class="col col-lg-7">
+   					<img src="/image/tissue.png" class="img-fluid" id="post-img" alt=""> 
+    				</div>
+    				<div class="col col-lg-5">
+						<div>
+						<img src="/image/profile.png" class="rounded-circle" alt="" width="50" height="50">
+						&nbsp;
+						<b>jmyj727</b>
+						<hr>
+						<p class="fst-normal" id="main_content">두루마리 휴지 공구할 분:)</p>
+							<p class="text-black-50" id="small_content">
+							필수품 &nbsp;두루마리 휴지</p>
+					 	<p class="fw-bolder" id="middle_title">1200원</p>
+  						</div>
+   						<div class="row pt-2">
+   							<div class="col">
+   							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people"> 
+						<path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+						</svg>
+						2/8명
+   						</div>
+   						<div class="row pt-1">
+   						<div class="col">
+   							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-check">
+  						<path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+  						<path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+						</svg>
+						2022/04/06까지
+						</div>
+						</div>
+						<div class="row pt-1">
+						<div class="col">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link">
+ 						 <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
+  						<path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z"/>
+						</svg>
+						https://naver.com
+						</div>
+   						</div>
+  				</div>
+  				<div class="row pt-3">
+  				<div class="col" id="main_content">상세설명 상세설명 상세설명 
+					상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명
+					상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명
+				</div>
+				</div>
+				<div class="row pt-3">
+				<div class="d-grid gap-2 mt-5">
+				<button class="btn btn-outline-light w-100" id="btn-apply" data-bs-toggle="modal" data-bs-target="#applyModal">신청하기</button>
+				</div>
+				
+			</div>
+			</div>
+			</div>
+			
+			<!-- 댓글 -->
+			<div class="row pt-5">
+				<hr>
+  				<div class="col">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right-text" viewBox="0 0 16 16">
+		  			<path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1H2zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12z"/>
+		  			<path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+					</svg> 댓글(23)
+				</div>
+			</div>
+			<div class= "row mt-5">
+			<div class="row pt-3">
+				<div class="col">
+					<img src="/image/yellow.JPG" class="rounded-circle" alt="" id="img-author">
+						<span id="main_content" style="font-weight: bold;">lorlov</span>
+				</div>
+					<div class="row pt-1">
+					<p id="main_content">저 신청하겠습니다!!</p>
+					</div>
+					<div>
+					<span id="small_content" style="color: silver;">2022/05/10 17:55</span>
+					<span id="small_content" style="padding-left: 4em; font-weight: bold;">답글달기</span>
+					<span id="small_content" style="padding-left: 54em;">수정</span>
+					<span id="small_content" style="padding-left: 1em;">삭제</span>
+					</div>
+				</div>
+			<div class="row pt-3 pb-1 mt-1" id="fav-card">
+				<div class="col">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
+	  			<path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
+				</svg>
+					<img src="/image/profile.png" class="rounded-circle" alt="" id="img-author">
+						<span id="main_content" style="font-weight: bold;">jmyj727</span>
+				</div>
+				<div class="row pt-1 mx-2">
+					<p id="main_content">신청폼 작성해주세요:)</p>
+					</div>
+					<div>
+					<span id="small_content" style="color: silver;">2022/05/13 12:08</span>
+					<span id="small_content" style="padding-left: 4em; font-weight: bold;">답글달기</span>
+					
+					<span id="small_content" style="padding-left: 54em;">수정</span>				
+					<span id="small_content" style="padding-left: 1em;">삭제</span>
+					</div>
+			</div>
+			<div class="row pt-3 pb-1 mt-1" id="fav-card">
+				<div class="col">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
+	  			<path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
+				</svg>
+					<img src="/image/profile2.jpg" class="rounded-circle" alt="" id="img-author">
+						<span id="main_content" style="font-weight: bold;">dev_jeongmin</span>
+				</div>
+				<div class="row pt-1 mx-2">
+					<p id="main_content">삭제된 댓글입니다.</p>
+				</div>
+			</div>
+			<div class="row pt-3"><hr></div>
+			</div>
+			
+			
+			<!-- 댓글 등록 버튼 -->
+			<div class="row pt-5">
+   					<div class="col add pt-3 pb-3" id="main_content">
+   						<span id="small_content" style="color: silver;">댓글을 입력해주세요</span>
+   						<span style="padding-left: 55em;">
+      					<button class="btn btn-outline-light" id="btn-apply" >등록</button></span>
+    				</div>
+  			</div>
+			
+			
+		</div>	
+		</div>
+		<th:block th:include="@{/content/groupBuyingPost/modal_delete}"></th:block>
+		<th:block th:include="@{/content/groupBuyingPost/modal_apply}"></th:block>
+		<th:block layout:fragment="footer" th:include="@{/fragments/footer}"></th:block>
+	</body>
+</html>

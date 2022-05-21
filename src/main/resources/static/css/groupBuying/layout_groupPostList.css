@@ -1,0 +1,59 @@
+@charset "UTF-8";
+
+#fav-card, #all-card {
+	border-radius: 15px;
+	height: 360px;
+}
+
+#postList-img {
+	border-radius: 15px 15px 0 0;
+}
+
+#fav-card {
+	background-color: #F2EAE4;
+}
+
+#isDone {
+	background-color: #735C3F;
+}
+
+.card-img-top {
+	height: 13vw;
+	object-fit: cover;
+}
+
+#btn-newPost {
+	border-radius: 10px;
+	border-color: #735C3F;
+	color: black;
+}
+
+#btn-newPost:hover {
+	color: white;
+	background-color: #735C3F;
+}
+
+#search-option, #search-category {
+	border-radius: 5px;
+	height: 30px;
+	border-color: grey;
+}
+
+a {
+	display: block;
+}
+
+.card-title {
+	width: 200px;
+	height: 50px; overflow : hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	font-weight:bold;
+}
+
+.title {
+	font-weight:bold;
+}

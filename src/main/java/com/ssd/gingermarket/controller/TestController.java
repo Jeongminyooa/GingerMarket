@@ -27,7 +27,7 @@ public class TestController {
 		ModelAndView mav = new ModelAndView("content/content_container");
 		return mav;
 	}
-
+  
 	// postList view 확인용
 	@GetMapping("/home/postList")
 	public ModelAndView goPostList(HttpServletRequest request) {
@@ -60,6 +60,32 @@ public class TestController {
 		return mav;
 	}
 	
+
+
+	@GetMapping("/groupBuying/viewGroupPost")
+ 	public ModelAndView goViewGroupPost(HttpServletRequest request) {
+	  ModelAndView mav = new ModelAndView("content/groupBuyingPost/viewGroupPost");
+	  return mav;
+	}
+	
+	@GetMapping("/groupBuying/groupPostList")
+	  public ModelAndView goGroupPostList(HttpServletRequest request) {
+	  	ModelAndView mav = new ModelAndView("content/groupBuyingPost/groupPostList");
+	    return mav;
+	 }
+	    
+	@GetMapping("/groupBuying/addGroupPost")
+	 public ModelAndView goAddGroupPost(HttpServletRequest request) {
+	   ModelAndView mav = new ModelAndView("content/groupBuyingPost/groupPost_add");
+	   return mav;
+	 }
+	    
+	@GetMapping("/groupBuying/applyGroupPost")
+	 public ModelAndView goApplyGroupPost(HttpServletRequest request) {
+	   ModelAndView mav = new ModelAndView("content/groupBuyingPost/GroupPost_apply");
+	   return mav;
+	}
+
 	//message List 확인용
 	@GetMapping("/messages")
 	public ModelAndView goMessageList(HttpServletRequest request) {

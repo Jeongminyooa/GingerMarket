@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+#img-author{
+	width:30px;
+	height:30px;
+	
+}
+
+.apply_btn {
+	border : 1px solid #735C3F;;
+	border-radius : 10px;
+	color : white;
+	background-color : #735C3F;
+	height : 36px;
+}
+
+.apply_btn:hover {
+	color : black;
+	background-color : white;;
+	transition-duration: 0.3s;
+  
+}
+
