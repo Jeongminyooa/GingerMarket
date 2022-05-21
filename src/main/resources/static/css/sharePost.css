@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+button{
+	border-radius: 8px;
+	border-color: grey;
+}
+
+button:hover, #btn-sendMsg:hover, #btn-confirm:hover{
+	color: white;
+	background-color: #91A77F;
+}
+
+#div-img {
+	width: 50%;
+	margin: auto;
+}
+
+#img-author, #img-post {
+	width: 72px;
+	height: 72px;
+}
+
+#small_content {
+	color: grey;
+}
+
+
+#btn-modalConfirm {
+	background-color: #91A77F;
+}
+a{
+	text-decoration : none !important;
+}
+
+#icon:hover{
+    transform: scale(1.1, 1.1);
+    transition-duration: 0.5s;
+    background-color:initial;
+  }
+#icon{
+    transition-duration: 1s;
+  }
