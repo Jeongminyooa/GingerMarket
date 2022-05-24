@@ -12,15 +12,27 @@ input{
 #info{
 	margin-left:50px;
 }
+#tel, #address_kakao{
+	width:100px;
+}
 #confirmbtn{
 	width:94px;
-	height:30px;
 	background-color : #91A77F;
 	border: none;
 	border-radius: 10px;
 	margin-left:30px;
 }
-
+.btn-primary{
+	position:relative;
+	height:30px;
+}
+.btn-primary p{
+	position: absolute;
+  	top: 50%;
+  	left: 50%;
+  	transform: translate(-50%, -50%);
+  	margin: 0;
+}
 #dropdownMenuLink{
 	background-color : white;
 	border: none;
@@ -28,7 +40,6 @@ input{
 }
 #submit, #quit{
 	width:150px;
-	height:30px;
 	border-radius: 10px;
 }
 #submit{
@@ -36,8 +47,19 @@ input{
 	color : white;
 	border: none;
 }
+#submit:hover,#confirmbtn:hover {
+	color : white;
+	background-color : #68785B;
+	transition-duration: 0.3s;
+  
+}
 #quit{
 	background-color : white;
 	color : black;
-	border-color : black;
+	border:1px solid #91A77F;
+}
+#quit:hover{
+	color : white;
+	background-color : #91A77F;
+	transition-duration: 0.3s;
 }

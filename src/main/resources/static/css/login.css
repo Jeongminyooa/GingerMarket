@@ -1,42 +1,56 @@
 @charset "UTF-8";
-.content{
-	margin-top : 150px;
-	margin-bottom:100px;
-	display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size:16px;
-    
+#small_content{
+	color : #999999;
+}
+svg{
+	margin-top:150px;
 }
 div{
 	white-space:nowrap;
 }
+#page_title {
+	font-size : 60px;
+}
+.table{
+	position:relative;
+	height:30px;
+}
+.btn-primary{
+	position:relative;
+	width: 300px;
+	height: 50px;
+}
+.btn-primary p{
+	position: absolute;
+  	top: 50%;
+  	left: 50%;
+  	transform: translate(-50%, -50%);
+  	margin: 0;
+}
 input{
 	width: 300px;
 	height: 48px;
-	outline : #DFDFDF;
-}
-#content{
-	color : #999999;
-}
-
-#btns{
-    width:100%;
+	border : #DFDFDF 1px solid;
 }
 table{
     text-align:center;
 }
-#login, #signup{
-	width: 300px;
-	height: 50px;
-	line-height: 100%;
+#login{
+	background-color: #91A77F;
 	border: none;
 	border-radius: 10px;
-	font:16px black;
 }
-#login{
-	background-color: #95A583;
+#login:hover{
+	background-color: #68785B;
+	transition-duration: 0.3s;
 }
 #signup{
 	background-color: #A68D6F;
+	border: none;
+	border-radius: 10px;
+}
+#signup:hover{
+	background-color: #735C3F;
+	transition-duration: 0.3s;
+	
 }
