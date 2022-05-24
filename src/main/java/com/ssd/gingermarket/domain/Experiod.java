@@ -2,7 +2,7 @@ package com.ssd.gingermarket.domain;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.*;
 
@@ -18,18 +18,18 @@ public class Experiod {
 	 @Column(name = "experiod_idx",unique = true)
 	 private Long id;
 	 
-	 // 후에 참조 관계 추가
-	 @Column(unique = true, nullable = false)
+	 // 후에 참조 관계 추가, author 컬럼명으로 변경
+	 @Column(nullable = false)
 	 private Long userId;
 	
 	 @Column(length = 22)
 	 private String category;
 	 
 	 @Column(name = "enroll_date")
-	 private LocalDateTime enrollDate;
+	 private LocalDate enrollDate;
 	 
 	 @Column(name = "end_date")
-	 private LocalDateTime endDate;
+	 private LocalDate endDate;
 	 
 	 @Column(name = "d_day")
 	 private int dDay;
@@ -41,10 +41,17 @@ public class Experiod {
 		 this.dDay = dDay;
 		 
 		 // 등록일
-		 this.enrollDate = LocalDateTime.now();
+		 this.enrollDate = LocalDate.now();
 		 
 		 // 마감일 계산
 		 this.endDate = enrollDate.plusDays(dDay);
+	
+	 }
+	 
+	 // 디데이 업데이트
+	 public int updateDday() {
+		 this.dDay--;
+		 return dDay;
 	 }
 	 
 }
