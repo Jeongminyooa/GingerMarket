@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class ExperiodServiceImpl implements ExperiodService {
 
 	private final ExperiodRepository experiodRepository;
-
+		
 	@Override
 	@Transactional(rollbackFor=Exception.class)
 	public void addExperiod(Long userId, String category, int period) {
@@ -55,16 +55,11 @@ public class ExperiodServiceImpl implements ExperiodService {
 		return null;
 	}
 	
+	
 	@Override
-	@Transactional(rollbackFor=Exception.class)
-	public void updateExperiodDday(Long experiodIdx) {
-		Optional<Experiod> experiodOptional = experiodRepository.findById(experiodIdx);
-		
-		if(experiodOptional.isPresent()) {
-			Experiod experiod = experiodOptional.get();
-			experiod.updateDday();
-			experiodRepository.save(experiod);
-		}
+	@Transactional
+	public void updateExperiodDday() {
+		//experiodRepository.updateDday();
 	}
 		
 	@Override

@@ -1,8 +1,10 @@
 package com.ssd.gingermarket.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,7 +36,9 @@ public class MyPageController {
 			
 			if(category.equals("experiod")) {
 				List<ExperiodDto.Info> dto = experiodService.getAllExperiod(userId);
+				Map<String, Integer> categoryMap = ExperiodController.categoryExperiodMap();
 				mav.addObject("experiodList", dto);
+				mav.addObject("categoryMap", categoryMap);
 			}
 		}
 		return mav;

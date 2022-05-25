@@ -20,7 +20,7 @@ public interface ExperiodService {
 	public Experiod getExperiod(Long experiodIdx);
 	
 	// 교체주기 업데이트
-	public void updateExperiodDday(Long experiodIdx);
+	public void updateExperiodDday();
 	
 	// 교체주기 삭제
 	public void removeExperiod(Long experiodIdx);

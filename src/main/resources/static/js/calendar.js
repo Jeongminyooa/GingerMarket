@@ -8,6 +8,7 @@ $(document).ready(function() {
     금월 마지막일 날짜와 요일
     전월 마지막일 날짜와 요일
 */
+var monthList = ['MON', 'TUE', 'WED', "THU", "FRI", "SAT", "SUN"];
 
 function calendarInit() {
 
@@ -106,7 +107,7 @@ function onClickCalendar(e) {
 	
 	var thisYearMonth = document.querySelector('.year-month')
 	
-	var clickDate = thisYearMonth.innerHtml + "." + e.innerHtml;
+	var clickDate = thisYearMonth.textContent + "." + e.textContent;
 	console.log(clickDate);
 	
 	/*
