@@ -56,18 +56,18 @@
 		</div>
 	</div>
 	<div class="col col-lg-6">
-		<th:block th:each="num : ${#numbers.sequence(1,10)}">
+		<th:bolck th:each="experiod : ${experiodList}">
 			<div class="row pt-1 border-top"></div>
 			<div class="row p-3">
 				<div class="col col-lg-8" id="main_content">
-					<div class="d-inline-block text-truncate">두루마리 휴지</div>
-					<div class="font-grey">D-2</div>
+					<div class="d-inline-block text-truncate" th:text="${experiod.category}">두루마리 휴지</div>
+					<div class="font-grey" th:text="'D-' + ${experiod.dDay}">D-2</div>
 				</div>
 				<div class="col col-lg-4" id="main_content">
 					<button type="button" class="update_btn w-100" onclick="deleteExperiod(this)">삭제</button>
 				</div>
 			</div>
-		</th:block>
+		</th:bolck>
 	</div>
 </div>
 
