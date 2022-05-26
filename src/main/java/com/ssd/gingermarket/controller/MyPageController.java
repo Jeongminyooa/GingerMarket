@@ -31,13 +31,14 @@ public class MyPageController {
 		
 		ModelAndView mav = new ModelAndView("content/mypage/mypage");
 		
+		List<ExperiodDto.Info> dto = experiodService.getAllExperiod(userId);
+		mav.addObject("experiodList", dto);
+		
 		if(category != null) {
 			mav.addObject("category", category);
 			
 			if(category.equals("experiod")) {
-				List<ExperiodDto.Info> dto = experiodService.getAllExperiod(userId);
 				Map<String, Integer> categoryMap = ExperiodController.categoryExperiodMap();
-				mav.addObject("experiodList", dto);
 				mav.addObject("categoryMap", categoryMap);
 			}
 		}

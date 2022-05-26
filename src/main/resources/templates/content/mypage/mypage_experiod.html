@@ -1,6 +1,167 @@
-<script>
-	function deleteExperiod(e) {
-		alert('삭제하시겠습니까?')
+<script th:inline="javascript">
+	function deleteExperiod(idx) {
+		var result = confirm("삭제하시겠습니까?");
+		
+		if(result) {
+			var form = document.getElementById('experiodDeleteForm');
+			form.submit();
+		}
+	}
+	
+	
+	$(document).ready(function() {
+	    calendarInit();
+	});
+	/*
+	    달력 렌더링 할 때 필요한 정보 목록 
+
+	    현재 월(초기값 : 현재 시간)
+	    금월 마지막일 날짜와 요일
+	    전월 마지막일 날짜와 요일
+	*/
+	var monthList = ['MON', 'TUE', 'WED', "THU", "FRI", "SAT", "SUN"];
+
+	function calendarInit() {
+
+	    // 날짜 정보 가져오기
+	    var date = new Date(); // 현재 날짜(로컬 기준) 가져오기
+	    var utc = date.getTime() + (date.getTimezoneOffset() * 60 * 1000); // uct 표준시 도출
+	    var kstGap = 9 * 60 * 60 * 1000; // 한국 kst 기준시간 더하기
+	    var today = new Date(utc + kstGap); // 한국 시간으로 date 객체 만들기(오늘)
+	  
+	    var thisMonth = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+	    // 달력에서 표기하는 날짜 객체
+	  
+	    var currentYear = thisMonth.getFullYear(); // 달력에서 표기하는 연
+	    var currentMonth = thisMonth.getMonth(); // 달력에서 표기하는 월
+	    var currentDate = thisMonth.getDate(); // 달력에서 표기하는 일
+
+	    // 캘린더 렌더링
+	    renderCalender(thisMonth);
+
+	    function renderCalender(thisMonth) {
+
+	        // 렌더링을 위한 데이터 정리
+	        currentYear = thisMonth.getFullYear();
+	        currentMonth = thisMonth.getMonth();
+	        currentDate = thisMonth.getDate();
+
+	        // 이전 달의 마지막 날 날짜와 요일 구하기
+	        var startDay = new Date(currentYear, currentMonth, 0);
+	        var prevDate = startDay.getDate();
+	        var prevDay = startDay.getDay();
+
+	        // 이번 달의 마지막날 날짜와 요일 구하기
+	        var endDay = new Date(currentYear, currentMonth + 1, 0);
+	        var nextDate = endDay.getDate();
+	        var nextDay = endDay.getDay();
+
+	        // 현재 월 표기
+	        $('.year-month').text(currentYear + '.' + (currentMonth + 1));
+
+	        // 렌더링 html 요소 생성
+	        calendar = document.querySelector('.dates')
+	        calendar.innerHTML = '';
+	        
+	        // 지난달
+	        for (var i = prevDate - prevDay + 1; i <= prevDate; i++) {
+	            calendar.innerHTML = calendar.innerHTML + '<div class="day prev disable" >' + i + '</div>'
+	        }
+	        // 이번달
+	        for (var i = 1; i <= nextDate; i++) {	            
+	        	/*<![CDATA[*/
+	            // 날짜에 해당하는 데이터가 있다면 아이콘을 찍어준다.
+	            let experiodLost = /*[[${experiodList}]]*/ 'default';
+	            let ex_date = new Date(currentYear + "-" + (currentMonth + 1) + "-" + i);
+	            
+	            /*]]>*/
+	            
+	            const year = ex_date.getFullYear();
+	            const month = ex_date.getMonth() + 1;
+	            const date = ex_date.getDate();
+	            
+	            let ex_date_str = (`${year}-${month >= 10 ? month : '0' + month}-${date >= 10 ? date : '0' + date}`);
+	            let flag = false;
+	            experiodLost.forEach(function(experiod) {
+	            	if(ex_date_str == experiod.endDate) {
+	            		flag = true;
+	            		}
+	            });
+	            
+	            if(flag) {
+		            calendar.innerHTML = calendar.innerHTML + '<div class="day current" onclick="onClickCalendar(this)" >' + i + '<p><p><p><p>'
+					+ '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>'
+		            + '</div>';
+	            } else {
+		            calendar.innerHTML = calendar.innerHTML + '<div class="day current" onclick="onClickCalendar(this)" >' + i + '</div>';
+	            }
+	            
+	            
+	        }
+	        // 다음달
+	        for (var i = 1; i <= (7 - nextDay == 7 ? 0 : 7 - nextDay); i++) {
+	            calendar.innerHTML = calendar.innerHTML + '<div class="day next disable">' + i + '</div>'
+	        }
+
+	        // 오늘 날짜 표기
+	        if (today.getMonth() == currentMonth) {
+	            todayDate = today.getDate();
+	            var currentMonthDate = document.querySelectorAll('.dates .current');
+	            currentMonthDate[todayDate -1].classList.add('today');
+	        }
+	    }
+
+	    // 이전달로 이동
+	    $('.go-prev').on('click', function() {
+	        thisMonth = new Date(currentYear, currentMonth - 1, 1);
+	        renderCalender(thisMonth);
+	    });
+
+	    // 다음달로 이동
+	    $('.go-next').on('click', function() {
+	        thisMonth = new Date(currentYear, currentMonth + 1, 1);
+	        renderCalender(thisMonth); 
+	    });
+	    
+	    $('.current').on('click', function() {
+			
+		});
+	}
+
+	//클릭한 날짜로 비동기 통신
+	function onClickCalendar(e) {
+
+		var preClick = document.querySelector('.click')
+		if(preClick != null)
+			preClick.classList.remove('click');
+		
+		e.classList.add('click');
+		
+		var thisYearMonth = document.querySelector('.year-month')
+		
+		var clickDate = thisYearMonth.textContent + "." + e.textContent;
+		console.log(clickDate);
+		
+		/*
+		var exCalendarDto = {
+			paramDate : clickDate
+		}
+		var paramDate = $.param(clickDate);
+		location.href = "/experiod/calendar?"+paramDate;
+		*/
+		const url = "/experiods/date?date=" + clickDate;
+		 $.ajax({
+		        url: url,
+		        type: "GET",
+		    success: function onData (data) {
+		    	 $('#experiodContent').replaceWith(data);
+        		console.log(data);
+    		},
+   			 error: function onError (error) {
+        		console.error(error);
+    		}
+		  });
+		
 	}
 </script>
 
@@ -55,8 +216,9 @@
 			</div>
 		</div>
 	</div>
-	<div class="col col-lg-6">
+	<div class="col col-lg-6" id="experiodContent">
 		<th:bolck th:each="experiod : ${experiodList}">
+		<div th:if="${experiod.dDay > -1}">
 			<div class="row pt-1 border-top"></div>
 			<div class="row p-3">
 				<div class="col col-lg-8" id="main_content">
@@ -64,9 +226,12 @@
 					<div class="font-grey" th:text="'D-' + ${experiod.dDay}">D-2</div>
 				</div>
 				<div class="col col-lg-4" id="main_content">
-					<button type="button" class="update_btn w-100" onclick="deleteExperiod(this)">삭제</button>
+					<form id="experiodDeleteForm" th:action="@{experiods/{eid}(eid=${experiod.experiodIdx})}" th:method="DELETE">
+						<button type="button" class="update_btn w-100" onclick="deleteExperiod()">삭제</button>
+					</form>
 				</div>
 			</div>
+		</div>
 		</th:bolck>
 	</div>
 </div>
