@@ -25,13 +25,10 @@ public class Experiod {
 	 @Column(length = 22)
 	 private String category;
 	 
-	 @Column(name = "enroll_date")
 	 private LocalDate enrollDate;
 	 
-	 @Column(name = "end_date")
 	 private LocalDate endDate;
 	 
-	 @Column(name = "d_day")
 	 private int dDay;
 	 
 	 @Builder(builderClassName= "experiod", builderMethodName = "experiodBuilder")
