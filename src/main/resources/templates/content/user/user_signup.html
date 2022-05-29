@@ -111,7 +111,7 @@
   				<div class="row" id="info">
    					<div class="col bg-white">
       					생필품 카테고리 선택 <br>
-						<select class="selectpicker" multiple data-live-search="true">
+						<select class="selectpicker" multiple data-live-search="true" style="width:400px !important;">
   							<option>가전제품</option>
   							<option>욕실제품</option>
   							<option>위생제품</option>
@@ -122,7 +122,10 @@
   							<option>생활잡화</option>
 						</select>
 					</div>
-					<script>$('select').selectpicker();</script>
+					<script>
+						$(document).ready( function() { $('select').selectpicker({ maxOptions:3 }); } );
+					</script>
+
    				</div><hr>
    				<div class="row" id="info">
    					<div class="col bg-white" >
@@ -144,7 +147,7 @@
  							<button class="btn btn-primary " type="submit" value="Submit" id="submit" ><p>가입</p></button>
  						</div>
  						<div class="col">
- 							<button type="button" class="btn btn-primary" id="quit" value="Reset" onclick="location.href='login' "><p>취소</p></button>
+ 							<a href="#" class="btn btn-primary" role="button" id="quit" onClick="location.href='login'"><p>취소</p></a>
  						</div>
 					</div>
 				</div>
