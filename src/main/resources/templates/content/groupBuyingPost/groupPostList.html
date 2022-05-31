@@ -5,24 +5,27 @@
 	layout:decorate="~{layout/default_layout}">
 
 <th:block layout:fragment="head">
-	<title>나눔 포스트 리스트</title>
+	<title>Spring Boot</title>
 	<meta charset="utf-8">
 
 	<!-- css -->
 	<link th:href="@{/css/layout_content.css}" rel="stylesheet" />
-	<link th:href="@{/css/layout_postList.css}" rel="stylesheet" />
-	
+	<link th:href="@{/css/groupBuying/layout_groupPostList.css}" rel="stylesheet" />
 	<!-- Bootstrap CSS -->
+
 	<link
 		href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
 		rel="stylesheet"
 		integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
 		crossorigin="anonymous">
 
+	<!-- Bootstrap JS -->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
 		crossorigin="anonymous"></script>
+
+
 </th:block>
 
 <body>
@@ -32,20 +35,15 @@
 		<div class="container w-75">
 			<div class="row pt-5">
 				<div class="col bg-white text-center" id="page_title">
-					<b>나눔 인기매물</b>
+					<b>공구 포스트 전체조회</b>
 				</div>
 			</div>
 
-			<!-- 옵션 선택 드롭다운 -->
 			<div class="d-flex justify-content-end mt-5">
 				<form class="d-flex me-3">
-					<select id="search-option">
-						<option>키워드</option>
-						<option>주소</option>
-					</select>
-
+				
 					<!--검색 창 -->
-					<input class="form-control" type="search" placeholder="Search"
+					<input class="form-control" type="search" placeholder="검색어를 입력하세요"
 						aria-label="Search" id="search-option">
 					<button class="btn btn-sm " id="btn-search-option" type="submit">
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
@@ -80,7 +78,7 @@
 			</div>
 
 			<!-- fav-post  -->
-			<th:block th:include="@{/content/sharePost/sharePost_favPostList}"></th:block>
+			<th:block th:include="@{/content/groupBuyingPost/groupPost_favPostList}"></th:block>
 
 			<br>
 			<hr>
@@ -91,12 +89,11 @@
 				</p>
 			</div>
 			<!--  all-post  -->
-			<th:block th:include="@{/content/sharePost/sharePost_allPostList}"></th:block>
+			<th:block th:include="@{/content/groupBuyingPost/groupPost_allPostList}"></th:block>
 
 			<!-- 새 글 등록 BTN -->
 			<div class="d-grid gap-2 mt-5">
-				<a class="btn btn-outline-success" href="#"
-					role="button" id="btn-newPost">새 글 등록</a>
+				<button class="btn btn-outline-light" id="btn-newPost" >등록</button>
 			</div>
 		</div>
 		<!-- container -->

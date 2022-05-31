@@ -27,7 +27,7 @@ public class TestController {
 		ModelAndView mav = new ModelAndView("content/content_container");
 		return mav;
 	}
-
+  
 	// postList view 확인용
 	@GetMapping("/home/postList")
 	public ModelAndView goPostList(HttpServletRequest request) {
@@ -40,15 +40,9 @@ public class TestController {
 		return testService.insertTest(request);
 	}
 
-	@GetMapping("/mypage")
-	public ModelAndView gomMyPage(HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView("content/mypage/mypage");
-		return mav;
-	}
-
 	@GetMapping("/home/viewSharePost")
 	public ModelAndView goViewSharePost(HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView("content/sharePost/ViewSharePost");
+		ModelAndView mav = new ModelAndView("content/sharePost/sharePost_view");
 		return mav;
 	}
 
@@ -66,6 +60,7 @@ public class TestController {
 		return mav;
 	}
 	
+
 	@GetMapping("/home/login")
 	public ModelAndView goLogin(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("content/user/user_login");
@@ -74,7 +69,43 @@ public class TestController {
 	@GetMapping("/home/signup")
 	public ModelAndView goSignup(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("content/user/user_signup");
+
+
+	@GetMapping("/groupBuying/viewGroupPost")
+ 	public ModelAndView goViewGroupPost(HttpServletRequest request) {
+	  ModelAndView mav = new ModelAndView("content/groupBuyingPost/viewGroupPost");
+	  return mav;
+	}
+	
+	@GetMapping("/groupBuying/groupPostList")
+	  public ModelAndView goGroupPostList(HttpServletRequest request) {
+	  	ModelAndView mav = new ModelAndView("content/groupBuyingPost/groupPostList");
+	    return mav;
+	 }
+	    
+	@GetMapping("/groupBuying/addGroupPost")
+	 public ModelAndView goAddGroupPost(HttpServletRequest request) {
+	   ModelAndView mav = new ModelAndView("content/groupBuyingPost/groupPost_add");
+	   return mav;
+	 }
+	    
+	@GetMapping("/groupBuying/applyGroupPost")
+	 public ModelAndView goApplyGroupPost(HttpServletRequest request) {
+	   ModelAndView mav = new ModelAndView("content/groupBuyingPost/GroupPost_apply");
+	   return mav;
+	}
+
+	//message List 확인용
+	@GetMapping("/messages")
+	public ModelAndView goMessageList(HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView("content/message/messageList");
 		return mav;
 	}
 	
+	//message 상세조회용
+		@GetMapping("/messages/roomIdx")
+		public ModelAndView goMessages(HttpServletRequest request) {
+			ModelAndView mav = new ModelAndView("content/message/messageInfo");
+			return mav;
+		}
 }
