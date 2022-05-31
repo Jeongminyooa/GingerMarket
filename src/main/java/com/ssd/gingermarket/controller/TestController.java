@@ -69,6 +69,9 @@ public class TestController {
 	@GetMapping("/home/signup")
 	public ModelAndView goSignup(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("content/user/user_signup");
+		return mav;
+		
+	}	
 
 
 	@GetMapping("/groupBuying/viewGroupPost")
