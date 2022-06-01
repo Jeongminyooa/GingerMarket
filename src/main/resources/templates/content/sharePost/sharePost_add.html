@@ -24,22 +24,10 @@
 		crossorigin="anonymous"></script>
 </th:block>
 
-<script>
-	function PreviewImage() {
-		// 파일리더 생성 
-		var preview = new FileReader();
-		preview.onload = function(e) {
-			// img id 값 
-			document.getElementById("img-thumbnail").src = e.target.result;
-		};
-		// input id 값 
-		preview.readAsDataURL(document.getElementById("file").files[0]);
-	};
-</script>
 <body>
 
 	<th:block layout:fragment="nav" th:include="@{/fragments/nav}"></th:block>
-
+	
 	<div layout:fragment="content" class="content">
 		<div class="container w-75">
 			<!--content-->
@@ -50,10 +38,9 @@
 			</div>
 			<hr>
 
-			<!-- 추후 Thymeleaf form 적용 예정 -->
 			<!-- form -->
-			<!-- <form> action="" th:action th:object="" method="post" -->
-			<form name="form" enctype="multipart/form-data">
+			<form th:action="@{/share}" th:object="${postReq}" th:method="post">
+				
 				<!-- 사진 업로드 -->
 				<div class="d-flex">
 					<div id="div-addImg">
@@ -82,38 +69,32 @@
 				<div class="mb-3">
 					<label for="inputTitle" class="form-label">글 제목</label> <b
 						class="text-danger">*</b> <input type="text" class="form-control"
-						id="inputTitle" placeholder="글 제목">
+						id="inputTitle" th:field="*{title}" placeholder="글 제목">
 				</div>
 
 				<hr>
 				<div class="mb-3">
-					<label for="inputAddr" class="form-label">사용자 주소</label> <b
-						class="text-danger">*</b> <input type="text" class="form-control"
-						id="inputAddr" placeholder="원래 사용자 주소">
+					<label for="inputAddr" class="form-label">사용자 주소</label> <b class="text-danger">*</b> 
+					<input type="text" class="form-control" id="inputAddr" th:field="*{address}" placeholder="원래 사용자 주소">
 				</div>
 
 				<hr>
 
-				<!-- 추후 Thymeleaf form 적용 예정 -->
 				<div class="mb-3">
 					<label for="inputCategory" class="form-label">나눔 상품 카테고리</label> <b
-						class="text-danger">*</b> <select class="form-select"
+						class="text-danger">*</b> <select class="form-select" th:name="category" 
 						aria-label="Default select example">
-						<option selected>카테고리 선택</option>
-						<option value="가전제품">가전제품</option>
-						<option value="욕실용품">욕실용품</option>
-						<option value="위생용품">위생용품</option>
-						<option value="주방용품">주방용품</option>
-						<option value="바디/헤어">바디/헤어</option>
-						<option value="청소/세탁용품">청소/세탁용품</option>
-						<option value="문구">문구</option>
-						<option value="생활잡화">생활잡화</option>
+						<option selected disabled>카테고리 선택</option> <!-- validation 추가 -->
+						<option th:each="val : ${categoryList}" 
+									th:value="${val}" 
+                					th:text="${val}">
+        				</option>
 					</select>
 				</div>
 
 				<div class="mb-3">
 					<label for="inputDescr" class="form-label">상세설명</label>
-					<textarea class="form-control" aria-label="With textarea"
+					<textarea class="form-control" th:field="*{descr}" aria-label="With textarea"
 						placeholder="나눔할 상품의 개수도 함께 작성해주세요." rows="10"></textarea>
 				</div>
 
