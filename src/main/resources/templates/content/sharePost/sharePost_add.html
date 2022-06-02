@@ -87,7 +87,8 @@
 						<option selected disabled>카테고리 선택</option> <!-- validation 추가 -->
 						<option th:each="val : ${categoryList}" 
 									th:value="${val}" 
-                					th:text="${val}">
+                					th:text="${val}"
+                					th:field="*{category}">
         				</option>
 					</select>
 				</div>

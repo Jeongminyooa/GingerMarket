@@ -46,39 +46,28 @@ public class ModifySharePostController {
 	}
 	
 	
-	@GetMapping("/updateForm")
-	public ModelAndView goUpdateForm(@RequestParam(required=true) Long postIdx) { 
+	@GetMapping("/{postIdx}/updateForm")
+	public ModelAndView goUpdateForm(@PathVariable Long postIdx) { 
 		Long userIdx = (long) 1;//user session으로 추후 수정 
 		
+		SharePostDto.Request req = sharePostService.getPostForModify(postIdx);
+		
 		ModelAndView mav = new ModelAndView("content/sharePost/sharePost_update");
-		
-		SharePostDto.viewResponse viewRes = sharePostService.getPost(postIdx);
-		
-		SharePostDto.Request req = new SharePostDto.Request();
-		req.setTitle(viewRes.getTitle());
-		req.setCategory(viewRes.getCategory());
-		req.setDescr(viewRes.getDescr());
-		req.setImageIdx(viewRes.getImageIdx());
-		req.setAuthorIdx(viewRes.getAuthorIdx());
-		
 		mav.addObject("updateReq", req);
-		mav.addObject("postInfo", viewRes);
+		mav.addObject("postIdx", postIdx);
 		
 		return mav;
 	}
 	
-	@PutMapping("")
-    public RedirectView updatePost(SharePostDto.Request post, 
-    								@RequestParam(required=true) Long postIdx,
-    								@RequestParam(required=false) String category) 
+	@PutMapping("/{postIdx}")
+    public RedirectView updatePost(SharePostDto.Request post, @PathVariable Long postIdx) 
 	{
 		Long authorIdx = (long) 1; //session구현 후 변경
 		
-		post.setCategory(category);
 		post.setAuthorIdx(authorIdx);
 		sharePostService.modifyPost(postIdx, post);
 		
-        return new RedirectView("/share/posts");
+        return new RedirectView("/share/" + postIdx);
     }
 	
 	

@@ -14,14 +14,18 @@ public interface SharePostService {
 	public void addPost(SharePostDto.Request dto);
 	
 	//포스트 상세조회
-	public SharePostDto.viewResponse getPost(Long postIdx);
+	public SharePostDto.DetailResponse getPost(Long postIdx);
+	
+	//포스트 상세조회(update)
+	public SharePostDto.Request getPostForModify(Long postIdx);
 	
 	//전체 포스트리스트 조회 
-	public List<SharePostDto.cardResponse> getAllPost();
+	public List<SharePostDto.CardResponse> getAllPost();
 	
 	//포스트 업데이트 
 	public void modifyPost(Long postIdx, SharePostDto.Request dto);
 	
 	//포스트 삭제
 	public void removePost(Long postIdx);
+	
 }

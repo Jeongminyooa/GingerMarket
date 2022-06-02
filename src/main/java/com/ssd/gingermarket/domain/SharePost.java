@@ -40,7 +40,7 @@ public class SharePost implements Serializable {
 	@Column(length = 1000)
 	private String descr;
 	
-	@Column(length = 20)
+	@Column(length = 50)
 	private String address;
 	
 	@Column(length = 3)

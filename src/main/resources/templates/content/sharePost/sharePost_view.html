@@ -55,9 +55,11 @@
 				              		<div class="pt-4 pd-5 text-center">게시물을 정말 수정하시겠습니까?</div>
 				            	</div>
 
-								<div class="pt-5 mb-3 text-center">
+								<div class="d-flex mx-auto pt-5 mb-3 text-center">
 									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				               		<button type="button" class="btn btn-secondary" id="btn-modalConfirm" th:onclick="'location.href=\''+ @{/share/updateForm(postIdx=${postInfo.postIdx})} + '\''">수정</button>
+									<form th:id="goUpdateForm" th:action="@{/share/{postIdx}/updateForm(postIdx=${postInfo.postIdx})}" th:method="GET">
+				               			<button type="submit" class="btn btn-secondary" id="btn-modalConfirm">수정</button>
+				               		</form>
 								</div>
 				         	</div>
 				        </div>
@@ -81,8 +83,8 @@
 
 								<div class="d-flex mx-auto pt-5 mb-3 text-center">
 				               		<button type="button" class="btn btn-secondary me-1" data-bs-dismiss="modal">취소</button>
-				               		<form th:id="deletePostForm" th:action="@{/share(postIdx=${postInfo.postIdx})}" th:method="DELETE">
-				               			<button id="btn-modalConfirm" type="submit" class="btn btn-secondary" data-bs-dismiss="modal">삭제</button>
+				               		<form th:id="deletePostForm" th:action="@{/share/{postIdx}(postIdx=${postInfo.postIdx})}" th:method="DELETE">
+				               			<button id="btn-modalConfirm" type="submit" class="btn btn-secondary">삭제</button>
 				               		</form>
 								</div>
 				         	</div>

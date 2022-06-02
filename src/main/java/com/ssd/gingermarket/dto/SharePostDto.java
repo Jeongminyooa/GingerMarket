@@ -15,26 +15,6 @@ public class SharePostDto {
 	@NoArgsConstructor
 	@AllArgsConstructor
 	@Data
-	public static class Info {
-		private Long postIdx;
-		// 추후 User 객체참조
-		private Long authorIdx;
-		private String address;
-		private String favItem;
-		private String category;
-		
-		private String keyword;
-		private String title;
-		private Long imageIdx;
-		private String descr;
-		private boolean progress;
-		private LocalDateTime enrollDate;
-		// 추후 MessageRoom 객체 참조
-		private int msgCount;
-	}
-	@NoArgsConstructor
-	@AllArgsConstructor
-	@Data
 	public static class Request{
 		private String title;
 		private String category;
@@ -53,12 +33,21 @@ public class SharePostDto {
 					.authorIdx(authorIdx)
 					.build();
 		}
+		
+		public Request(SharePost sharePost) {
+			this.title = sharePost.getTitle();
+			this.category = sharePost.getCategory();
+			this.descr = sharePost.getDescr();
+			this.address = sharePost.getAddress();
+			this.imageIdx = sharePost.getImageIdx();
+			this.authorIdx = sharePost.getAuthorIdx();
+		}
 	}
 	
 	@NoArgsConstructor
 	@AllArgsConstructor
 	@Data
-	public static class cardResponse{
+	public static class CardResponse{
 		private Long postIdx;
 		
 		//추후 User 객체 참조
@@ -72,7 +61,7 @@ public class SharePostDto {
 		//추후 MessageRoom 객체 참조 
 		private int msgCount;
 		
-		public cardResponse(SharePost sharePost) {
+		public CardResponse(SharePost sharePost) {
 			this.postIdx = sharePost.getPostIdx();
 			this.userIdx = sharePost.getAuthorIdx();
 			this.category = sharePost.getCategory();
@@ -92,7 +81,7 @@ public class SharePostDto {
 	@NoArgsConstructor
 	@AllArgsConstructor
 	@Data
-	public static class viewResponse{
+	public static class DetailResponse{
 		private Long postIdx;
 		private Long authorIdx;
 		private String category;
@@ -103,7 +92,7 @@ public class SharePostDto {
 		private LocalDateTime enrollDate;
 		private int msgCount;
 		
-		public viewResponse(SharePost sharePost) {
+		public DetailResponse(SharePost sharePost) {
 			this.postIdx = sharePost.getPostIdx();
 			this.authorIdx = sharePost.getAuthorIdx();
 			this.category = sharePost.getCategory();

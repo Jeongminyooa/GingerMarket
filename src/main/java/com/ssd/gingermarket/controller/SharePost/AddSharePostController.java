@@ -54,10 +54,9 @@ public class AddSharePostController {
 	}
 	
 	@PostMapping("")
-    public RedirectView createPost(SharePostDto.Request post, @RequestParam(required=false) String category) {
+	public RedirectView createPost(SharePostDto.Request post) {	
 		Long authorIdx = (long) 1; //session구현 후 변경
 		
-		post.setCategory(category);
 		post.setAuthorIdx(authorIdx);
 		sharePostService.addPost(post);
 		

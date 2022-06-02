@@ -27,8 +27,8 @@ import lombok.RequiredArgsConstructor;
 public class RemoveSharePostController {
 	private final SharePostService sharePostService;
 	
-	@DeleteMapping("")
-    public RedirectView deletePost(@RequestParam(required=true) Long postIdx) {
+	@DeleteMapping("{postIdx}")
+    public RedirectView deletePost(@PathVariable Long postIdx) {
 		sharePostService.removePost(postIdx);
         return new RedirectView("/share/posts");
     }

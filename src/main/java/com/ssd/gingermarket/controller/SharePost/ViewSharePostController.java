@@ -29,8 +29,8 @@ public class ViewSharePostController {
 	/**
      * 게시글 상세 조회
      */
-	@GetMapping("")
-	public ModelAndView getPost(@RequestParam(required=true) Long postIdx){
+	@GetMapping("{postIdx}")
+	public ModelAndView getPost(@PathVariable Long postIdx){
 		ModelAndView mav = new ModelAndView("content/sharePost/sharePost_view");
 		mav.addObject("postInfo", sharePostService.getPost(postIdx));
 		
