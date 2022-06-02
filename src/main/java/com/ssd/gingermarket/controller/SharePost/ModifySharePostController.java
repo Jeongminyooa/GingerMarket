@@ -70,5 +70,14 @@ public class ModifySharePostController {
         return new RedirectView("/share/" + postIdx);
     }
 	
+	@PutMapping("/{postIdx}/progress")
+	public RedirectView updateProgress(@PathVariable Long postIdx)
+	{
+		boolean prog = sharePostService.getPost(postIdx).isProgress();
+		sharePostService.modifyProgress(postIdx, prog);
+		
+		return new RedirectView("/share/" + postIdx);
+	}
+	
 	
 }

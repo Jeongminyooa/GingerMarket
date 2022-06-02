@@ -27,5 +27,8 @@ public interface SharePostService {
 	
 	//포스트 삭제
 	public void removePost(Long postIdx);
+
+	//나눔 상태 업데이트 
+	public void modifyProgress(Long postIdx, boolean prog);
 	
 }

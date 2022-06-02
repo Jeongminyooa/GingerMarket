@@ -60,4 +60,11 @@ public class SharePost extends BaseTime {
         this.imageIdx = imageIdx;
     }
 	
+	public void updateProgress(boolean prog) {
+		if(prog)
+			this.progress = "'N'";
+		else
+			this.progress = "'Y'";
+	}
+	
 }

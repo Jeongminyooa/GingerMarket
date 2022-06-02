@@ -72,6 +72,13 @@ public class SharePostServiceImpl implements SharePostService {
     	sharePostRepository.deleteById(postIdx);
     }
     
+    //진행 유무 변경 
+    @Override
+    @Transactional
+    public void modifyProgress(Long postIdx, boolean prog) {
+    	SharePost entity = sharePostRepository.findById(postIdx).orElseThrow(); 
+    	entity.updateProgress(prog);
+    }
     
 
 }

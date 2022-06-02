@@ -112,14 +112,18 @@
 					</div>
 					
 					<div th:if="${postInfo.progress} == false" class="col-1">
-						<button class="btn btn-sm border border-secondary mt-3"
-						id="btn-isProg" type="submit"
-						style="width: 100px; height: 30px;">나눔중</button>
+						<form th:id="inProgress" th:action="@{/share/{postIdx}/progress(postIdx=${postInfo.postIdx})}" th:method="PUT">
+							<button class="btn btn-sm border border-secondary mt-3" id="btn-isProg" type="submit" style="width: 100px; height: 30px;">
+								나눔중
+							</button>
+						</form>
 					</div>
 					<div th:unless="${postInfo.progress} == false" class="col-1">
-						<button class="btn btn-sm border border-secondary mt-3"
-						id="btn-isDone" type="submit"
-						style="width: 100px; height: 30px;">나눔완료</button>
+						<form th:id="notInProgress" th:action="@{/share/{postIdx}/progress(postIdx=${postInfo.postIdx})}" th:method="PUT">
+							<button class="btn btn-sm border border-secondary mt-3" id="btn-isDone" type="submit" style="width: 100px; height: 30px;">
+								나눔완료
+							</button>
+						</form>
 					</div>
 					
 				</div>
