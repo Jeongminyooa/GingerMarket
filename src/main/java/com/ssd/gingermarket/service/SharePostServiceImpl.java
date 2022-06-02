@@ -53,7 +53,7 @@ public class SharePostServiceImpl implements SharePostService {
 	@Override
 	@Transactional(readOnly = true)
     public List<SharePostDto.CardResponse> getAllPost() {
-		List<SharePost> postList = sharePostRepository.findAll(Sort.by(Direction.DESC, "enrollDate"));
+		List<SharePost> postList = sharePostRepository.findAll(Sort.by(Direction.DESC, "createdDate"));
         return postList.stream().map(SharePostDto.CardResponse::new).collect(Collectors.toList());
     }
     
@@ -65,9 +65,7 @@ public class SharePostServiceImpl implements SharePostService {
     	entity.updatePost(dto.getTitle(), dto.getCategory(), dto.getDescr(), dto.getAddress(), dto.getImageIdx());
     }
     
-    /**
-     * 게시글 삭제  
-     */
+    //게시글 삭제  
     @Override
     @Transactional
     public void removePost(Long postIdx) {

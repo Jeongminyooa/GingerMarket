@@ -1,14 +1,10 @@
 package com.ssd.gingermarket.domain;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -24,7 +20,7 @@ import lombok.*;
 @Getter
 @DynamicInsert //null인 필드값이 insert 시 제외되게하며, default값을 넣어주기 위함 
 @Table(name="sharepost")
-public class SharePost implements Serializable {
+public class SharePost extends BaseTime {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SharepostSequence")
 	@SequenceGenerator(sequenceName = "SharepostSequence", name = "ShareSequenceGenerator", allocationSize = 1)
@@ -47,8 +43,6 @@ public class SharePost implements Serializable {
 	@ColumnDefault("'N'")
 	private String progress;
 	
-	private LocalDateTime enrollDate;
-	
 	@ColumnDefault("0")
 	private int messageCnt;
 	
@@ -57,11 +51,6 @@ public class SharePost implements Serializable {
 	
 	@Column(nullable = false)
 	private Long authorIdx;
-	
-	@PrePersist
-    public void enrollDate() {
-        this.enrollDate = LocalDateTime.now();
-    }
 	
 	public void updatePost(String title, String category, String descr, String address, Long imageIdx) {
         this.title = title;

@@ -105,7 +105,7 @@ public class SharePostDto {
 			else
 				prog = false;
 			this.progress = prog;
-			this.enrollDate = sharePost.getEnrollDate();
+			this.enrollDate = sharePost.getCreatedDate();
 			this.msgCount = sharePost.getMessageCnt();
 		}
 	}
