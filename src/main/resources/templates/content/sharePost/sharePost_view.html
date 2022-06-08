@@ -97,8 +97,8 @@
 			</div>
 
 			<!-- post image view -->
-			<div class="row pt-3" id="div-img">
-				<img src="/image/postList.JPG" alt="...">
+			<div th:if = "${not #strings.isEmpty(postInfo.imgUrl)}"  class="row pt-3" id="div-img">
+				<img th:src="@{${postInfo.imgUrl}}" alt="...">
 			</div>
 
 			<!-- post author section -->

@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.ssd.gingermarket.domain.Image;
+import com.ssd.gingermarket.dto.ImageDto;
 import com.ssd.gingermarket.dto.SharePostDto;
 import com.ssd.gingermarket.dto.SharePostDto.Request;
+import com.ssd.gingermarket.service.ImageService;
 import com.ssd.gingermarket.service.SharePostService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class ModifySharePostController {
 	
 	private final SharePostService sharePostService;
+	private final ImageService imageService;
 	
 	@ModelAttribute("categoryList")
 	public List<String> categoryList(){
@@ -64,7 +68,12 @@ public class ModifySharePostController {
 	{
 		Long authorIdx = (long) 1; //session구현 후 변경
 		
+		ImageDto.Request imgDto = new ImageDto.Request(post.getFile());
+		Image img = imageService.uploadFile(imgDto.getImageFile());
+		
 		post.setAuthorIdx(authorIdx);
+		post.setImage(img);
+		System.out.println("setImage 했음!!!\n");
 		sharePostService.modifyPost(postIdx, post);
 		
         return new RedirectView("/share/" + postIdx);

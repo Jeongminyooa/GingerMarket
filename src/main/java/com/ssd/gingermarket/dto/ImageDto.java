@@ -12,6 +12,6 @@ public class ImageDto {
 	@AllArgsConstructor
 	@Data
 	public static class Request {
-		private MultipartFile imageFile;
+		private MultipartFile imageFile;	
 	}
 }

@@ -2,6 +2,10 @@ package com.ssd.gingermarket.dto;
 
 import java.time.LocalDateTime;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.ssd.gingermarket.domain.Image;
 import com.ssd.gingermarket.domain.SharePost;
 import com.ssd.gingermarket.domain.TestEntity;
 
@@ -16,20 +20,26 @@ public class SharePostDto {
 	@AllArgsConstructor
 	@Data
 	public static class Request{
+		private String uploadDirLocal = "/upload/";
+		
 		private String title;
 		private String category;
 		private String descr;
 		private String address;
-		private Long imageIdx;
-		private Long authorIdx;
 		
+		private Image image;
+		private String imgUrl;
+		private MultipartFile file;
+		
+		private Long authorIdx;
+			
 		public SharePost toEntity() {
 			return SharePost.builder()
 					.title(title)
 					.category(category)
 					.descr(descr)
 					.address(address)
-					.imageIdx(imageIdx)
+					.image(image)
 					.authorIdx(authorIdx)
 					.build();
 		}
@@ -39,7 +49,7 @@ public class SharePostDto {
 			this.category = sharePost.getCategory();
 			this.descr = sharePost.getDescr();
 			this.address = sharePost.getAddress();
-			this.imageIdx = sharePost.getImageIdx();
+			this.imgUrl = this.uploadDirLocal + sharePost.getImage().getUrl();
 			this.authorIdx = sharePost.getAuthorIdx();
 		}
 	}
@@ -48,6 +58,10 @@ public class SharePostDto {
 	@AllArgsConstructor
 	@Data
 	public static class CardResponse{
+		//@Value("/upload/")
+		private String uploadDirLocal = "/upload/";
+		
+		
 		private Long postIdx;
 		
 		//추후 User 객체 참조
@@ -55,7 +69,7 @@ public class SharePostDto {
 		
 		private String category;
 		private String title;
-		private Long imageIdx;
+		private String imgUrl;
 		private String address;
 		private boolean progress;
 		//추후 MessageRoom 객체 참조 
@@ -66,7 +80,12 @@ public class SharePostDto {
 			this.userIdx = sharePost.getAuthorIdx();
 			this.category = sharePost.getCategory();
 			this.title = sharePost.getTitle();
-			this.imageIdx = sharePost.getImageIdx();
+			
+			try {
+				this.imgUrl = this.uploadDirLocal + sharePost.getImage().getUrl();
+			}catch (Exception e ) {	           
+				this.imgUrl = "";
+			}
 			this.address = sharePost.getAddress();
 			boolean prog;
 			if(sharePost.getProgress().equals("'Y'"))
@@ -82,11 +101,13 @@ public class SharePostDto {
 	@AllArgsConstructor
 	@Data
 	public static class DetailResponse{
+		private String uploadDirLocal = "/upload/";
+		
 		private Long postIdx;
 		private Long authorIdx;
 		private String category;
 		private String title;
-		private Long imageIdx;
+		private String imgUrl;
 		private String descr;
 		private boolean progress;
 		private LocalDateTime enrollDate;
@@ -97,7 +118,14 @@ public class SharePostDto {
 			this.authorIdx = sharePost.getAuthorIdx();
 			this.category = sharePost.getCategory();
 			this.title = sharePost.getTitle();
-			this.imageIdx = sharePost.getImageIdx();
+			String url = "";
+			try {
+				url = this.uploadDirLocal + sharePost.getImage().getUrl();
+			}catch (Exception e ) {
+				url = "";
+			}finally {
+				this.imgUrl = url;
+			}
 			this.descr = sharePost.getDescr();
 			boolean prog;
 			if(sharePost.getProgress().equals("'Y'"))

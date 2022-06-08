@@ -29,7 +29,7 @@ public class SharePostServiceImpl implements SharePostService {
 	@Override
 	@Transactional
 	public void addPost(SharePostDto.Request dto) {
-		sharePostRepository.save(dto.toEntity()).getPostIdx();
+		sharePostRepository.save(dto.toEntity());
 	}
 
 	
@@ -54,6 +54,7 @@ public class SharePostServiceImpl implements SharePostService {
 	@Transactional(readOnly = true)
     public List<SharePostDto.CardResponse> getAllPost() {
 		List<SharePost> postList = sharePostRepository.findAll(Sort.by(Direction.DESC, "createdDate"));
+		
         return postList.stream().map(SharePostDto.CardResponse::new).collect(Collectors.toList());
     }
     
@@ -62,7 +63,7 @@ public class SharePostServiceImpl implements SharePostService {
     @Transactional
     public void modifyPost(Long postIdx, SharePostDto.Request dto) {
     	SharePost entity = sharePostRepository.findById(postIdx).orElseThrow(); 
-    	entity.updatePost(dto.getTitle(), dto.getCategory(), dto.getDescr(), dto.getAddress(), dto.getImageIdx());
+    	entity.updatePost(dto.getTitle(), dto.getCategory(), dto.getDescr(), dto.getAddress(), dto.getImage());
     }
     
     //게시글 삭제  

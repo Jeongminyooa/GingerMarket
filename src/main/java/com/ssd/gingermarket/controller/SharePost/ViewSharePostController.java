@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ssd.gingermarket.dto.SharePostDto;
 import com.ssd.gingermarket.dto.SharePostDto.Request;
+import com.ssd.gingermarket.service.ImageService;
 import com.ssd.gingermarket.service.SharePostService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ViewSharePostController {
 	private final SharePostService sharePostService;
+	private final ImageService imageService;
 
 	/**
      * 게시글 상세 조회
@@ -43,11 +45,12 @@ public class ViewSharePostController {
 	@GetMapping("/posts")
 	public ModelAndView getPostList() {
 		
-		long userIdx = 1;
+		Long userIdx = (long) 1;
 		
 		ModelAndView mav = new ModelAndView("content/sharePost/sharePostList");
 		mav.addObject("allPostList", sharePostService.getAllPost());
 		mav.addObject("userIdx", 1); //user session 구현 후 수정 예정 
+
 		
 		return mav;
 	}
