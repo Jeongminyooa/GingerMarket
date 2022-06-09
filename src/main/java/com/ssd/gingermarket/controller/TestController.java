@@ -1,19 +1,29 @@
 package com.ssd.gingermarket.controller;
 
 
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import org.springframework.beans.factory.annotation.Value;
 import com.ssd.gingermarket.domain.Image;
+import com.ssd.gingermarket.domain.User;
+import com.ssd.gingermarket.dto.ExperiodDto;
 import com.ssd.gingermarket.dto.ImageDto;
+import com.ssd.gingermarket.dto.UserDto;
+import com.ssd.gingermarket.service.ExperiodService;
 import com.ssd.gingermarket.service.ImageService;
 
-import lombok.*;
+import lombok.RequiredArgsConstructor;
 // import lombok.extern.slf4j.Slf4j;
 
 // @Slf4j //로그 
@@ -40,4 +50,34 @@ public class TestController {
 		
 		return mav;
 	}
+	
+	
+	//test
+	private final ExperiodService experiodService;
+	
+	@GetMapping("/mypage")
+	public ModelAndView gomMyPageTest(@RequestParam(value="category", required=false) String category,
+			HttpSession httpSession) {
+		User user = (User) httpSession.getAttribute("user");
+		UserDto.Response userdto = new UserDto.Response(user);
+		long userId = userdto.getUserIdx();
+		
+		ModelAndView mav = new ModelAndView("content/user/testmypage");
+		
+		List<ExperiodDto.Info> dto = experiodService.getAllExperiod(userId);
+		mav.addObject("experiodList", dto);
+		
+		mav.addObject("user1", userdto);
+		
+		if(category != null) {
+			mav.addObject("category", category);
+			
+			if(category.equals("experiod")) {
+				Map<String, Integer> categoryMap = ExperiodController.categoryExperiodMap();
+				mav.addObject("categoryMap", categoryMap);
+			}
+		}
+		return mav;
+	}
+	
 }
