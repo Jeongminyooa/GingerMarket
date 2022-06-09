@@ -33,7 +33,7 @@
 <body>
 	<div layout:fragment="content" class="content">
 		<div class="container w-75">
-			<form>
+			<form th:method="post" th:action="@{/user}" th:object="${userReq}">
 				<div class="row pt-5">
 					<div class="col bg-white text-center" id="page_title">
 						<b>회원가입</b>
@@ -43,7 +43,7 @@
 				<div class="row" >
    					<div class="col bg-white" id="info">
       					<div>아이디 <span class='text-danger'>*</span><br>
-      						<input type="text">
+      						<input type="text" th:field="*{userId}">
         					<button type="button" class="btn btn-primary"  id="confirmbtn" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><p>중복확인</p></button>
         					<!-- Modal -->
 							<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -58,10 +58,11 @@
   								</div>
 							</div>
 						</div>
-    					<div>비밀번호 <span class='text-danger'>*</span><br><input type="password"></div>
-    					<div>비밀번호 확인 <span class='text-danger'>*</span><br><input type="password"></div>
+    					<div>비밀번호 <span class='text-danger' >*</span><br><input type="password" th:field="*{password}"></div>
+    					<div>비밀번호 확인 <span class='text-danger'>*</span><br><input type="password" th:field="*{repeatedPassword}"></div>
     					<div>
-    						닉네임 <span class='text-danger'>*</span><br><input type="text">
+    						닉네임 <span class='text-danger'>*</span><br>
+    							<input type="text" th:field="*{name}">
        						<button class="btn btn-primary" type="button" id="confirmbtn" data-bs-toggle="modal" data-bs-target="#ll"><p>중복확인</p></button>
        						<!-- Modal -->
 							<div class="modal fade" id="ll" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -76,10 +77,11 @@
   								</div>
 							</div>
     					</div>
-    					<div>주소<br>
-    						<input type="text" id="address_kakao" name="address" readonly > 시/도 
-    						<input type="text" id="address_kakao" name="address" readonly style="margin-left:10px;">
-    						<input type="text" id="address_kakao" name="address" readonly style="margin-left:10px;">
+    					<div>주소<br>			
+    					 	<input type ="hidden" th:field="*{addr}" id="addr"/> 
+    						<input type="text" id="address_kakao" name="address" readonly> 시/도 
+    						<input type="text" id="address_kakao" name="address" readonly  style="margin-left:10px;">
+    						<input type="text" id="address_kakao" name="address" readonly  style="margin-left:10px;">
     					</div>
     					<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     					<script>
@@ -90,36 +92,32 @@
     					                	document.getElementsByName("address")[0].value = data.sido; 
     					                	document.getElementsByName("address")[1].value = data.sigungu; 
     					                	document.getElementsByName("address")[2].value = data.bname; 
+    					                	document.getElementById("addr").value = data.sido+" "+data.sigungu+" "+data.bname; 
     					            	}
     					        	}).open();
     					    	});
     						}
     					</script>
     					<div>휴대폰번호 <span class='text-danger'>*</span><br>
-    						<select class="selectpicker bg-white" id="tel">
-    							<option selected>010</option>
-    							<option>016</option>
-    							<option>017</option>
-    							<option>018</option>
-    							<option>019</option>
+    						<select class="selectpicker bg-white" id="tel" th:field="*{phone1}">
+    							<option th:each="phone1: ${phone1}" 
+    								th:value="${phone1}" 
+    								th:text="${phone1}">
+    							</option>
     						</select> -
-							<input type="text" size="4" maxlength="4" id="tel" pattern="[0-9]{3,4}"> -
-							<input type="text" size="4" maxlength="4" id="tel" pattern="[0-9]{4}"><br>
+							<input type="text" th:field="*{phone2}" size="4" maxlength="4" id="tel"  pattern="[0-9]{3,4}"> -
+							<input type="text" th:field="*{phone3}" size="4" maxlength="4" id="tel" pattern="[0-9]{4}"><br>
     					</div>
     				</div> 
   				</div><hr>
   				<div class="row" id="info">
    					<div class="col bg-white">
       					생필품 카테고리 선택 <br>
-						<select class="selectpicker" multiple data-live-search="true" style="width:400px !important;">
-  							<option>가전제품</option>
-  							<option>욕실제품</option>
-  							<option>위생제품</option>
-  							<option>주방제품</option>
-  							<option>바디/헤어</option>
-  							<option>청소/세탁용품</option>
-  							<option>문구</option>
-  							<option>생활잡화</option>
+						<select class="selectpicker" th:field="*{items}" multiple data-live-search="true" style="width:400px !important;">
+  							<option th:each="items: ${items}" 
+    								th:value="${items}" 
+    								th:text="${items}">
+    						</option>
 						</select>
 					</div>
 					<script>
@@ -130,7 +128,7 @@
    				<div class="row" id="info">
    					<div class="col bg-white" >
       					 <label for="file-input">프로필 사진<br>
-      							<input class="form-control" type="file" id="file"style="display: none;" accept="image/*"
+      							<input class="form-control" type="file" name="file" multiple="multiple" id="file" style="display: none;" accept="image/*"
 									onchange="PreviewImage();">
 								<button class="btn" id="icon" onclick="onclick=document.all.file.click()">
     							<svg width="92" height="92" viewBox="0 0 92 92" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -144,7 +142,7 @@
   				<div class="d-flex justify-content-center" >
  					<div class="row">
  						<div class="col">
- 							<button class="btn btn-primary " type="submit" value="Submit" id="submit" ><p>가입</p></button>
+ 							<button class="btn btn-primary " type="submit" value="submit" id="submit" ><p>가입</p></button>
  						</div>
  						<div class="col">
  							<a href="#" class="btn btn-primary" role="button" id="quit" onClick="location.href='login'"><p>취소</p></a>
