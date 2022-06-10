@@ -68,12 +68,14 @@ public class ModifySharePostController {
 	{
 		Long authorIdx = (long) 1; //session구현 후 변경
 		
-		ImageDto.Request imgDto = new ImageDto.Request(post.getFile());
-		Image img = imageService.uploadFile(imgDto.getImageFile());
-		
+		if(!post.getFile().getOriginalFilename().equals("")) {
+			ImageDto.Request imgDto = new ImageDto.Request(post.getFile());
+			Image img = imageService.uploadFile(imgDto.getImageFile());
+			post.setImage(img);
+		}
+			
 		post.setAuthorIdx(authorIdx);
-		post.setImage(img);
-		System.out.println("setImage 했음!!!\n");
+	
 		sharePostService.modifyPost(postIdx, post);
 		
         return new RedirectView("/share-posts/" + postIdx);

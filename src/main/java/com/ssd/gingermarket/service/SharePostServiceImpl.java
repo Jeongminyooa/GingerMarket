@@ -63,7 +63,12 @@ public class SharePostServiceImpl implements SharePostService {
     @Transactional
     public void modifyPost(Long postIdx, SharePostDto.Request dto) {
     	SharePost entity = sharePostRepository.findById(postIdx).orElseThrow(); 
-    	entity.updatePost(dto.getTitle(), dto.getCategory(), dto.getDescr(), dto.getAddress(), dto.getImage());
+    	if(dto.getFile().getOriginalFilename().equals(""))
+    		entity.updatePost(dto.getTitle(), dto.getCategory(), dto.getDescr(), dto.getAddress());
+    	else {
+    		entity.updatePost(dto.getTitle(), dto.getCategory(), dto.getDescr(), dto.getAddress());
+    		entity.updatePostImg(dto.getImage());
+    	}
     }
     
     //게시글 삭제  

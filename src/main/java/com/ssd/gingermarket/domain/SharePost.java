@@ -1,5 +1,6 @@
 package com.ssd.gingermarket.domain;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,10 +48,8 @@ public class SharePost extends BaseTime {
 	@Column(length = 50)
 	private String address;
 	
-	@Column(length = 3)
+	@Column(length = 1)
 	private String progress;
-	
-	private int messageCnt = 0;
 	
 	@OneToOne
 	@JoinColumn(name="image_idx")
@@ -66,20 +65,24 @@ public class SharePost extends BaseTime {
 	public void prePersist(){
 		this.progress = this.progress == null ? "N" : this.progress;
 	}
+
 	
-	public void updatePost(String title, String category, String descr, String address, Image image) {
+	public void updatePost(String title, String category, String descr, String address) {
         this.title = title;
         this.category = category;
         this.descr = descr;
         this.address = address;
-        this.image = image;
     }
+	
+	public void updatePostImg(Image image) {
+		this.image = image;
+	}
 	
 	public void updateProgress(boolean prog) {
 		if(prog)
-			this.progress = "'N'";
+			this.progress = "N";
 		else
-			this.progress = "'Y'";
+			this.progress = "Y";
 	}
 	
 	
