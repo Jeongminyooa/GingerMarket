@@ -60,7 +60,7 @@
 
 								<div class="d-flex mx-auto pt-5 mb-3 text-center">
 									<button type="button" class="btn btn-secondary me-1" data-bs-dismiss="modal">취소</button>
-									<form th:id="goUpdateForm" th:action="@{/share/{postIdx}/updateForm(postIdx=${postInfo.postIdx})}" th:method="GET">
+									<form th:id="getUpdateForm" th:action="@{/share-posts/{postIdx}/edit(postIdx=${postInfo.postIdx})}" th:method="GET">
 				               			<button type="submit" class="btn btn-secondary" id="btn-modalConfirm">수정</button>
 				               		</form>
 								</div>
@@ -86,7 +86,7 @@
 
 								<div class="d-flex mx-auto pt-5 mb-3 text-center">
 				               		<button type="button" class="btn btn-secondary me-1" data-bs-dismiss="modal">취소</button>
-				               		<form th:id="deletePostForm" th:action="@{/share/{postIdx}(postIdx=${postInfo.postIdx})}" th:method="DELETE">
+				               		<form th:id="deletePostForm" th:action="@{/share-posts/{postIdx}(postIdx=${postInfo.postIdx})}" th:method="DELETE">
 				               			<button id="btn-modalConfirm" type="submit" class="btn btn-secondary">삭제</button>
 				               		</form>
 								</div>
@@ -201,7 +201,7 @@
 
 			<!--Send message BTN -->
 			<div th:if="${postInfo.progress} == false" class="d-grid gap-2 mt-3">
-				<a class="btn btn-outline-success rounded-pill" href="#"
+				<a class="btn btn-outline-success rounded-pill" th:href="@{/message/{postIdx}(postIdx=${postInfo.postIdx})}"
 					role="button" id="btn-sendMsg">쪽지 보내기</a>
 			</div>
 			

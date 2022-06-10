@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 
 //@Slf4j //로그 
 @RestController 
-@RequestMapping("/share")
+@RequestMapping("/share-posts")
 @RequiredArgsConstructor
 public class ModifySharePostController {
 	
@@ -50,7 +50,7 @@ public class ModifySharePostController {
 	}
 	
 	
-	@GetMapping("/{postIdx}/updateForm")
+	@GetMapping("/{postIdx}/edit")
 	public ModelAndView goUpdateForm(@PathVariable Long postIdx) { 
 		Long userIdx = (long) 1;//user session으로 추후 수정 
 		
@@ -76,7 +76,7 @@ public class ModifySharePostController {
 		System.out.println("setImage 했음!!!\n");
 		sharePostService.modifyPost(postIdx, post);
 		
-        return new RedirectView("/share/" + postIdx);
+        return new RedirectView("/share-posts/" + postIdx);
     }
 	
 	@PutMapping("/{postIdx}/progress")
@@ -85,7 +85,7 @@ public class ModifySharePostController {
 		boolean prog = sharePostService.getPost(postIdx).isProgress();
 		sharePostService.modifyProgress(postIdx, prog);
 		
-		return new RedirectView("/share/" + postIdx);
+		return new RedirectView("/share-posts/" + postIdx);
 	}
 	
 	

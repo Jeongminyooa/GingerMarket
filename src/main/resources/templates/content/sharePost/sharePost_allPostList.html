@@ -15,7 +15,7 @@
 						</div>
 						
 						<div class="card-body">
-							<a th:text=${postInfo.title} th:href="@{/share/{postIdx}(postIdx=${postInfo.postIdx})}" class="card-title stretched-link text-truncate"
+							<a th:text=${postInfo.title} th:href="@{/share-posts/{postIdx}(postIdx=${postInfo.postIdx})}" class="card-title stretched-link text-truncate"
 								id="main_content" ><b>사용자 카테고리 추천 게시물</b></a>
 							<p th:text=${postInfo.address} class="card-text" id="small_content">서울시 성북구 하월곡동</p>
 							<div class="d-flex mr-3">

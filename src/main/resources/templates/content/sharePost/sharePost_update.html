@@ -41,7 +41,7 @@
 			<hr>
 
 			<!-- form -->
-			<form th:action="@{/share/{postIdx}(postIdx=${postIdx})}" th:object="${updateReq}" th:method="PUT" enctype="multipart/form-data">
+			<form th:action="@{/share-posts/{postIdx}(postIdx=${postIdx})}" th:object="${updateReq}" th:method="PUT" enctype="multipart/form-data">
 				<!-- 사진 업로드 -->
 				<div class="row">
 					<div class="col-1" id="div-addImg">

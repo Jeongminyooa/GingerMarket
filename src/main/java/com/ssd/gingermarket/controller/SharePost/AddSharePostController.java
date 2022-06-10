@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 
 //@Slf4j //로그 
 @RestController 
-@RequestMapping("/share")
+@RequestMapping("/share-posts")
 @RequiredArgsConstructor
 public class AddSharePostController {
 	
@@ -51,8 +51,8 @@ public class AddSharePostController {
 	}
 	
 	
-	@GetMapping("/addForm")
-	public ModelAndView goAddForm() { 
+	@GetMapping("/new")
+	public ModelAndView getAddForm() { 
 		Long userIdx = (long) 2;//user session으로 추후 수정 
 		
 		ModelAndView mav = new ModelAndView("content/sharePost/sharePost_add");
@@ -81,7 +81,7 @@ public class AddSharePostController {
 		post.setAuthorIdx(authorIdx);
 		sharePostService.addPost(post);
 		
-        return new RedirectView("/share/posts");
+        return new RedirectView("/share-posts");
     }
 	
 	
