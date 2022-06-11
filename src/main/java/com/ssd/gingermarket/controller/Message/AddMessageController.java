@@ -14,39 +14,42 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.ssd.gingermarket.domain.SharePost;
+import com.ssd.gingermarket.dto.MessageDto;
+import com.ssd.gingermarket.dto.MessageDto.Request;
 import com.ssd.gingermarket.dto.SharePostDto;
+import com.ssd.gingermarket.service.MessageService;
 import com.ssd.gingermarket.service.SharePostService;
 
 import lombok.RequiredArgsConstructor;
 
 //@Slf4j //로그 
 @RestController 
-@RequestMapping("/message")
+@RequestMapping("/messages")
 @RequiredArgsConstructor
 public class AddMessageController {
 	
 	private final SharePostService sharePostService;
+	private final MessageService messageService;
 	
+//	@PostMapping("/{postIdx}")
+//	public RedirectView sendMessage(@PathVariable Long postIdx, MessageDto.Request req) {	
+//		Long senderIdx = (long) 1; //session구현 후 변경
+//		
+//		req.setSenderIdx(senderIdx);
+//		messageService.sendMessage(req, postIdx);
+//		
+//        return new RedirectView("/messages/" + postIdx);
+//    }
 	
-	@GetMapping("/{postIdx}/room")
-	public ModelAndView goMessageRoom(@PathVariable Long postIdx) { 
-		Long senderIdx = (long) 2;//user session으로 추후 수정 
+	@PostMapping("/{postIdx}")
+	public int sendMessage(@PathVariable Long postIdx, @RequestBody MessageDto.Request req) {	
+		Long senderIdx = (long) 1; //session구현 후 변경
 		
-		ModelAndView mav = new ModelAndView("content/sharePost/sharePost_add");
-		mav.addObject("postReq", new SharePostDto.Request());
+		req.setSenderIdx(senderIdx);
+		messageService.sendMessage(req, postIdx);
 		
-		return mav;
-	}
-	
-	@PostMapping("")
-	public RedirectView createPost(SharePostDto.Request post) {	
-		Long authorIdx = (long) 1; //session구현 후 변경
-		
-		post.setAuthorIdx(authorIdx);
-		sharePostService.addPost(post);
-		
-        return new RedirectView("/share/posts");
+        return 1;
     }
-	
 	
 }
