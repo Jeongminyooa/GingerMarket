@@ -1,6 +1,7 @@
 package com.ssd.gingermarket.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,12 +15,29 @@ public class CommentDto {
 	public static class Info {
 		private Long commentIdx;
 		private String content;
-		private LocalDateTime createDate;
-		private LocalDateTime updateDate;
+		private LocalDateTime lastModifiedDate;
 		private boolean isDeleted;
+		
+		private Long authorIdx; // 사용자 idx
+		private String imageUrl; // 사용자 프로필 사진
+		private String nickname; // 사용자 닉네임
+		
+		private List<CommentDto.childInfo> childCommentList;
+	}
+	
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Data
+	public static class childInfo {
+		private Long commentIdx;
 		private Long parentIdx;
-		private Long groupIdx;
-		private Long authorIdx;
+		private String content;
+		private LocalDateTime lastModifiedDate;
+		private boolean isDeleted;
+		
+		private Long authorIdx; // 사용자 idx
+		private String imageUrl; // 사용자 프로필 사진
+		private String nickname; // 사용자 닉네임
 	}
 	
 	@NoArgsConstructor
@@ -27,6 +45,5 @@ public class CommentDto {
 	@Data
 	public static class Request {
 		private String content;
-		private Long parent_idx;
 	}
 }

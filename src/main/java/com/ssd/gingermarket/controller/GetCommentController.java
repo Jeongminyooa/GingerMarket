@@ -7,9 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.ssd.gingermarket.domain.CommentInfo;
 import com.ssd.gingermarket.dto.CommentDto;
 import com.ssd.gingermarket.service.CommentInfoService;
 
@@ -24,15 +23,18 @@ public class GetCommentController {
 
 	private final CommentInfoService commentInfoService;
 	
+	@GetMapping("")
+	public ModelAndView test () {
+		return new ModelAndView("content/groupBuyingPost/viewGroupPost");
+	}
+	
 	// 댓글 리스트 불러오기
-	@GetMapping("/{gid}/list")
+	@GetMapping("/{gid}")
 	public String getCommentList (Model model, @PathVariable(value="gid") Long groupIdx) {
-		long userId = 1;
-		
 		List<CommentDto.Info> commentList = commentInfoService.getCommentList(groupIdx);
 	
 		model.addAttribute("commentList", commentList);
-		return "content/groupBuyingPost/viewGroupPost :: #experiodContent";
+		
+		return "content/groupBuyingPost/viewGroupPost :: #commentContent";
 	}
-	
 }

@@ -10,7 +10,10 @@ import com.ssd.gingermarket.dto.CommentDto;
 public interface CommentInfoService {
 
 	// 댓글 작성
-	public void addComment(CommentDto.Request request);
+	public void addComment(CommentDto.Request request, Long authorIdx, Long groupIdx);
+	
+	// 대댓글 작성 
+	public void addChildComment(CommentDto.Request request, Long authorIdx, Long groupIdx, Long parentIdx);
 	
 	// 댓글 목록 가져오기
 	public List<CommentDto.Info> getCommentList(Long groupIdx);
