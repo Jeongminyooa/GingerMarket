@@ -15,6 +15,16 @@
 	border-color: #735C3F;
 }
 
+#btn-add-comment, #btn-add-reply {
+	border-radius: 10px;
+	background-color: #735C3F;
+	color: white;
+}
+
+#btn-add-comment:hover, #btn-add-reply:hover {
+	color: white;
+	border-color: #735C3F;
+}
 #img-author{
 	width:30px;
 	height:30px;
@@ -32,8 +42,13 @@
 .add {
 	border : 1px solid #A68D6F;
 	border-radius : 10px;
+	background-color : white;
 }
 
+input {
+	border : 0;
+	height: 50px;
+}
 #btn-search-option{
 	border-radius: 8px;
 	border-color: grey;
@@ -41,4 +56,12 @@
 #btn-search-option:hover {
 	color: white;
 	background-color: #735C3F;
+}
+
+.font-weight-bold {
+	font-weight: bold;
+}
+
+.font-grey {
+	color : #9C9C9C;
 }
