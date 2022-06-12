@@ -42,7 +42,7 @@ public class UserDto {
 					.item1(items[0])
 					.item2(items[1])
 					.item3(items[2])
-			//		.img(imageFile)
+				//	.img(img)
 					.build();
 		}
 	}
@@ -71,7 +71,7 @@ public class UserDto {
 			this.item1=user.getItem1();
 			this.item2=user.getItem2();
 			this.item3=user.getItem3();
-			this.img=user.getUserIdx();
+			this.img=user.getImg();
 			this.address=user.getAddress();
 		}
 	}

@@ -31,13 +31,12 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="user_idx")
 	private Long userIdx;
 	
-	@Column(name="user_id",unique = true, nullable = false, length=10)
+	@Column(unique = true, nullable = false, length=10)
 	private String userId;
 	
-	@Column(name="password",nullable = false, length=16)
+	@Column(nullable = false, length=16)
 	private String password;
 	
 	@Column(unique = true, nullable = false, length=10)
@@ -57,8 +56,10 @@ public class User {
 	private String item3;
 	
 	@OneToOne
-	@JoinColumn(name="image_idx")
-	private Image img;
+	@JoinColumn(name="imgIdx")
+	private Image image;
+	
+	private Long img;
 	
 	public boolean matchPassword(String newPassword) {
 		return newPassword.equals(password);

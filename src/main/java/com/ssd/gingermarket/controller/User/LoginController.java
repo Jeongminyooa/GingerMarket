@@ -29,7 +29,7 @@ public class LoginController {
 	private final UserService userService;
 	
 	@GetMapping("/user/login")
-	public ModelAndView goLoginForm() {
+	public ModelAndView getLoginForm() {
 		ModelAndView mav = new ModelAndView("content/user/user_login");
 		UserDto.LoginRequest user = new UserDto.LoginRequest();
 		mav.addObject("loginReq", user);
@@ -37,16 +37,17 @@ public class LoginController {
 	}
 	
 	@PostMapping("/user/login")
-	public RedirectView login(HttpServletRequest req, UserDto.LoginRequest dto){
+	public RedirectView login(HttpServletRequest req, UserDto.LoginRequest dto,
+			Model model){
 		User user = userService.getUser(dto.getUserId(), dto.getPassword());
 		if(user == null) {
 			return new RedirectView("/user/signup");
 		}
 		else {
 			HttpSession session = req.getSession();
-			session.setAttribute("user", user);
+			session.setAttribute("userId", user.getUserId());
 			session.setAttribute("userIdx", user.getUserIdx());
-			return new RedirectView("/test/mypage");
+			return new RedirectView("/share/posts");
 		}
 
 	}

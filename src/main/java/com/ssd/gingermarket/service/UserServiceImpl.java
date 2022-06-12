@@ -20,10 +20,11 @@ public class UserServiceImpl implements UserService{
 	@Transactional
 	public Long addUser(UserDto.Request dto) {
 		return userRepository.save(dto.toEntity()).getUserIdx();
-		
 	}
+	
 	@Override
-	public void updateUser(Long userIdx,UserDto.Request dto) {
+	@Transactional
+	public void modifyUser(Long userIdx,UserDto.Request dto) {
 		User user = userRepository.findById(userIdx).orElseThrow(); 
 		user.updateUser(dto.getUserId(), dto.getPassword(), dto.getName(),
 				dto.getPhone1()+dto.getPhone2()+dto.getPhone3(), 
@@ -31,18 +32,21 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
+	@Transactional
 	public void removeUser(Long userIdx) {
 		userRepository.deleteById(userIdx);
 	}
 	
 	@Override
+	@Transactional
 	public User getUser(String userId, String password) {
 		return userRepository.findByUserIdAndPassword(userId, password);
 	}
 
 	@Override
+	@Transactional
 	public User getUser(Long userIdx) {
-		return userRepository.findByUserIdx(userIdx);
+		return userRepository.findById(userIdx).get();
 	}
 	
 }

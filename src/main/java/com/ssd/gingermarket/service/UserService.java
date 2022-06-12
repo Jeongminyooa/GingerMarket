@@ -13,7 +13,7 @@ public interface UserService {
 	public Long addUser(UserDto.Request dto);
 	
 	//회원 정보 수정
-	public void updateUser(Long userIdx,UserDto.Request dto);
+	public void modifyUser(Long userIdx,UserDto.Request dto);
 	
 	//회원 탈퇴
 	public void removeUser(Long userIdx);

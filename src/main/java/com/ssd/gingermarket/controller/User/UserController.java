@@ -2,10 +2,14 @@ package com.ssd.gingermarket.controller.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,14 +32,12 @@ public class UserController {
 
 	private final UserService userService;
 
-
-	
 	@GetMapping("/signup")
-	public ModelAndView goSignUp() { 
+	public ModelAndView getSignUp() { 
 		ModelAndView mav = new ModelAndView("content/user/user_signup");
-		UserDto.Request user = new UserDto.Request();
-		mav.addObject("userReq", user);
-	
+		
+		mav.addObject("userReq", new UserDto.Request());
+		
 		List<String> phone1 = new ArrayList<>();
 		phone1.add("010");
 		phone1.add("016");
@@ -55,25 +57,29 @@ public class UserController {
 		category.add("생활잡화");
 		mav.addObject("items", category);
 		
+		
 		return mav;
 	}
-	
+
 	@PostMapping("")
 	public RedirectView register(UserDto.Request req) {
+		
 		Long idx = userService.addUser(req);
 		User user = userService.getUser(idx);
-		if(user.matchPassword(req.getRepeatedPassword()))
+		
+		
+		if(user.matchPassword(req.getRepeatedPassword())) 
 			return new RedirectView("/user/login");
-		else
+		else {
 			return new RedirectView("/user/signup");
-    }
-
-	@GetMapping("/quit")
-	public RedirectView deleteUser(HttpServletRequest req) { 
+		}
+	}
+	
+	@DeleteMapping("/quit")
+	public RedirectView quitUser(HttpServletRequest req) { 
 		HttpSession session = req.getSession(false);
 		Long userIdx = (Long) session.getAttribute("userIdx");
 		
-		System.out.println("useridx "+userIdx );
 		userService.removeUser(userIdx);
 
         if(session != null){
