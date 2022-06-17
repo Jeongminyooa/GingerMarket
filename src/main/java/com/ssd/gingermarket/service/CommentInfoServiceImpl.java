@@ -79,7 +79,7 @@ public class CommentInfoServiceImpl implements CommentInfoService {
 				, LocalDateTime.now()
 				/*, co.getUpdateDate() == null ? co.getCreateDate() : co.getUpdateDate() */
 				, co.getUpdateDate()
-				, (co.getIsDeleted().equals("0") ? false : true)
+				, (co.getIsDeleted().equals("N") ? false : true)
 				, co.getAuthorIdx(),"프로필", "닉네임"
 				, ofList(co.getChildCommentList())))
 				.collect(Collectors.toList());
@@ -99,7 +99,7 @@ public class CommentInfoServiceImpl implements CommentInfoService {
 				ch.getContent(),
 				LocalDateTime.now(),
 				ch.getUpdateDate(),
-				(ch.getIsDeleted().equals("0") ? false : true),
+				(ch.getIsDeleted().equals("N") ? false : true),
 				ch.getAuthorIdx(),
 				"대댓글 프로필", "대댓글"))
 				.collect(Collectors.toList());

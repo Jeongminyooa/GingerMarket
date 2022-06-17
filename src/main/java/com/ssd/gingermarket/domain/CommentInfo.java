@@ -40,7 +40,7 @@ public class CommentInfo {
 	// 수정 날짜
 	private LocalDateTime updateDate;
 	
-	// 0 혹은 1
+	// N 혹은 Y
 	@Column(length = 1)
 	private String isDeleted;
 	
@@ -67,7 +67,7 @@ public class CommentInfo {
 		 this.parentIdx = parentIdx;
 		 this.groupIdx = groupIdx;
 		 this.authorIdx = authorIdx;
-		 this.isDeleted = "0";	
+		 this.isDeleted = "N";	
 	 }
 	
 	// 수정
@@ -78,6 +78,6 @@ public class CommentInfo {
 	
 	// 삭제
 	public void removeComment() {
-		this.isDeleted = "1";
+		this.isDeleted = "Y";
 	}
 }
