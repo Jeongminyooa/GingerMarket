@@ -5,7 +5,7 @@
 	layout:decorate="~{layout/default_layout}">
 
 <th:block layout:fragment="head">
-	<title>나눔 포스트 등록</title>
+	<title>나눔 포스트 수정</title>
 	<meta charset="utf-8">
 
 	<!-- css -->
@@ -27,20 +27,19 @@
 <body>
 
 	<th:block layout:fragment="nav" th:include="@{/fragments/nav}"></th:block>
-	
+
 	<div layout:fragment="content" class="content">
 		<div class="container w-75">
 			<!--content-->
 			<div class="row pt-5">
 				<div class="col bg-white text-center" id="page_title">
-					<b>나눔 글쓰기</b>
+					<b>나눔 글 수정하기</b>
 				</div>
 			</div>
 			<hr>
 
 			<!-- form -->
-			<form th:action="@{/share}" th:object="${postReq}" th:method="post">
-				
+			<form th:action="@{/share/{postIdx}(postIdx=${postIdx})}" th:object="${updateReq}" th:method="PUT">
 				<!-- 사진 업로드 -->
 				<div class="d-flex">
 					<div id="div-addImg">
@@ -67,36 +66,33 @@
 				<hr>
 
 				<div class="mb-3">
-					<label for="inputTitle" class="form-label">글 제목</label> <b
-						class="text-danger">*</b> <input type="text" class="form-control"
-						id="inputTitle" th:field="*{title}" placeholder="글 제목">
+					<label for="inputTitle" class="form-label">글 제목</label> <b class="text-danger">*</b> 
+					<input type="text" class="form-control" id="inputTitle" th:value="${updateReq.title}" th:field="*{title}" >
 				</div>
 
 				<hr>
 				<div class="mb-3">
 					<label for="inputAddr" class="form-label">사용자 주소</label> <b class="text-danger">*</b> 
-					<input type="text" class="form-control" id="inputAddr" th:field="*{address}" placeholder="원래 사용자 주소">
+					<input type="text" class="form-control" id="inputAddr" th:field="*{address}" value="원래 사용자 주소">
 				</div>
 
 				<hr>
 
 				<div class="mb-3">
-					<label for="inputCategory" class="form-label">나눔 상품 카테고리</label> <b
-						class="text-danger">*</b> <select class="form-select" th:name="category" 
-						aria-label="Default select example">
-						<option selected disabled>카테고리 선택</option> <!-- validation 추가 -->
+					<label for="inputCategory" class="form-label">나눔 상품 카테고리</label> <b class="text-danger">*</b> 
+					<select class="form-select" th:name="category" aria-label="Default select example">
 						<option th:each="val : ${categoryList}" 
 									th:value="${val}" 
                 					th:text="${val}"
-                					th:field="*{category}">
+                					th:field="*{category}"
+                					th:selected="${val} == ${updateReq.category}">
         				</option>
 					</select>
 				</div>
 
 				<div class="mb-3">
 					<label for="inputDescr" class="form-label">상세설명</label>
-					<textarea class="form-control" th:field="*{descr}" aria-label="With textarea"
-						placeholder="나눔할 상품의 개수도 함께 작성해주세요." rows="10"></textarea>
+					<textarea class="form-control" th:field="*{descr}" th:text="${updateReq.descr}" aria-label="With textarea" rows="10"></textarea>
 				</div>
 
 				<!-- Confirm BTN -->

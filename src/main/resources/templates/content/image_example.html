@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>이미지 예시 코드</title>
+</head>
+<body>
+<h3>커맨드 객체</h3>
+<form th:object=${image} action="image-upload" method="post" enctype="multipart/form-data">
+	파일: <input type="file" name="imageFile" />
+	<br/>
+	<input type="submit" value="Upload"/>
+</form>
+
+<img th:src="@{${fileUrl}}"/>
+</body>
+</html>

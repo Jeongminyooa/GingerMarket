@@ -1,9 +1,13 @@
 <!-- Experiod add Modal -->
 <script>
+	// 교체주기 선택 요소가 저장되는 배열
 	const cntCategory = [];
+	
+	// 교체주기 선택 요소 등록
 	function handleOnClickCategory(e) {
 		const value = e.innerText;
 
+		console.log(cntCategory);
 		if (cntCategory.length > 0) {
 			alert('선호 생필품은 1개만 선택 가능합니다.');
 			return;
@@ -13,19 +17,37 @@
 		$selectedTag.attr("id", "item");
 		$selectedTag.attr("onclick", "cancelOnClickCategory(this)");
 		$('#selecteCategory').append($selectedTag);
+		
+		// form으로 보낼 요소
+		const $selectedItem = $('<input type="text" id="selectedItem" name="category" value="' + value + '">');		
+		$('#formItem').append($selectedItem);
 
 		cntCategory.push(value);
 	}
 
+	// 교체주기 선택 요소 삭제
 	function cancelOnClickCategory(e) {
 		const value = e.innerText;
 		e.remove();
-		for (let i = 0; i < cntCategory.length; i++) {
-			if (cntCategory[i] == value) {
-				cntCategory.splice(i, i + 1);
-				return;
-			}
+		
+		// form으로 보낼 요소도 삭제
+		const $selectedItem = document.getElementById('selectedItem');
+		console.log($selectedItem);
+		$selectedItem.remove();
+		cntCategory.pop();
+		
+		return;
+	}
+	
+	// 교체주기 POST
+	function submit() {
+		if(cntCategory.length == 0) {
+			alert('카테고리를 선택해주세요.');
+			return false;
 		}
+		
+		var form = document.getElementById('form');
+		form.submit();
 	}
 </script>
 
@@ -41,32 +63,31 @@
 				<div id="page_title" class="text-center">
 					<b>교체 주기 등록</b>
 				</div>
-				<form class="ps-5 pt-2 pe-5">
+				<form class="ps-5 pt-2 pe-5" id="form" th:action="@{/experiods}" method="POST">
 					<div class="mb-3">
 						<div class="dropdown">
 							<button class="btn btn-white text-black dropdown-toggle"
 								type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
 								aria-expanded="false">생필품 카테고리 선택</button>
-							<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-								<li><a class="dropdown-item" onclick="handleOnClickCategory(this)">가전제품</a></li>
-								<li><a class="dropdown-item" onclick="handleOnClickCategory(this)">욕실용품</a></li>
-								<li><a class="dropdown-item" onclick="handleOnClickCategory(this)">위생용품</a></li>
-								<li><a class="dropdown-item" onclick="handleOnClickCategory(this)">바디/헤어</a></li>
-								<li><a class="dropdown-item" onclick="handleOnClickCategory(this)">청소/세탁용품</a></li>
-								<li><a class="dropdown-item" onclick="handleOnClickCategory(this)">문구</a></li>
-								<li><a class="dropdown-item" onclick="handleOnClickCategory(this)">생활잡화</a></li>
+							<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" id="categoryMap">
+								<th:block th:each="item : ${categoryMap}">
+									<li><a class="dropdown-item" th:text="${item.key}" onclick="handleOnClickCategory(this)">생필품</a></li>
+								</th:block>
 							</ul>
 						</div>
 						<div id="selecteCategory"></div>
 					</div>
 					
-					<div class="mb-3 font-grey">
+					<div class="mb-5 font-grey">
 						생필품 종류를 설정해주세요!<br>
 						생강마켓에서 자동으로 계산하여 교체 예정일 3일전부터 마이페이지에서 알림을 보내드립니다.
 					</div>
+					
+					<div id="formItem" style="display:none">
+					</div>
 
-					<div class="mb-2 mt-2 pt-2 text-center">
-						<button type="button" class="quit_btn w-75">등록</button>
+					<div class="mb-2 mt-5 pt-5 text-center">
+						<button type="button" class="quit_btn w-75" onclick="submit()">등록</button>
 					</div>
 				</form>
 			</div>
