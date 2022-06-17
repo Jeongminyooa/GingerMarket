@@ -5,11 +5,19 @@ button{
 	border-color: grey;
 }
 
-button:hover, #btn-sendMsg:hover, #btn-confirm:hover{
+button:hover, #btn-sendMsg:hover, #btn-confirm:hover, #btn-isProg:hover{
 	color: white;
 	background-color: #91A77F;
 }
 
+#btn-isDone, #btn-enableSendMsg{
+	color : white;
+	background-color : #91A77F;
+}
+#btn-isDone:hover{
+	color : grey;
+	background-color : white;
+}
 #div-img {
 	width: 50%;
 	margin: auto;

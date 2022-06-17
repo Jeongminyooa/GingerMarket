@@ -23,21 +23,7 @@
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
 		crossorigin="anonymous"></script>
 </th:block>
-
-<script>
-	function PreviewImage() {
-		// 파일리더 생성 
-		var preview = new FileReader();
-		preview.onload = function(e) {
-			// img id 값 
-			document.getElementById("img-thumbnail").src = e.target.result;
-		};
-		// input id 값 
-		preview.readAsDataURL(document.getElementById("file").files[0]);
-	};
-</script>
 <body>
-
 	<th:block layout:fragment="nav" th:include="@{/fragments/nav}"></th:block>
 
 	<div layout:fragment="content" class="content">
@@ -50,7 +36,9 @@
 			</div>
 			<hr>
 
-			<form name="form" enctype="multipart/form-data">
+			<!-- form -->
+			<form th:action="@{/group-buying}" th:object="${postReq}" th:method="post">
+			
 				<!-- 사진 업로드 -->
 				<div class="d-flex">
 					<div id="div-addImg">
@@ -72,35 +60,27 @@
 						<img id="img-thumbnail">
 					</div>
 				</div>
-				<p></p>
-				<div class="row border-top"></div>
-
+				
+				<p><p>
+				
 				<div class="mb-3 mt-3 pt-3">
 					<label for="inputTitle" class="form-label">글 제목</label>
 						<b class="text-danger">*</b> <input type="text" class="form-control"
-						id="inputTitle" placeholder="글 제목">
+						id="inputTitle" th:field="*{title}" placeholder="글 제목">
 				</div>
 
-				<div class="row border-top"></div>
-
-				<!-- 추후 Thymeleaf form 적용 예정 -->
 				<div class="mb-3 mt-3">
 					<label for="inputCategory" class="form-label">공구 상품 카테고리</label>
-						<b class="text-danger">*</b> <select class="form-select"
+						<b class="text-danger">*</b> <select class="form-select" th:name="category"
 						aria-label="Default select example">
-						<option selected>카테고리 선택</option>
-						<option value="가전제품">가전제품</option>
-						<option value="욕실용품">욕실용품</option>
-						<option value="위생용품">위생용품</option>
-						<option value="주방용품">주방용품</option>
-						<option value="바디/헤어">바디/헤어</option>
-						<option value="청소/세탁용품">청소/세탁용품</option>
-						<option value="문구">문구</option>
-						<option value="생활잡화">생활잡화</option>
+						<option selected disabled>카테고리 선택</option>
+						<option th:each="val : ${categoryList}" 
+						th:value="${val}" th:text="${val}" th:field="*{category}">
+						</option>
 					</select>
 				</div>
 				
-				<div class="row">
+				<div class="row mb-1">
 					<div class="col col-lg-5">
 					 <label for="inputRecruit" class="form-label">모집인원</label>
 					 <b class="text-danger">*</b>
@@ -115,14 +95,14 @@
 					<div class="col col-lg-4">
 						<div class="input-group">
 							<input type="text" class="form-control"
-								id="inputRecruit" placeholder="">
+								id="inputRecruit" th:field="*{recruitNum}" placeholder="">
 							<span class="input-group-text">명</span> 
 						</div>
 					</div>
 					<div class="col col-lg-1"></div>
 					<div class="col col-lg-4">
 						<input type="date" class="form-control"
-						id="inputEndDate">
+						id="inputEndDate" th:field="*{endDate}">
 					</div>	
 				</div>
 				
@@ -131,18 +111,18 @@
 					<div class="col col-lg-4">
 						<div class="input-group">
 							<input type="text" class="form-control"
-								id="inputPrice" placeholder="금액을 입력하세요">
+								id="inputPrice" th:field="*{price}" placeholder="금액을 입력하세요">
 							<span class="input-group-text">원</span> 
 						</div>
 					</div>
 				</div>
-				<div class="row border-top"></div>
 				
+				<div class="row border-top"></div>
 				<div class="mb-3 mt-3">
 					<label for="inputSite" class="form-label">상품사이트</label>
 						<div class="input-group mb-3">
 						<input type="text" class="form-control"
-						id="inputSite" placeholder="참고할 링크를 첨부해주세요">
+						id="inputSite" th:field="*{website}" placeholder="참고할 링크를 첨부해주세요">
 						<span class="input-group-text">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link">
  						 <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
@@ -155,14 +135,14 @@
 
 				<div class="mb-3 mt-3">
 					<label for="inputDescr" class="form-label">상세설명</label>
-					<textarea class="form-control" aria-label="With textarea"
+					<textarea class="form-control" th:field="*{descr}" aria-label="With textarea"
 						placeholder="공구게시판에 올릴 게시글 내용을 작성해주세요." rows="10"></textarea>
 				</div>
 
 				<!-- Confirm BTN -->
 				<div class="d-grid gap-2 mt-5">
-					<a class="btn btn-outline-success w-auto" href="#" role="button"
-						id="btn-confirm">완료</a>
+					<button type="submit" class="btn btn-outline-light w-auto" 
+						id="btn-confirm">완료</button>
 				</div>
 			</form>
 		</div>

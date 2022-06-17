@@ -64,11 +64,10 @@ public class ExperiodController {
 	}
 	
 	
-	// 교체주기 d-day 업데이트 -> 추후 개발 예정
+	// 교체주기 d-day 업데이트
 	//@Scheduled(cron = "*/10 0 0 * * *")
 	public void updateExperiod() {
 		// 자정마다 1씩 줄어듦
-		System.out.println("스케줄링 테스트");
 		experiodService.updateExperiodDday();
 	}
 	
@@ -86,7 +85,6 @@ public class ExperiodController {
 	public String getExperiodByDate (Model model, @RequestParam(value="date") String date) {
 		long userId = 1;
 		
-		System.out.println(date);
 		List<ExperiodDto.Info> dto = experiodService.getExperiodByDate(userId, date);
 		
 		model.addAttribute("experiodList", dto);

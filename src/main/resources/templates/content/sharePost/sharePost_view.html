@@ -25,6 +25,9 @@
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
 		crossorigin="anonymous"></script>
 </th:block>
+<script>
+
+</script>
 <body>
 
 	<th:block layout:fragment="nav" th:include="@{/fragments/nav}"></th:block>
@@ -55,9 +58,11 @@
 				              		<div class="pt-4 pd-5 text-center">게시물을 정말 수정하시겠습니까?</div>
 				            	</div>
 
-								<div class="pt-5 mb-3 text-center">
-				               		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				               		<button type="button" class="btn btn-secondary" id="btn-modalConfirm">수정</button>
+								<div class="d-flex mx-auto pt-5 mb-3 text-center">
+									<button type="button" class="btn btn-secondary me-1" data-bs-dismiss="modal">취소</button>
+									<form th:id="goUpdateForm" th:action="@{/share/{postIdx}/updateForm(postIdx=${postInfo.postIdx})}" th:method="GET">
+				               			<button type="submit" class="btn btn-secondary" id="btn-modalConfirm">수정</button>
+				               		</form>
 								</div>
 				         	</div>
 				        </div>
@@ -79,9 +84,11 @@
 				              		<div class="pt-4 pd-5 text-center">게시물을 정말 삭제하시겠습니까?</div>
 				            	</div>
 
-								<div class="pt-5 mb-3 text-center">
-				               		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				               		<button type="button" class="btn btn-secondary" id="btn-modalConfirm">삭제</button>
+								<div class="d-flex mx-auto pt-5 mb-3 text-center">
+				               		<button type="button" class="btn btn-secondary me-1" data-bs-dismiss="modal">취소</button>
+				               		<form th:id="deletePostForm" th:action="@{/share/{postIdx}(postIdx=${postInfo.postIdx})}" th:method="DELETE">
+				               			<button id="btn-modalConfirm" type="submit" class="btn btn-secondary">삭제</button>
+				               		</form>
 								</div>
 				         	</div>
 				        </div>
@@ -107,10 +114,59 @@
 						<div id="small_content">서울시 광진구 자양3동</div>
 					</div>
 					
-					<div class="col-1">
-						<button class="btn btn-sm border border-secondary mt-3"
-						id="btn-isDone" type="submit"
-						style="width: 100px; height: 30px;">나눔완료</button>
+					<div th:if="${postInfo.progress} == false" class="col-1">
+						<button type="button" class="btn btn-sm border border-secondary mt-3" id="btn-isProg" style="width: 100px; height: 30px;"
+								data-bs-toggle="modal" data-bs-target="#updateProgToDone">
+							나눔중 
+						</button>
+
+						<!-- Modal -->
+						<!-- Update Modal -->
+						<div class="modal fade" id="updateProgToDone" tabindex="-1" aria-labelledby="updateProgLabel" aria-hidden="true">
+							<div class="modal-dialog">
+					        	<div class="modal-content"> 
+									<div class="modal-body justify-content-md-center ps-5 pe-5">
+					                	<div id="page_title" class="text-center"><b>게시물 수정</b></div>  
+					              		<div class="pt-4 pd-5 text-center">나눔 상태를 정말 완료로 수정하시겠습니까?</div>
+					            	</div>
+	
+									<div class="d-flex mx-auto pt-5 mb-3 text-center">
+										<button type="button" class="btn btn-secondary me-1" data-bs-dismiss="modal">취소</button>
+										<form th:id="inProgress" th:action="@{/share/{postIdx}/progress(postIdx=${postInfo.postIdx})}" th:method="PUT">
+					               			<button type="submit" class="btn btn-secondary" id="btn-isProg">확인</button>
+					               		</form>
+									</div>
+					         	</div>
+					        </div>
+					   </div>
+					</div>
+					
+
+					<div th:unless="${postInfo.progress} == false" class="col-1">
+						<button type="button" class="btn btn-sm border border-secondary mt-3" id="btn-isDone" style="width: 100px; height: 30px;"
+								data-bs-toggle="modal" data-bs-target="#updateProgToIng">
+							나눔완료  
+						</button>
+
+						<!-- Modal -->
+						<!-- Update Modal -->
+						<div class="modal fade" id="updateProgToIng" tabindex="-1" aria-labelledby="updateProgLabel" aria-hidden="true">
+							<div class="modal-dialog">
+					        	<div class="modal-content"> 
+									<div class="modal-body justify-content-md-center ps-5 pe-5">
+					                	<div id="page_title" class="text-center"><b>게시물 수정</b></div>  
+					              		<div class="pt-4 pd-5 text-center">나눔 상태를 정말 진행중으로 수정하시겠습니까?</div>
+					            	</div>
+	
+									<div class="d-flex mx-auto pt-5 mb-3 text-center">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+										<form th:id="notInProgress" th:action="@{/share/{postIdx}/progress(postIdx=${postInfo.postIdx})}" th:method="PUT">
+					               			<button type="submit" class="btn btn-secondary" id="btn-isDone">확인</button>
+					               		</form>
+									</div>
+					         	</div>
+					        </div>
+					   </div>
 					</div>
 					
 				</div>
@@ -119,20 +175,17 @@
 			<hr>
 			<!-- post content -->
 			<div class="post-container">
-				<div id="middle_title">
+				<div th:text=${postInfo.title} id="middle_title">
 					<b>두루마리 휴지 나눔합니당</b>
 				</div>
-				<div id="main_content" style="color: silver;">#위생용품</div>
-				<div class="pt-3" id="main_content">상세설명 상세설명 상세설명 15개 나눔함동 ~~
-					상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명
-					상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명
-					상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명</div>
+				<div th:text=${postInfo.category} id="main_content" style="color: silver;">#위생용품</div>
+				<div th:text=${postInfo.descr} class="pt-3" id="main_content">상세설명</div>
 			</div>
 
 			<!-- post enroll date & message cnt -->
 			<div class="row">
 				<div class="d-flex justify-content-end pt-2">
-					<div id="small_content" style="color: silver;">2022/05/08
+					<div th:text="${#temporals.format(postInfo.enrollDate, 'yyyy/MM/dd HH:mm')}" id="small_content" style="color: silver;">2022/05/08
 						17:47</div>
 					<div class="d-flex ms-auto pt-1 text-secondary">
 						<div class="icon me-1">
@@ -141,15 +194,20 @@
 							</svg>
 						</div>
 
-						<div class="msg-cnt">19</div>
+						<div th:text=${postInfo.msgCount} class="msg-cnt">19</div>
 					</div>
 				</div>
 			</div>
 
 			<!--Send message BTN -->
-			<div class="d-grid gap-2 mt-3">
+			<div th:if="${postInfo.progress} == false" class="d-grid gap-2 mt-3">
 				<a class="btn btn-outline-success rounded-pill" href="#"
 					role="button" id="btn-sendMsg">쪽지 보내기</a>
+			</div>
+			
+			<div th:unless="${postInfo.progress} == false" class="d-grid gap-2 mt-3">
+				<a class="btn btn-outline-success rounded-pill"
+					role="button" id="btn-enableSendMsg">나눔이 완료된 상품입니다.</a>
 			</div>
 		</div>
 	</div>
