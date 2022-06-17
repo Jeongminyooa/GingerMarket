@@ -1,23 +1,17 @@
-<!-- Delete Modal -->
-		<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-		 <div class="modal-dialog">
-		    <div class="modal-content"> 
-		      
-		      
-		      <div class="modal-body justify-content-md-center ps-5 pe-5">
-		       	<div id="page_title" class="text-center"><b>게시물 삭제</b></div>  
-		        <div class="pt-4 pd-5 text-center">게시물을 정말 삭제하시겠습니까?</div>
-		      </div>
-		      
-		     	<div class="pt-5 mb-3 text-center">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-		      		<button type="button" class="btn btn-secondary" id="btn-modalConfirm">삭제</button>
-				</div>
-					
-			</div>
-			</div>
-		</div>
-			
-		
-		
-		
+					<!-- Delete Modal -->
+					<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+				        	<div class="modal-content"> 
+								<div class="modal-body justify-content-md-center ps-5 pe-5">
+				                	<div id="page_title" class="text-center"><b>게시물 삭제</b></div>  
+				              		<div class="pt-4 pd-5 text-center">게시물을 정말 삭제하시겠습니까?</div>
+				            	</div>
+								<div class="d-flex mx-auto pt-5 mb-3 text-center">
+				               		<button type="button" class="btn btn-secondary me-1" data-bs-dismiss="modal">취소</button>
+				               		<form th:id="deletePost" th:action="@{/group-buying/{groupIdx}(groupIdx=${postInfo.groupIdx})}" th:method="DELETE">
+				               			<button id="btn-modalConfirm" type="submit" class="btn btn-secondary">삭제</button>
+				               		</form>
+								</div>
+				         	</div>
+				        </div>
+				   </div>

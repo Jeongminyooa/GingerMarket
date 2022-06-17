@@ -34,75 +34,100 @@
 				</div>
 			</div>
 			
+			<!-- 수정하기 / 삭제하기 modal -->
 			<div class="row pt-5">
 				<div class="d-flex justify-content-end">
-				
-					<button type="button" class="btn btn-sm border border-secondary"
-						id="btn-search-option">수정하기</button>&nbsp;
-				
 					<!-- Button trigger modal -->
+					<button type="button" class="btn btn-sm border border-secondary me-2"
+						id="btn-update"
+						data-bs-toggle="modal" data-bs-target="#updateModal">수정하기</button>
+						
 					<button type="button" class="btn btn-sm border border-secondary"
-						id="btn-search-option" data-bs-toggle="modal"
+						id="btn-delete" data-bs-toggle="modal"
 						data-bs-target="#deleteModal">삭제하기</button>
-							
+					
 				</div>
 			</div>
-  				
-  				<div class="row pt-3">
+			
+  					<!-- post image view -->
+  					<div class="row pt-3" id="div-img">
   					<div class="col col-lg-7">
-   					<img src="/image/tissue.png" class="img-fluid" id="post-img" alt=""> 
+   					<img src="/image/tissue.png" class="img-fluid" alt=""> 
     				</div>
+    				
+    				<!-- post author section -->
     				<div class="col col-lg-5">
-						<div>
-						<img src="/image/profile.png" class="rounded-circle" alt="" width="50" height="50">
+						<img src="/image/profile.png" class="rounded-circle" alt="" id="img-author" width="50" height="50">
 						&nbsp;
 						<b>jmyj727</b>
 						<hr>
-						<p class="fst-normal" id="main_content">두루마리 휴지 공구할 분:)</p>
-							<p class="text-black-50" id="small_content">
-							필수품 &nbsp;두루마리 휴지</p>
-					 	<p class="fw-bolder" id="middle_title">1200원</p>
-  						</div>
+					
+					
+					<!-- post content -->
+					<div class="post-container">
+						<div th:text=${postInfo.title} id="middle_title">두루마리 휴지 공구할 분:)</div>
+						<div th:text= "|#${postInfo.category}|" id="small_content" style="color: silver; padding: 3px;">#위생용품</div>
+						<div th:text="|${postInfo.price}원|" id="middle_title" style="font-weight:bold">
+						<b>1200원</b></div>
+  					
    						<div class="row pt-2">
    							<div class="col">
-   							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people"> 
-						<path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
-						</svg>
-						2/8명
+   								<div class="icon me-1">
+	   								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people"> 
+									<path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+									</svg>
+									<span th:text="|${postInfo.participateNum}/${postInfo.recruitNum}|" id="small_content">2/8</span>
+								</div>
+							
+										
+   							</div>
    						</div>
+   			
    						<div class="row pt-1">
-   						<div class="col">
-   							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-check">
-  						<path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
-  						<path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-						</svg>
-						2022/04/06까지
+   							<div class="col">
+   								<div class="icon me-1">
+		   							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-check">
+		  							<path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+		  							<path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+									</svg>
+									<span th:text="${#temporals.format(postInfo.endDate, 'yyyy/MM/dd')}" id="small_content">2022/05/08</span>
+								</div>	
+							</div>
 						</div>
-						</div>
+						
 						<div class="row pt-1">
-						<div class="col">
-							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link">
- 						 <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
-  						<path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z"/>
-						</svg>
-						https://naver.com
-						</div>
+							<div class="col">
+								<div class="icon me-1">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link">
+		 						 	<path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
+		  							<path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z"/>
+									</svg>
+									<span th:text=${postInfo.website} id="small_content">https://naver.com</span>
+								</div>
+							</div>
    						</div>
-  				</div>
-  				<div class="row pt-3">
-  				<div class="col" id="main_content">상세설명 상세설명 상세설명 
-					상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명
-					상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명 상세설명
-				</div>
-				</div>
-				<div class="row pt-3">
-				<div class="d-grid gap-2 mt-5">
-				<button class="btn btn-outline-light w-100" id="btn-apply" data-bs-toggle="modal" data-bs-target="#applyModal">신청하기</button>
+   		
+   						<div class="row pt-3">
+   						<div th:text=${postInfo.descr} id="main_content">상세설명</div>
+   						</div>
+   						
+				<!-- Apply BTN -->
+		
+				<div th:if="(${postInfo.progress} == 0 OR ${postInfo.progress} == 1) AND ${postInfo.authorIdx} != ${userIdx}" class="d-grid gap-2 mt-5 pt-3">
+				<button type="button" class="btn btn-outline-light w-100" id="btn-apply" data-bs-toggle="modal" data-bs-target="#applyModal">신청하기</button>
 				</div>
 				
+				<div th:if="${postInfo.authorIdx} == ${userIdx}" class="d-grid gap-2 mt-5 pt-3">
+				<a th:href="@{/group-buying/{groupIdx}/apply-form(groupIdx=${postInfo.groupIdx})}" class="btn btn-outline-light w-100" 
+				 role="button" id="btn-apply">조회하기</a>
+				</div>
+				
+				<div th:if="${postInfo.progress} == 2 AND ${postInfo.authorIdx} != ${userIdx}" class="d-grid gap-2 mt-5 pt-3">
+				<a class="btn btn-outline-light"
+					role="button" id="btn-enableApply">모집 완료된 상품입니다.</a>
+				</div>
 			</div>
-			</div>
-			</div>
+		</div>
 			
 			<!-- 댓글 -->
 			<div class="row pt-5">
@@ -174,10 +199,11 @@
     				</div>
   			</div>
 			
-			
+		</div>	
 		</div>	
 		</div>
 		<th:block th:include="@{/content/groupBuyingPost/modal_delete}"></th:block>
+		<th:block th:include="@{/content/groupBuyingPost/modal_update}"></th:block>
 		<th:block th:include="@{/content/groupBuyingPost/modal_apply}"></th:block>
 		<th:block layout:fragment="footer" th:include="@{/fragments/footer}"></th:block>
 	</body>

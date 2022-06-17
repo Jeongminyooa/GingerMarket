@@ -5,7 +5,7 @@
 	layout:decorate="~{layout/default_layout}">
 
 <th:block layout:fragment="head">
-	<title>Spring Boot</title>
+	<title>공구 포스트 전체 조회</title>
 	<meta charset="utf-8">
 
 	<!-- css -->
@@ -27,7 +27,9 @@
 
 
 </th:block>
-
+<script>
+	
+</script>
 <body>
 	<th:block layout:fragment="nav" th:include="@{/fragments/nav}"></th:block>
 
@@ -93,7 +95,8 @@
 
 			<!-- 새 글 등록 BTN -->
 			<div class="d-grid gap-2 mt-5">
-				<button class="btn btn-outline-light" id="btn-newPost" >등록</button>
+				<a th:href="@{/group-buying/new-add-form}"
+				class="btn btn-outline-light" role="button" id="btn-newPost">새 글 등록</a>
 			</div>
 		</div>
 		<!-- container -->
