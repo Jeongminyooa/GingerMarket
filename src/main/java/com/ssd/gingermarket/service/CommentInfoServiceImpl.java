@@ -76,8 +76,9 @@ public class CommentInfoServiceImpl implements CommentInfoService {
 		
 		List<CommentDto.Info> dto = commentInfoList.stream().map(co -> new CommentDto.Info(co.getId()
 				, co.getContent()
+				, LocalDateTime.now()
 				/*, co.getUpdateDate() == null ? co.getCreateDate() : co.getUpdateDate() */
-				, (co.getUpdateDate() == null ? LocalDateTime.now() : co.getUpdateDate())
+				, co.getUpdateDate()
 				, (co.getIsDeleted().equals("0") ? false : true)
 				, co.getAuthorIdx(),"프로필", "닉네임"
 				, ofList(co.getChildCommentList())))
@@ -96,22 +97,28 @@ public class CommentInfoServiceImpl implements CommentInfoService {
 				ch.getId(),
 				ch.getParentIdx().getId(),
 				ch.getContent(),
-				(ch.getUpdateDate() == null ? LocalDateTime.now() : ch.getUpdateDate()),
+				LocalDateTime.now(),
+				ch.getUpdateDate(),
 				(ch.getIsDeleted().equals("0") ? false : true),
 				ch.getAuthorIdx(),
 				"대댓글 프로필", "대댓글"))
 				.collect(Collectors.toList());
 	}
+	
 	@Override
-	public void updateComment(CommentDto.Request request) {
+	@Transactional
+	public void updateComment(CommentDto.Request request, Long commentIdx) {
 		// TODO Auto-generated method stub
-
+		CommentInfo comment = commentInfoRepository.findById(commentIdx).orElseThrow(null);
+		comment.updateComment(request.getContent());
 	}
 
 	@Override
+	@Transactional
 	public void removeComment(Long commentIdx) {
 		// TODO Auto-generated method stub
-
+		CommentInfo comment = commentInfoRepository.findById(commentIdx).orElseThrow(null); 
+		comment.removeComment();
 	}
 
 }

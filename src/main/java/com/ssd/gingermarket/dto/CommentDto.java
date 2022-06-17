@@ -15,6 +15,7 @@ public class CommentDto {
 	public static class Info {
 		private Long commentIdx;
 		private String content;
+		private LocalDateTime createdDate;
 		private LocalDateTime lastModifiedDate;
 		private boolean isDeleted;
 		
@@ -32,6 +33,7 @@ public class CommentDto {
 		private Long commentIdx;
 		private Long parentIdx;
 		private String content;
+		private LocalDateTime createdDate;
 		private LocalDateTime lastModifiedDate;
 		private boolean isDeleted;
 		

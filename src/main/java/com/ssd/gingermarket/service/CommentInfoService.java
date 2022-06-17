@@ -19,7 +19,7 @@ public interface CommentInfoService {
 	public List<CommentDto.Info> getCommentList(Long groupIdx);
 	
 	// 댓글 수정
-	public void updateComment(CommentDto.Request request);
+	public void updateComment(CommentDto.Request request, Long commentIdx);
 	
 	// 댓글 삭제
 	public void removeComment(Long commentIdx);

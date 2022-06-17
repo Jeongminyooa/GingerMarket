@@ -25,6 +25,7 @@ public class GetCommentController {
 	
 	@GetMapping("")
 	public ModelAndView test () {
+		
 		return new ModelAndView("content/groupBuyingPost/viewGroupPost");
 	}
 	
@@ -33,6 +34,11 @@ public class GetCommentController {
 	public String getCommentList (Model model, @PathVariable(value="gid") Long groupIdx) {
 		List<CommentDto.Info> commentList = commentInfoService.getCommentList(groupIdx);
 	
+		// 로그인한 사용자의 id
+		model.addAttribute("userIdx", (long)1);
+		
+		// 포스트 작성자 id
+		model.addAttribute("postAuthorIdx", (long)1);
 		model.addAttribute("commentList", commentList);
 		
 		return "content/groupBuyingPost/viewGroupPost :: #commentContent";

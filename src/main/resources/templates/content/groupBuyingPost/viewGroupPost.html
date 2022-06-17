@@ -68,35 +68,108 @@
 	
 			// 댓글 리스트
 			function commentInit() {
-				
 				var url = "/comments/1";
-					 $.ajax({
-					        url: url,
-					        type: "GET",
-					    success: function onData (data) {
-					    	console.log(data);
-					    	 $('#commentContent').replaceWith(data);
-			    		},
-			   			 error: function onError (error) {
-			        		console.error(error);
+				$.ajax({
+					url: url,
+					type: "GET",
+					success: function onData (data) {
+						$('#commentContent').replaceWith(data);
+			    	},
+			    	error: function onError (error) {
+			    		console.error(error);
 			    		}
-					  });
+			    	});
 				}
 			
-			/* 답글 달기 입력창 */
-			function replyComment(e, num) {
+			/* 수정폼으로 전환 */
+			function transUpdateForm(comment) {
+				// comment -> 현재 선택한 노드
+			
+				// 선택 노드 기준 전체를 감싸주는 comment node 찾기
+				let parentCommentNode = comment.parentNode.parentNode.parentNode;
+				let nodeList = parentCommentNode.childNodes;
+		
+				// 댓글폼 보이도록
+				let updateFormTag = nodeList[7];
+				updateFormTag.classList.remove('d-none');
+				
+				// 댓글 내용 none
+				let contentsTag = nodeList[3];
+				contentsTag.className += ' d-none';
+				
+				// 그외 정보 및 버튼 태그 none
+				let infoTag = nodeList[9];
+				infoTag.className += ' d-none';
+			}
+			
+			// 댓글 수정
+			function updateComment(comment, cid) {
+				let parentCommentNode = comment.parentNode.parentNode;
+				let nodeList = parentCommentNode.childNodes;
+				let inputTag = nodeList[1].childNodes[1];
+				
+				let url = "/comments/" + cid; 
+				const content = inputTag.value;
+				let data = JSON.stringify({
+					"content" : content
+				});
+				
+				if(content == '') {
+					alert("댓글 내용을 입력해주세요.");
+					return;
+				}
+				
+				$.ajax({
+					url : url,
+					type : "PUT",
+					datatype : "json",
+					contentType : "application/json; charset=UTF-8",
+					data : data,
+					success : function(res) {
+						if(res == true) {
+							/* 댓글 리스트 다시 렌더링하도록 새로고침 */ 	
+							location.reload();
+						}
+					},
+					error : function(statis, error) {
+						alert("수정 실패입니다. 잠시 후에 다시 시도해주세요.");
+					}
+				});	
+			}
+			
+			// 댓글폼 취소
+			function cancelUpdate(comment) {
+				let parentCommentNode = comment.parentNode.parentNode.parentNode;
+				let nodeList = parentCommentNode.childNodes;
+				
+				// 댓글폼 보이도록
+				let updateFormTag = nodeList[7];
+				updateFormTag.className += ' d-none';
+				
+				// 댓글 내용 none
+				let contentsTag = nodeList[3];
+				contentsTag.classList.remove('d-none');
+				
+				// 그외 정보 및 버튼 태그 none
+				let infoTag = nodeList[9];
+				infoTag.classList.remove('d-none');
+			}
+			
+			/* 답글 달기 입력창 생성 */
+			function replyComment(comment, cid) {
+				// comment -> 현재 선택한 노드, cid -> 선택 노드의 id
+		
 				if(status) {
 					// 열려 있는 대댓글 창을 닫아줌 -> 패턴 사용
 					$('div').remove("[id^='reply-comment-node-']");
-					//$('div').remove('#reply-comment-node-' + num);
 					status = false;
 				}
 				status = true;
 					
 				// 출력될 입력창	
 				var replyNode = document.createElement('div');
-				replyNode.setAttribute('class', 'row p-3 add');
-				replyNode.setAttribute('id', 'reply-comment-node-' + num);
+				replyNode.setAttribute('class', 'row p-3 ms-3 me-3 add');
+				replyNode.setAttribute('id', 'reply-comment-node-' + cid);
 				
 				var replyTextContainer = document.createElement('div');
 				replyTextContainer.setAttribute('class', 'col col-lg-11');
@@ -125,22 +198,20 @@
 				replyNode.appendChild(replyTextContainer);
 				replyNode.appendChild(replyButtonContainer);
 				
-				var preTr = e.parentNode.parentNode;
+				var preTr = comment.parentNode.parentNode;
 				preTr.appendChild(replyNode);
-				console.log(preTr);
+				
 			}
 			
 			function addReply() {
 				/* 대댓글 등록 이벤트 */
 				
 				// 댓글 idx
-				var str = $("[id^='reply-comment-node-']").attr('id').split('-');
+				let str = $("[id^='reply-comment-node-']").attr('id').split('-');
 				let idx =  str[3];
 					
-				console.log(idx);
-					
 				// post id는 추후 타임리프 변수를 통해 가져
-				var url = "/comments/1/" + idx; 
+				let url = "/comments/1/" + idx; 
 				const content = $('#addReply').val();
 					
 				if(content == '') {
@@ -166,6 +237,16 @@
 						alert("등록 실패입니다. 잠시 후에 다시 시도해주세요.");
 					}
 				});	
+			}
+			
+			// 댓글 삭제
+			function deleteComment(comment) {
+				let result = confirm("삭제하시겠습니까?");
+				
+				if(result) {
+					let form = comment.parentNode;
+					form.submit();
+				}
 			}
 			
 		</script>
@@ -278,32 +359,49 @@
 				<!-- 부모 댓글 -->
 				<div class="parentComment" th:if="${comment.isDeleted == false}">
 					<div class="row pt-3">
-						<div class="col col-lg-2">
+						<div class="col col-lg-3">
 							<img src="/image/yellow.JPG" class="rounded-circle" alt="" id="img-author">
 							<span class="ps-2 font-weight-bold" id="main_content" th:text="${comment.nickname}">부모 댓글 닉네임</span>
+							<span class="ps-2 badge rounded-pill bg-dark" id="small_content" th:if="${postAuthorIdx == comment.authorIdx}">작성자</span>
 						</div>
 					</div>
-					<div class="row pt-1">
-						<div class="col col-lg-12 ps-5">
+					<div class="row pt-1 ps-5">
+						<div class="col col-lg-12">
 							<p id="main_content" th:text="${comment.content}">댓글 내용</p>
 						</div>
 					</div>
-					<div class="row pt-3 pb-3">
-						<div class="col col-lg-2 font-grey" id="small_content" th:text="${comment.lastModifiedDate}">날짜 출력</div>
-						<div class="col col-lg-1 font-weight-bold" id="small_content" th:onclick="replyComment(this, [[${comment.commentIdx}]])">답글달기</div>
+					<!-- 댓글 수정폼 -->
+					<div class="row p-3 m-3 update d-none">
+						<div class="col col-lg-10">
+							<input type="text" class="w-100" id="updateComment" th:value="${comment.content}"/>
+						</div>
+						<div class="col col-lg-1 m-auto">
+							<button class="btn btn-outline-light" id="btn-cancel-comment" onclick="cancelUpdate(this)">취소</button>
+    					</div>
+    					<div class="col col-lg-1 m-auto">
+    						<button class="btn btn-outline-light" id="btn-update-comment" th:onclick="updateComment(this, [[${comment.commentIdx}]])">등록</button>
+    					</div>
+					</div>
+						
+					<div class="row pt-3 pb-3 ps-5">
+						<div class="col col-lg-2 font-grey" id="small_content" th:if="${comment.lastModifiedDate == null}" th:text="${#temporals.format(comment.createdDate, 'yyyy.MM.dd. HH:mm')}">생성 날짜</div>				
+						<div class="col col-lg-2 font-grey" id="small_content" th:unless="${comment.lastModifiedDate == null}" th:text="${#temporals.format(comment.lastModifiedDate, 'yyyy.MM.dd. HH:mm' + ' 수정')}">수정된 날짜</div>
+						<div class="col col-lg-1 font-weight-bold reply-comment" id="small_content" th:onclick="replyComment(this, [[${comment.commentIdx}]])">답글달기</div>
 						<div class="col col-lg-7"></div>
-						<a class="col col-lg-1" id="small_content">수정</a>
+						<div class="col col-lg-1">
+							<button type="button" class="btn" id="small_content" th:if="${userIdx == comment.authorIdx}" onclick="transUpdateForm(this)">수정</button>
+						</div>
 						<div class="col col-lg-1">
 							<form id="commentDeleteForm" th:action="@{comments/{cid}(cid=${comment.commentIdx})}" th:method="DELETE">
-								<button type="button" class="btn" id="small_content" onclick="deleteComment()">삭제</button>
+								<button type="button" class="btn" id="small_content" th:if="${userIdx == comment.authorIdx}" onclick="deleteComment(this)">삭제</button>
 							</form>
 						</div>
 					</div>
 				</div>
 				
 				<!-- 삭제 댓글 -->
-				<div class="removeComment mt-1" th:if="${comment.isDeleted == true}"id="fav-card">
-					<div class="row ps-1 pt-3 pb-3 pb-1 mt-1">
+				<div class="removeComment mt-1" th:if="${comment.isDeleted == true}">
+					<div class="row ps-1 pt-3 pb-3 pb-1 mt-1 ps-2">
 						<div class="col col-lg-12">
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
 				  			<path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
@@ -316,33 +414,53 @@
 				<!-- 자식 댓글 출력을 위한 이중 반복문 -->
 				<th:block th:each="childComm : ${comment.childCommentList}">
 					<!-- 자식 댓글 -->
-					<div class="childComment ps-2" th:if="${childComm.isDeleted == false}" id="fav-card">
+					<div class="childComment ps-2 pb-1" th:if="${childComm.isDeleted == false}" id="fav-card">
 						<div class="row pt-3 pb-1 mt-1">
-							<div class="col col-lg-2">
+							<div class="col col-lg-3">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
 				  				<path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
 								</svg>
 								<img src="/image/profile.png" class="rounded-circle" alt="" id="img-author">
-								<span class="ps-2 font-weight-bold" id="main_content" th:text="${childComm.nickname}">대댓글 닉네임</span>
+								<span class="ps-2 font-weight-bold" id="" th:text="${childComm.nickname}">대댓글 닉네임</span>
+								<span class="ps-2 badge rounded-pill bg-light text-dark" id="small_content" th:if="${postAuthorIdx == childComm.authorIdx}">작성자</span>
 							</div>
 						</div>
-						<div class="row pt-1">
-							<div class="col col-lg-12 ps-5">
+						<div class="row pt-1 ps-5">
+							<div class="col col-lg-12">
 								<p id="main_content" th:text="${childComm.content}">대댓글 내용</p>
 							</div>
 						</div>
-						<div class="row pt-3 pb-3">
-							<div class="col col-lg-2 font-grey" id="small_content" th:text="${childComm.lastModifiedDate}">날짜</div>
+						<!-- 댓글 수정폼 -->
+						<div class="row p-3 m-3 update d-none">
+							<div class="col col-lg-10">
+								<input type="text" class="w-100" id="updateComment" th:value="${childComm.content}"/>
+							</div>
+							<div class="col col-lg-1 m-auto">
+								<button class="btn btn-outline-light" id="btn-cancel-comment" onclick="cancelUpdate(this)">취소</button>
+    						</div>
+    						<div class="col col-lg-1 m-auto">
+    							<button class="btn btn-outline-light" id="btn-update-comment" th:onclick="updateComment(this, [[${childComm.commentIdx}]])">등록</button>
+    						</div>
+						</div>
+						<div class="row pt-3 pb-3 ps-5">
+							<div class="col col-lg-2 font-grey" id="small_content" th:if="${childComm.lastModifiedDate == null}" th:text="${#temporals.format(childComm.createdDate, 'yyyy.MM.dd. HH:mm')}">생성 날짜</div>
+							<div class="col col-lg-2 font-grey" id="small_content" th:unless="${childComm.lastModifiedDate == null}" th:text="${#temporals.format(childComm.lastModifiedDate, 'yyyy.MM.dd. HH:mm') + ' 수정'}">수정된 날짜</div>
 							<div class="col col-lg-1 font-weight-bold reply-comment" id="small_content" th:onclick="replyComment(this, [[${childComm.parentIdx}]])">답글달기</div>
 							<div class="col col-lg-7"></div>
-							<a class="col col-lg-1" id="small_content">수정</a>
-							<a class="col col-lg-1" id="small_content">삭제</a>
+							<div class="col col-lg-1">
+								<button type="button" class="btn" id="small_content" th:if="${userIdx == childComm.authorIdx}" onclick="transUpdateForm(this)">수정</button>
+							</div>
+							<div class="col col-lg-1">
+								<form id="commentDeleteForm" th:action="@{comments/{cid}(cid=${childComm.commentIdx})}" th:method="DELETE">
+									<button type="button" class="btn" id="small_content" th:if="${userIdx == childComm.authorIdx}" onclick="deleteComment(this)">삭제</button>
+								</form>
+							</div>
 						</div>
 					</div>
 					
 					<!-- 자식 삭제 댓글 -->
 					<div class="removeComment mt-1" th:if="${childComm.isDeleted == true}"id="fav-card">
-						<div class="row pt-3 pb-3 pb-1 mt-1">
+						<div class="row pt-3 pb-3 pb-1 mt-1 ps-2">
 							<div class="col col-lg-12">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
 					  			<path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
