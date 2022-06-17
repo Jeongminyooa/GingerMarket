@@ -29,6 +29,12 @@
 		$( document ).ready(function() {
 			var location = document.querySelector("#move").offsetTop;
 			window.scrollTo({top:location, behavior:'smooth'});
+			
+			/* 카테고리 최대 선택 개수 */
+			$('category-select').selectpicker({
+				maxOptions : 3
+			});
+
 		});
 		</script>
 </th:block>
