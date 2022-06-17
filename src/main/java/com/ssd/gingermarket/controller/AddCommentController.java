@@ -44,7 +44,7 @@ public class AddCommentController {
 	 * @param parentIdx
 	 * @return
 	 */
-	@PostMapping("/{gid}/{pid}")
+	@PostMapping("/{gid}/reply/{pid}")
 	public ResponseEntity<Boolean> addChildComment(
 		@RequestBody CommentDto.Request dto,
 		@PathVariable(value="gid") Long groupIdx,
