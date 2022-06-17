@@ -36,12 +36,10 @@ public interface GroupBuyingService {
 	public void removePost(Long groupIdx);
 	
 	// 공구 신청 조회
-	public List<ApplyDto.Info> getAllApply();
+	public List<ApplyDto.Response> getAllApply();
 	
 	// 공구 신청 등록
-	public void addApplyForm();
-	
-	
+	public void addApply(ApplyDto.Request apply, Long groupIdx);
 
 	
 }
