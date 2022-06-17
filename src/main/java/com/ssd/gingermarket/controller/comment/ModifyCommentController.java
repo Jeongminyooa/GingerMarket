@@ -1,4 +1,4 @@
-package com.ssd.gingermarket.controller;
+package com.ssd.gingermarket.controller.comment;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

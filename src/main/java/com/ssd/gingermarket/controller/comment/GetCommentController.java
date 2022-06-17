@@ -1,4 +1,4 @@
-package com.ssd.gingermarket.controller;
+package com.ssd.gingermarket.controller.comment;
 
 import java.util.List;
 
@@ -22,12 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 public class GetCommentController {
 
 	private final CommentInfoService commentInfoService;
-	
-	@GetMapping("")
-	public ModelAndView test () {
-		
-		return new ModelAndView("content/groupBuyingPost/viewGroupPost");
-	}
 	
 	// 댓글 리스트 불러오기
 	@GetMapping("/{gid}")
