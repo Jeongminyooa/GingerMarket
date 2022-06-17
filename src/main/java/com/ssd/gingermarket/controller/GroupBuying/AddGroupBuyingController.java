@@ -16,7 +16,7 @@ import com.ssd.gingermarket.service.GroupBuyingService;
 
 import lombok.RequiredArgsConstructor;
 
-//@Slf4j //로그
+//@Slf4j
 @RestController 
 @RequestMapping("/group-buying")
 @RequiredArgsConstructor
@@ -40,8 +40,8 @@ public class AddGroupBuyingController {
 	}
 
 	//공구 포스트 등록 페이지 이동
-	@GetMapping("/add")
-	public ModelAndView goAddPost() {
+	@GetMapping("/new-add-form")
+	public ModelAndView goAddForm() {
 		
 		ModelAndView mav = new ModelAndView("content/groupBuyingPost/groupPost_add");
 		mav.addObject("postReq", new GroupBuyingDto.Request());
@@ -50,13 +50,14 @@ public class AddGroupBuyingController {
 	
 	// 공구 포스트 등록
 	@PostMapping("")
-	public RedirectView createPost(GroupBuyingDto.Request groupBuying) {
-		Long authorIdx = (long) 1;
+	public RedirectView addPost(GroupBuyingDto.Request groupBuying) {
+		// session에서 userId를 받아오는 코드로 수정
+		Long authorIdx = (long)2;
 		
 		groupBuying.setAuthorIdx(authorIdx);
 		groupBuyingService.addPost(groupBuying);
-			
-		return new RedirectView("/group-buying/posts");
+		
+		return new RedirectView("/group-buying");
 	}
 	
 }

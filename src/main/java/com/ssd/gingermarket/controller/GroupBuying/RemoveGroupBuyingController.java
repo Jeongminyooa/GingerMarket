@@ -16,10 +16,10 @@ import lombok.RequiredArgsConstructor;
 public class RemoveGroupBuyingController {
 	private final GroupBuyingService groupBuyingService;
 
-	@DeleteMapping("{groupIdx}")
+	@DeleteMapping("/{groupIdx}")
 	public RedirectView deletePost(@PathVariable Long groupIdx) {
 		groupBuyingService.removePost(groupIdx);
-        return new RedirectView("/group-buying/posts");
+        return new RedirectView("/group-buying");
     }
 
 

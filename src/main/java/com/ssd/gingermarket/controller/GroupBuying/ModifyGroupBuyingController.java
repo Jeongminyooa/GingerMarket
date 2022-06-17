@@ -38,8 +38,8 @@ public class ModifyGroupBuyingController {
 	}
 
 
-	@GetMapping("/{groupIdx}/update")
-	public ModelAndView goUpdateForm(@PathVariable Long groupIdx) { 		
+	@GetMapping("/{groupIdx}/edit-form")
+	public ModelAndView getUpdateForm(@PathVariable Long groupIdx) { 		
 		GroupBuyingDto.Request req = groupBuyingService.getPostForModify(groupIdx);
 
 		ModelAndView mav = new ModelAndView("content/groupBuyingPost/groupPost_update");

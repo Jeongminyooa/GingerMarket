@@ -27,6 +27,7 @@ public class GroupBuyingDto {
 		private int price;
 		private Long imageIdx;
 		private Long authorIdx;
+		private int progress;
 
 		public GroupBuying toEntity(){
 			return GroupBuying.builder()
@@ -39,6 +40,7 @@ public class GroupBuyingDto {
 					.price(price)
 					.imageIdx(imageIdx)
 					.authorIdx(authorIdx)
+					.progress(progress)
 					.build();
 		}
 		
@@ -52,6 +54,7 @@ public class GroupBuyingDto {
 			this.price = groupBuying.getPrice();
 			this.imageIdx = groupBuying.getImageIdx();
 			this.authorIdx = groupBuying.getAuthorIdx();
+			this.progress = groupBuying.getProgress();
 		}
 
 	}
@@ -116,7 +119,7 @@ public class GroupBuyingDto {
 				this.participateNum = groupBuying.getParticipateNum();
 				this.price = groupBuying.getPrice();
 				this.website = groupBuying.getWebsite();
-				this.createDate = groupBuying.getCreateDate();
+				this.createDate = groupBuying.getCreatedDate();
 				this.endDate = groupBuying.getEndDate();
 				this.descr = groupBuying.getDescr();
 				this.progress = groupBuying.getProgress();

@@ -9,7 +9,7 @@
 
 								<div class="d-flex mx-auto pt-5 mb-3 text-center">
 									<button type="button" class="btn btn-secondary me-1" data-bs-dismiss="modal">취소</button>
-									<form th:id="goUpdateForm" th:action="@{/group-buying/{groupIdx}/update(groupIdx=${postInfo.groupIdx})}" th:method="GET">
+									<form th:id="goUpdateForm" th:action="@{/group-buying/{groupIdx}/edit-form(groupIdx=${postInfo.groupIdx})}" th:method="GET">
 				               			<button type="submit" class="btn btn-secondary" id="btn-modalConfirm">수정</button>
 				               		</form>
 								</div>
