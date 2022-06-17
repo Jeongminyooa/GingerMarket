@@ -1,5 +1,6 @@
 package com.ssd.gingermarket.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,8 +24,23 @@ public class MyPageController {
 	
 	private final ExperiodService experiodService;
 	
+	@ModelAttribute("items")
+	public List<String> categoryList(){
+		List<String> category = new ArrayList<>();
+		category.add("가전제품");
+		category.add("욕실용품");
+		category.add("위생용품");
+		category.add("주방용품");
+		category.add("바디/헤어");
+		category.add("청소/세탁용품");
+		category.add("문구");
+		category.add("생활잡화");
+		
+		return category;
+	}
+	
 	@GetMapping("")
-	public ModelAndView gomMyPage(@RequestParam(value="category", required=false) String category) {
+	public ModelAndView getMyPage(@RequestParam(value="category", required=false) String category) {
 		
 		// test
 		long userId = 1;

@@ -11,7 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Table(name="experiod") 
-public class Experiod {
+public class Experiod extends BaseTime{
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ExperiodSequence")
 	 @SequenceGenerator(sequenceName = "ExperiodSequence", name = "ExperiodSequenceGenerator", allocationSize = 1)
@@ -25,8 +25,6 @@ public class Experiod {
 	 @Column(length = 22)
 	 private String category;
 	 
-	 private LocalDate enrollDate;
-	 
 	 private LocalDate endDate;
 	 
 	 private int dDay;
@@ -37,11 +35,8 @@ public class Experiod {
 		 this.category = category;
 		 this.dDay = dDay;
 		 
-		 // 등록일
-		 this.enrollDate = LocalDate.now();
-		 
 		 // 마감일 계산
-		 this.endDate = enrollDate.plusDays(dDay);
+		 //this.endDate = getCreatedDate().toLocalDate().plusDays(dDay);
 	
 	 }
 	 
