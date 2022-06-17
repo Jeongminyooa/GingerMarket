@@ -10,9 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssd.gingermarket.domain.CommentInfo;
 import com.ssd.gingermarket.dto.CommentDto;
-import com.ssd.gingermarket.dto.CommentDto.Info;
 import com.ssd.gingermarket.dto.CommentDto.Request;
-import com.ssd.gingermarket.dto.CommentDto.childInfo;
 import com.ssd.gingermarket.repository.CommentInfoRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -88,12 +86,12 @@ public class CommentInfoServiceImpl implements CommentInfoService {
 	}
 
 	// 대댓글 entity -> dto
-	public List<CommentDto.childInfo> ofList (List<CommentInfo> list) {
+	public List<CommentDto.ChildInfo> ofList (List<CommentInfo> list) {
 		if(list.size() == 0) {
-			return new ArrayList<childInfo>();
+			return new ArrayList<CommentDto.ChildInfo>();
 		}
 		
-		return list.stream().map(ch -> new CommentDto.childInfo(
+		return list.stream().map(ch -> new CommentDto.ChildInfo(
 				ch.getId(),
 				ch.getParentIdx().getId(),
 				ch.getContent(),

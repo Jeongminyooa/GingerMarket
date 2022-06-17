@@ -23,13 +23,13 @@ public class CommentDto {
 		private String imageUrl; // 사용자 프로필 사진
 		private String nickname; // 사용자 닉네임
 		
-		private List<CommentDto.childInfo> childCommentList;
+		private List<CommentDto.ChildInfo> childCommentList;
 	}
 	
 	@NoArgsConstructor
 	@AllArgsConstructor
 	@Data
-	public static class childInfo {
+	public static class ChildInfo {
 		private Long commentIdx;
 		private Long parentIdx;
 		private String content;
