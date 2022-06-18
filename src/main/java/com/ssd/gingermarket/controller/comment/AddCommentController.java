@@ -30,7 +30,7 @@ public class AddCommentController {
 	public ResponseEntity<Boolean> addComment (
 			@RequestBody CommentDto.Request dto,
 			@PathVariable(value="gid") Long groupIdx) {
-		Long authorIdx = (long) 1;
+		Long authorIdx = (long) 2;
 	
 		commentInfoService.addComment(dto, authorIdx, groupIdx);
 		
@@ -50,7 +50,7 @@ public class AddCommentController {
 		@PathVariable(value="gid") Long groupIdx,
 		@PathVariable(value="pid") Long parentIdx) {
 		
-		Long authorIdx = (long) 1;
+		Long authorIdx = (long) 2;
 		
 		commentInfoService.addChildComment(dto, authorIdx, groupIdx, parentIdx);
 		

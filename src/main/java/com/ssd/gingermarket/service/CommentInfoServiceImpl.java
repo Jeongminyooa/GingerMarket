@@ -9,9 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssd.gingermarket.domain.CommentInfo;
+import com.ssd.gingermarket.domain.GroupBuying;
+import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.CommentDto;
 import com.ssd.gingermarket.dto.CommentDto.Request;
 import com.ssd.gingermarket.repository.CommentInfoRepository;
+import com.ssd.gingermarket.repository.GroupBuyingRepository;
+import com.ssd.gingermarket.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,20 +24,22 @@ import lombok.RequiredArgsConstructor;
 public class CommentInfoServiceImpl implements CommentInfoService {
 	
 	private final CommentInfoRepository commentInfoRepository;
+	private final UserRepository userRepository;
+	private final GroupBuyingRepository groupBuyingRepository;
 
 	@Override
 	@Transactional
 	public void addComment(CommentDto.Request request, Long authorIdx, Long groupIdx) {
 		// user entity
-		// User author = userRepository.findById(authorIdx);
+		User author = userRepository.findById(authorIdx).orElseThrow();
 		
 		// group entity
-		// GroupBuying groupBuying = groupBuyingRepository.findById(groupIdx);
+		GroupBuying groupBuying = groupBuyingRepository.findById(groupIdx).orElseThrow();
 		
 		CommentInfo comment = CommentInfo.commentBuilder()
 				.content(request.getContent())
-				.groupIdx(groupIdx)
-				.authorIdx(authorIdx)
+				.group(groupBuying)
+				.author(author)
 				.build();
 		
 		commentInfoRepository.saveAndFlush(comment);
@@ -42,23 +48,26 @@ public class CommentInfoServiceImpl implements CommentInfoService {
 	@Override
 	@Transactional
 	public void addChildComment(Request request, Long authorIdx, Long groupIdx, Long parentIdx) {
-		// TODO Auto-generated method stub
+		// user entity
+		User author = userRepository.findById(authorIdx).orElseThrow();
+		
 		// post entity
-				// GroupBuying groupBuyingPost = groupBuyingRepository.findById(dto.getGroupIdx);
-				// 부모 댓글의 entity 
-				CommentInfo parentComment = commentInfoRepository.findById(parentIdx).orElseThrow(null);
+		GroupBuying groupBuyingPost = groupBuyingRepository.findById(groupIdx).orElseThrow();
+		
+		// 부모 댓글의 entity 
+		CommentInfo parentComment = commentInfoRepository.findById(parentIdx).orElseThrow(null);
 				
-				CommentInfo childComment = CommentInfo.commentBuilder()
-						.content(request.getContent())
-						.parentIdx(parentComment)
-						.groupIdx(groupIdx)
-						.authorIdx(authorIdx)
-						.build();
+		CommentInfo childComment = CommentInfo.commentBuilder()
+				.content(request.getContent())
+				.parentIdx(parentComment)
+				.group(groupBuyingPost)
+				.author(author)
+				.build();
 				
-				parentComment.getChildCommentList().add(childComment);
+		parentComment.getChildCommentList().add(childComment);
 				
-				commentInfoRepository.save(childComment);
-				return;
+		commentInfoRepository.save(childComment);
+		return;
 	}
 
 	@Override
@@ -66,27 +75,29 @@ public class CommentInfoServiceImpl implements CommentInfoService {
 	public List<CommentDto.Info> getCommentList(Long groupIdx) {
 		// TODO Auto-generated method stub
 		
-		// post 정보 가져오기
-		// GroupBuyingPost groupPostEntity = GroupBuyingRepository.findById(groupIdx);
+		GroupBuying groupBuyingPost = groupBuyingRepository.findById(groupIdx).orElseThrow();
+		Long postAuthorIdx = groupBuyingPost.getAuthorIdx();
+		
 		List<CommentInfo> commentInfoList = commentInfoRepository.findByGroupIdx(groupIdx);
 		
-		// int commentCount = groupPostEntity.getCommentList().size();
-		
-		List<CommentDto.Info> dto = commentInfoList.stream().map(co -> new CommentDto.Info(co.getId()
-				, co.getContent()
-				, LocalDateTime.now()
-				/*, co.getUpdateDate() == null ? co.getCreateDate() : co.getUpdateDate() */
-				, co.getUpdateDate()
-				, (co.getIsDeleted().equals("N") ? false : true)
-				, co.getAuthorIdx(),"프로필", "닉네임"
-				, ofList(co.getChildCommentList())))
+		List<CommentDto.Info> dto = commentInfoList.stream().map(co -> new CommentDto.Info(
+				co.getId(),
+				co.getContent(),
+				co.getCreatedDate(),
+				co.getUpdateDate(),
+				(co.getIsDeleted().equals("N") ? false : true),
+				co.getAuthor().getUserIdx(),
+				(co.getAuthor().getImage() == null ? null : co.getAuthor().getImage().getUrl()),
+				co.getAuthor().getName(),
+				ofList(co.getChildCommentList(), postAuthorIdx),
+				(postAuthorIdx == co.getAuthor().getUserIdx() ? true : false)))
 				.collect(Collectors.toList());
 
 		return dto;
 	}
 
 	// 대댓글 entity -> dto
-	public List<CommentDto.ChildInfo> ofList (List<CommentInfo> list) {
+	public List<CommentDto.ChildInfo> ofList (List<CommentInfo> list, Long postAuthorIdx) {
 		if(list.size() == 0) {
 			return new ArrayList<CommentDto.ChildInfo>();
 		}
@@ -95,11 +106,14 @@ public class CommentInfoServiceImpl implements CommentInfoService {
 				ch.getId(),
 				ch.getParentIdx().getId(),
 				ch.getContent(),
-				LocalDateTime.now(),
+				ch.getCreatedDate(),
 				ch.getUpdateDate(),
 				(ch.getIsDeleted().equals("N") ? false : true),
-				ch.getAuthorIdx(),
-				"대댓글 프로필", "대댓글"))
+				ch.getAuthor().getUserIdx(),
+				(ch.getAuthor().getImage() == null ? null : ch.getAuthor().getImage().getUrl()),
+				ch.getAuthor().getName(),
+				(postAuthorIdx == ch.getAuthor().getUserIdx() ? true : false)
+				))
 				.collect(Collectors.toList());
 	}
 	
@@ -113,10 +127,14 @@ public class CommentInfoServiceImpl implements CommentInfoService {
 
 	@Override
 	@Transactional
-	public void removeComment(Long commentIdx) {
+	public Long removeComment(Long commentIdx) {
 		// TODO Auto-generated method stub
 		CommentInfo comment = commentInfoRepository.findById(commentIdx).orElseThrow(null); 
+		Long groupIdx = comment.getGroup().getGroupIdx();
+		
 		comment.removeComment();
+		
+		return groupIdx;
 	}
 
 }

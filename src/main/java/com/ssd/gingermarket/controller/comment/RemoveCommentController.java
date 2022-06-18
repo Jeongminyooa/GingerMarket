@@ -19,11 +19,10 @@ public class RemoveCommentController {
 
 	private final CommentInfoService commentInfoService;
 	
-	@DeleteMapping("/{cid}/{gid}")
-	public RedirectView removeComment(@PathVariable("cid") Long cid
-			,@PathVariable("gid") Long gid) {
-		commentInfoService.removeComment(cid);
+	@DeleteMapping("/{cid}")
+	public RedirectView removeComment(@PathVariable("cid") Long cid) {
+		Long groupIdx = commentInfoService.removeComment(cid);
 		
-		return new RedirectView("/group-buying/" + gid);
+		return new RedirectView("/group-buying/" + groupIdx);
 	}
 }

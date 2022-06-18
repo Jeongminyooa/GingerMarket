@@ -249,13 +249,11 @@
 			}
 			
 			// 댓글 삭제
-			function deleteComment(comment, cid) {
-				let groupIdx = [[${postInfo.groupIdx}]];
+			function deleteComment(comment) {
 				let result = confirm("삭제하시겠습니까?");
 				
 				if(result) {
 					let form = comment.parentNode;
-					form.action = '/comments/' + cid + '/' + groupIdx;
 					form.submit();
 				}
 			}
@@ -390,9 +388,10 @@
 				<div class="parentComment" th:if="${comment.isDeleted == false}">
 					<div class="row pt-3">
 						<div class="col col-lg-3">
-							<img src="/image/yellow.JPG" class="rounded-circle" alt="" id="img-author">
+							<img src="/image/profile.png" th:if="${comment.imageUrl}" th:src="${comment.imageUrl}" class="rounded-circle" alt="" id="img-author">
+							<img src="/image/profile.png" th:unless="${comment.imageUrl}" class="rounded-circle" alt="" id="img-author">
 							<span class="ps-2 font-weight-bold" id="main_content" th:text="${comment.nickname}">부모 댓글 닉네임</span>
-							<span class="ps-2 badge rounded-pill bg-dark" id="small_content" th:if="${postAuthorIdx == comment.authorIdx}">작성자</span>
+							<span class="ps-2 badge rounded-pill bg-dark" id="small_content" th:if="${comment.isPostAuthor}">작성자</span>
 						</div>
 					</div>
 					<div class="row pt-1 ps-5 comment-info">
@@ -423,7 +422,7 @@
 						</div>
 						<div class="col col-lg-1">
 							<form id="commentDeleteForm" th:action="@{comments/{cid}(cid=${comment.commentIdx})}" th:method="DELETE">
-								<button type="button" class="btn" id="small_content" th:if="${userIdx == comment.authorIdx}" th:onclick="deleteComment(this, [[${comment.commentIdx}]])">삭제</button>
+								<button type="button" class="btn" id="small_content" th:if="${userIdx == comment.authorIdx}" onclick="deleteComment(this)">삭제</button>
 							</form>
 						</div>
 					</div>
@@ -450,9 +449,10 @@
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
 				  				<path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
 								</svg>
-								<img src="/image/profile.png" class="rounded-circle" alt="" id="img-author">
+								<img src="/image/profile.png" th:if="${childComm.imageUrl}" th:src="${childComm.imageUrl}" class="rounded-circle" alt="" id="img-author">
+								<img src="/image/profile.png" th:unless="${childComm.imageUrl}" class="rounded-circle" alt="" id="img-author">
 								<span class="ps-2 font-weight-bold" id="" th:text="${childComm.nickname}">대댓글 닉네임</span>
-								<span class="ps-2 badge rounded-pill bg-light text-dark" id="small_content" th:if="${postAuthorIdx == childComm.authorIdx}">작성자</span>
+								<span class="ps-2 badge rounded-pill bg-light text-dark" id="small_content" th:if="${childComm.isPostAuthor}">작성자</span>
 							</div>
 						</div>
 						<div class="row pt-1 ps-5 comment-info">
@@ -481,8 +481,8 @@
 								<button type="button" class="btn" id="small_content" th:if="${userIdx == childComm.authorIdx}" onclick="transUpdateForm(this)">수정</button>
 							</div>
 							<div class="col col-lg-1">
-								<form id="commentDeleteForm" th:method="DELETE">
-									<button type="button" class="btn" id="small_content" th:if="${userIdx == childComm.authorIdx}" th:onclick="deleteComment(this, [[${childComm.commentIdx}]])">삭제</button>
+								<form id="commentDeleteForm" th:action="@{comments/{cid}(cid=${childComm.commentIdx})}" th:method="DELETE">
+									<button type="button" class="btn" id="small_content" th:if="${userIdx == childComm.authorIdx}" onclick="deleteComment(this)">삭제</button>
 								</form>
 							</div>
 						</div>

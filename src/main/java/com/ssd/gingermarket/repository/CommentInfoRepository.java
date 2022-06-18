@@ -11,7 +11,7 @@ import com.ssd.gingermarket.domain.CommentInfo;
 public interface CommentInfoRepository extends JpaRepository<CommentInfo, Long>{
 
 	@Query(value = "SELECT * "
-			+ "FROM comment_info c "
+			+ "FROM commentinfo c "
 			+ "WHERE c.parent_idx IS NULL AND c.group_idx = :group_idx", nativeQuery = true)
 	List<CommentInfo> findByGroupIdx(@Param("group_idx")Long groupIdx);
 
