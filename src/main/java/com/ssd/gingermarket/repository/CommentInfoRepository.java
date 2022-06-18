@@ -12,7 +12,8 @@ public interface CommentInfoRepository extends JpaRepository<CommentInfo, Long>{
 
 	@Query(value = "SELECT * "
 			+ "FROM commentinfo c "
-			+ "WHERE c.parent_idx IS NULL AND c.group_idx = :group_idx", nativeQuery = true)
+			+ "WHERE c.parent_idx IS NULL AND c.group_idx = :group_idx "
+			+ "ORDER BY c.created_date ASC", nativeQuery = true)
 	List<CommentInfo> findByGroupIdx(@Param("group_idx")Long groupIdx);
 
 }
