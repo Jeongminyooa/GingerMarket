@@ -13,10 +13,10 @@ import com.ssd.gingermarket.domain.User;
 
 public interface ExperiodRepository extends JpaRepository<Experiod, Long>{
 	
-	@Query(value = "UPDATE experiod e SET e.d_day = :d_day "
+	@Query(value = "UPDATE experiod e SET e.status = :status "
 			+ "WHERE e.end_date <= :end_date", nativeQuery = true)
-	public void updateDday(@Param("end_date")LocalDate endDate,
-			@Param("d_day")ExperiodType dDay);
+	public void updateStatus(@Param("end_date")LocalDate endDate,
+			@Param("status")ExperiodType status);
 	
 	@Query(value = "SELECT * "
 			+ "FROM experiod e "

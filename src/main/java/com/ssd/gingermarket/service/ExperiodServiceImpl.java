@@ -40,7 +40,7 @@ public class ExperiodServiceImpl implements ExperiodService {
 		Experiod experiod = Experiod.experiodBuilder()
 				.author(author)
 				.category(category)
-				.dDay(ExperiodType.OPEN)
+				.status(ExperiodType.OPEN)
 				.build();
 		
 		author.getExperiodList().add(experiod);
@@ -54,7 +54,7 @@ public class ExperiodServiceImpl implements ExperiodService {
 			public void run() {   // 스케쥴러에 의해 미래의 특정 시점에 실행될 작업을 정의				
 				LocalDate curTime = LocalDate.now();
 				// dDay를 1씩 줄임
-				experiodRepository.updateDday(curTime, ExperiodType.CLOSE_DEADLINE);
+				experiodRepository.updateStatus(curTime, ExperiodType.CLOSE_DEADLINE);
 				System.out.println("updateDdayRunner is executed at " + curTime);
 			}
 		};
@@ -64,7 +64,7 @@ public class ExperiodServiceImpl implements ExperiodService {
 			public void run() {   // 스케쥴러에 의해 미래의 특정 시점에 실행될 작업을 정의				
 				LocalDate curTime = LocalDate.now();
 				// dDay를 1씩 줄임
-				experiodRepository.updateDday(curTime, ExperiodType.DEADLINE);
+				experiodRepository.updateStatus(curTime, ExperiodType.DEADLINE);
 				System.out.println("todayIsDdayRunner is executed at " + curTime);
 			}
 		};
@@ -88,7 +88,7 @@ public class ExperiodServiceImpl implements ExperiodService {
 		List<Experiod> experiodList = experiodRepository.findAllByAuthor(author);
 		
 		// entity -> dto 변환
-		List<ExperiodDto.Info> dto = experiodList.stream().map(ex -> new ExperiodDto.Info(ex.getExperiodIdx(), ex.getCategory(), ex.getEndDate(), getPeriod(ex.getDDay(), ex.getEndDate()))).collect(Collectors.toList());
+		List<ExperiodDto.Info> dto = experiodList.stream().map(ex -> new ExperiodDto.Info(ex.getExperiodIdx(), ex.getCategory(), ex.getEndDate(), getPeriod(ex.getStatus(), ex.getEndDate()))).collect(Collectors.toList());
 		
 		return dto;
 	}
@@ -127,7 +127,7 @@ public class ExperiodServiceImpl implements ExperiodService {
 		List<Experiod> experiodList = experiodRepository.findAllByUserIdAndEndDate(authorIdx, targetDate);
 		
 		// entity -> dto 변환
-		List<ExperiodDto.Info> dto = experiodList.stream().map(ex -> new ExperiodDto.Info(ex.getExperiodIdx(), ex.getCategory(), ex.getEndDate(), getPeriod(ex.getDDay(), ex.getEndDate()))).collect(Collectors.toList());
+		List<ExperiodDto.Info> dto = experiodList.stream().map(ex -> new ExperiodDto.Info(ex.getExperiodIdx(), ex.getCategory(), ex.getEndDate(), getPeriod(ex.getStatus(), ex.getEndDate()))).collect(Collectors.toList());
 				
 		return dto;
 	}

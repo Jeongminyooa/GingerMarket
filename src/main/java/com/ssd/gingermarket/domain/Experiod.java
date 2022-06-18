@@ -28,13 +28,13 @@ public class Experiod extends BaseTime{
 	 private LocalDate endDate;
 	 
 	 @Enumerated(value = EnumType.STRING)
-	 private ExperiodType dDay;
+	 private ExperiodType status;
 	 
 	 @Builder(builderClassName= "experiod", builderMethodName = "experiodBuilder")
-	 public Experiod(User author, String category, ExperiodType dDay) {
+	 public Experiod(User author, String category, ExperiodType status) {
 		 this.author = author;
 		 this.category = category;
-		 this.dDay = dDay;
+		 this.status = status;
 	 }
 	 
 	// 마감일 계산
