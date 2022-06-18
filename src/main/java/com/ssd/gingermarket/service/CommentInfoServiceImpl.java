@@ -127,14 +127,12 @@ public class CommentInfoServiceImpl implements CommentInfoService {
 
 	@Override
 	@Transactional
-	public Long removeComment(Long commentIdx) {
+	public void removeComment(Long commentIdx) {
 		// TODO Auto-generated method stub
 		CommentInfo comment = commentInfoRepository.findById(commentIdx).orElseThrow(null); 
 		Long groupIdx = comment.getGroup().getGroupIdx();
 		
 		comment.removeComment();
-		
-		return groupIdx;
-	}
+		}
 
 }

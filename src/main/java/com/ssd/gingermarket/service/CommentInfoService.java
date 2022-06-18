@@ -22,6 +22,6 @@ public interface CommentInfoService {
 	public void updateComment(CommentDto.Request request, Long commentIdx);
 	
 	// 댓글 삭제
-	public Long removeComment(Long commentIdx);
+	public void removeComment(Long commentIdx);
 
 }

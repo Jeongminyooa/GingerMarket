@@ -249,12 +249,26 @@
 			}
 			
 			// 댓글 삭제
-			function deleteComment(comment) {
+			function deleteComment(cid) {
 				let result = confirm("삭제하시겠습니까?");
 				
 				if(result) {
-					let form = comment.parentNode;
-					form.submit();
+					let url = "/comments/" + cid; 
+					
+					$.ajax({
+						url : url,
+						type : "DELETE",
+						success : function(res) {
+							if(res == true) {
+								/* 댓글 리스트 다시 렌더링하도록 새로고침 */ 
+								alert("삭제가 완료되었습니다.");
+								location.reload();
+							}
+						},
+						error : function(statis, error) {
+							alert("삭제 실패입니다. 잠시 후에 다시 시도해주세요.");
+						}
+					});	
 				}
 			}
 			
@@ -421,9 +435,7 @@
 							<button type="button" class="btn" id="small_content" th:if="${userIdx == comment.authorIdx}" onclick="transUpdateForm(this)">수정</button>
 						</div>
 						<div class="col col-lg-1">
-							<form id="commentDeleteForm" th:action="@{comments/{cid}(cid=${comment.commentIdx})}" th:method="DELETE">
-								<button type="button" class="btn" id="small_content" th:if="${userIdx == comment.authorIdx}" onclick="deleteComment(this)">삭제</button>
-							</form>
+							<button type="button" class="btn" id="small_content" th:if="${userIdx == comment.authorIdx}" th:onclick="deleteComment([[${comment.commentIdx}]])">삭제</button>
 						</div>
 					</div>
 				</div>
@@ -481,9 +493,7 @@
 								<button type="button" class="btn" id="small_content" th:if="${userIdx == childComm.authorIdx}" onclick="transUpdateForm(this)">수정</button>
 							</div>
 							<div class="col col-lg-1">
-								<form id="commentDeleteForm" th:action="@{comments/{cid}(cid=${childComm.commentIdx})}" th:method="DELETE">
-									<button type="button" class="btn" id="small_content" th:if="${userIdx == childComm.authorIdx}" onclick="deleteComment(this)">삭제</button>
-								</form>
+								<button type="button" class="btn" id="small_content" th:if="${userIdx == childComm.authorIdx}" th:onclick="[[${childComm.commentIdx}]]">삭제</button>
 							</div>
 						</div>
 					</div>
