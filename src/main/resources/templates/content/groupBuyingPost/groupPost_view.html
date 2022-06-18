@@ -13,6 +13,10 @@
 		<link th:href="@{/css/layout_content.css}" rel="stylesheet" />
 		<link th:href="@{/css/groupBuying/layout_viewGroupPost.css}" rel="stylesheet" />
 		<link th:href="@{/css/groupBuying/layout_applyGroupPost.css}" rel="stylesheet" />
+		
+		<!-- jquery -->
+		<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+		
 		<!-- Bootstrap CSS -->
     	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 		<!-- Bootstrap JS -->
@@ -33,8 +37,9 @@
 				commentInit();
 				/* 댓글 등록 이벤트 */
 				$('#btn-add-comment').click(function() {
-				
-					var url = "/comments/1"; 
+					let groupIdx = [[${postInfo.groupIdx}]];
+
+					let url = "/comments/" + groupIdx; 
 					const content = $('#addComment').val();
 					
 					if(content == '') {
@@ -43,7 +48,7 @@
 					}
 					
 					$.ajax({
-						url : "/comments/1",
+						url : url,
 						type : "POST",
 						datatype : "json",
 						contentType : "application/json; charset=UTF-8",
@@ -65,7 +70,9 @@
 	
 			// 댓글 리스트
 			function commentInit() {
-				var url = "/comments/1";
+				let groupIdx = [[${postInfo.groupIdx}]];
+				let url = "/comments/" + groupIdx;
+				
 				$.ajax({
 					url: url,
 					type: "GET",
@@ -169,15 +176,15 @@
 				status = true;
 					
 				// 출력될 입력창	
-				var replyNode = document.createElement('div');
+				let replyNode = document.createElement('div');
 				replyNode.setAttribute('class', 'row p-3 ms-3 me-3 add');
 				replyNode.setAttribute('id', 'reply-comment-node-' + cid);
 				
-				var replyTextContainer = document.createElement('div');
+				let replyTextContainer = document.createElement('div');
 				replyTextContainer.setAttribute('class', 'col col-lg-11');
 				replyTextContainer.setAttribute('id', 'small_content');
 				
-				var replyTextInput = document.createElement('input');
+				let replyTextInput = document.createElement('input');
 				replyTextInput.setAttribute('class', 'w-100');
 				replyTextInput.setAttribute('type', 'text');
 				replyTextInput.setAttribute('id', 'addReply');
@@ -185,14 +192,14 @@
 				
 				replyTextContainer.appendChild(replyTextInput);
 				
-				var replyButtonContainer = document.createElement('div');
+				let replyButtonContainer = document.createElement('div');
 				replyButtonContainer.setAttribute('class', 'col col-lg-1 m-auto');
 				
-				var replyButton = document.createElement('button');
+				let replyButton = document.createElement('button');
 				replyButton.setAttribute('class', 'btn btn-outline-light');
 				replyButton.setAttribute('id', 'btn-add-reply');
 				replyButton.setAttribute('onclick', 'addReply()');
-				var text = document.createTextNode('등록');
+				let text = document.createTextNode('등록');
 				replyButton.appendChild(text);
 				
 				replyButtonContainer.appendChild(replyButton);
@@ -200,19 +207,20 @@
 				replyNode.appendChild(replyTextContainer);
 				replyNode.appendChild(replyButtonContainer);
 				
-				var preTr = comment.parentNode.parentNode;
+				let preTr = comment.parentNode.parentNode;
 				preTr.appendChild(replyNode);
 				
 			}
 			
 			/* 답글 등록 이벤트 */
 			function addReply() {
+				let groupIdx = [[${postInfo.groupIdx}]];
+				
 				// 댓글 idx
 				let str = $("[id^='reply-comment-node-']").attr('id').split('-');
 				let idx =  str[3];
 					
-				// post id는 추후 타임리프 변수를 통해 가져
-				let url = "/comments/1/reply/" + idx; 
+				let url = "/comments/" + groupIdx + "/reply/" + idx; 
 				const content = $('#addReply').val();
 					
 				if(content == '') {
@@ -241,11 +249,13 @@
 			}
 			
 			// 댓글 삭제
-			function deleteComment(comment) {
+			function deleteComment(comment, cid) {
+				let groupIdx = [[${postInfo.groupIdx}]];
 				let result = confirm("삭제하시겠습니까?");
 				
 				if(result) {
 					let form = comment.parentNode;
+					form.action = '/comments/' + cid + '/' + groupIdx;
 					form.submit();
 				}
 			}
@@ -413,7 +423,7 @@
 						</div>
 						<div class="col col-lg-1">
 							<form id="commentDeleteForm" th:action="@{comments/{cid}(cid=${comment.commentIdx})}" th:method="DELETE">
-								<button type="button" class="btn" id="small_content" th:if="${userIdx == comment.authorIdx}" onclick="deleteComment(this)">삭제</button>
+								<button type="button" class="btn" id="small_content" th:if="${userIdx == comment.authorIdx}" th:onclick="deleteComment(this, [[${comment.commentIdx}]])">삭제</button>
 							</form>
 						</div>
 					</div>
@@ -471,8 +481,8 @@
 								<button type="button" class="btn" id="small_content" th:if="${userIdx == childComm.authorIdx}" onclick="transUpdateForm(this)">수정</button>
 							</div>
 							<div class="col col-lg-1">
-								<form id="commentDeleteForm" th:action="@{comments/{cid}(cid=${childComm.commentIdx})}" th:method="DELETE">
-									<button type="button" class="btn" id="small_content" th:if="${userIdx == childComm.authorIdx}" onclick="deleteComment(this)">삭제</button>
+								<form id="commentDeleteForm" th:method="DELETE">
+									<button type="button" class="btn" id="small_content" th:if="${userIdx == childComm.authorIdx}" th:onclick="deleteComment(this, [[${childComm.commentIdx}]])">삭제</button>
 								</form>
 							</div>
 						</div>

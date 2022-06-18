@@ -35,6 +35,6 @@ public class GetCommentController {
 		model.addAttribute("postAuthorIdx", (long)1);
 		model.addAttribute("commentList", commentList);
 		
-		return "content/groupBuyingPost/viewGroupPost :: #commentContent";
+		return "content/groupBuyingPost/groupPost_view :: #commentContent";
 	}
 }
