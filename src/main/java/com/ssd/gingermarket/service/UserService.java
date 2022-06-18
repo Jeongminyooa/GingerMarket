@@ -22,4 +22,7 @@ public interface UserService {
 	
 	public User getUser(Long userIdx);
 	
+	// 마이페이지 회원정보 조회
+	public UserDto.Info getUserInfo(Long userIdx);
+	
 }

@@ -83,4 +83,20 @@ public class UserDto {
 		private String userId;
 		private String password;
 	}
+	
+
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Data
+	public static class Info {
+		private Long userIdx;
+		private String userId;
+		private String name;
+		private String imageUrl;
+		private String phone;
+		private String item1;
+		private String item2;
+		private String item3;
+		private String address;
+	}
 }

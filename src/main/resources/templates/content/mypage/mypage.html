@@ -55,15 +55,16 @@
   				<div class="row pt-5">
    					<div class="col col-lg-1"></div>
     				<div class="col col-lg-2 col-md-12 col-sm-12 col-12 profile text-center">
-    					<img src="/image/profile2.jpg" class="rounded-circle profile-img" alt="image">
+    					<img src="/image/profile.png" th:if="${userInfo.imageUrl}" th:src="${userInfo.imageUrl}" class="rounded-circle profile-img" alt="image">
+    					<img src="/image/profile.png" th:unless="${userInfo.imageUrl}" class="rounded-circle profile-img" alt="image">
     				</div>
     				<div class="col col-lg-9">
-      					<div id="middle_title">김생강</div>
-      					<div class="userId" id="main_content">jmjmjmz732002</div>
+      					<div id="middle_title" th:text="${userInfo.name}">닉네임</div>
+      					<div class="userId" id="main_content" th:text="${userInfo.userId}">ID</div>
       					<div class="category">
-      						<span class="badge">칫솔</span>
-      						<span class="badge">치약</span>
-      						<span class="badge">면도기날</span>
+      						<span class="badge" th:if="${userInfo.item1}" th:text="${userInfo.item1}">선호 아이템1</span>
+      						<span class="badge" th:if="${userInfo.item2}" th:text="${userInfo.item2}">선호 아이템2</span>
+      						<span class="badge" th:if="${userInfo.item3}" th:text="${userInfo.item3}">선호 아이템3</span>
       					</div>
     				</div>
   				</div>

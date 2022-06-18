@@ -49,4 +49,16 @@ public class UserServiceImpl implements UserService{
 		return userRepository.findById(userIdx).get();
 	}
 	
+	@Override
+	@Transactional(readOnly = true)
+	public UserDto.Info getUserInfo(Long userIdx) {
+		User userEntity = userRepository.findById(userIdx).orElseThrow();
+		
+		return new UserDto.Info(userEntity.getUserIdx(), userEntity.getUserId(), userEntity.getName(),
+				(userEntity.getImage() == null ? null : userEntity.getImage().getUrl()),
+				userEntity.getPhone(),
+				userEntity.getItem1(), userEntity.getItem2(), userEntity.getItem3(), userEntity.getAddress());
+		
+	}
+	
 }
