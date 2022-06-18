@@ -43,6 +43,9 @@ public class CommentInfoServiceImpl implements CommentInfoService {
 				.build();
 		
 		commentInfoRepository.saveAndFlush(comment);
+		
+		groupBuying.getCommentList().add(comment);
+		return;
 	}
 	
 	@Override
@@ -63,10 +66,14 @@ public class CommentInfoServiceImpl implements CommentInfoService {
 				.group(groupBuyingPost)
 				.author(author)
 				.build();
-				
+		
 		parentComment.getChildCommentList().add(childComment);
-				
+		
+		// 댓글 추가
 		commentInfoRepository.save(childComment);
+		
+		// 포스트의 댓글 추가
+		groupBuyingPost.getCommentList().add(childComment);
 		return;
 	}
 
