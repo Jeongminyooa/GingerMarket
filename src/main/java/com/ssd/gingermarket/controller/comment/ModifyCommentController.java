@@ -24,7 +24,6 @@ public class ModifyCommentController {
 	public ResponseEntity<Boolean> updateComment(
 			@RequestBody CommentDto.Request dto,
 			@PathVariable(value="cid") Long commentIdx) {
-		Long authorIdx = (long) 2;
 	
 		commentInfoService.updateComment(dto, commentIdx);
 		

@@ -2,6 +2,8 @@ package com.ssd.gingermarket.controller.comment;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +27,14 @@ public class GetCommentController {
 	
 	// 댓글 리스트 불러오기
 	@GetMapping("/{gid}")
-	public String getCommentList (Model model, @PathVariable(value="gid") Long groupIdx) {
+	public String getCommentList (Model model,
+			@PathVariable(value="gid") Long groupIdx,
+			HttpServletRequest req) {
+		/*
+		HttpSession session = req.getSession(false);
+		Long userIdx = (Long) session.getAttribute("userIdx");
+		 */
+		
 		List<CommentDto.Info> commentList = commentInfoService.getCommentList(groupIdx);
 	
 		// 로그인한 사용자의 id
