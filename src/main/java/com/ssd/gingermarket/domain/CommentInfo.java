@@ -26,8 +26,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Table(name="comment_info") 
-public class CommentInfo {
+@Table(name="commentinfo") 
+public class CommentInfo extends BaseTime {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ExperiodSequence")
@@ -54,20 +54,22 @@ public class CommentInfo {
 	private List<CommentInfo> childCommentList = new ArrayList<>();
 	
 	// 게시글 인덱스
-	// @ManyToOne
-	private Long groupIdx;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="group_idx")
+	private GroupBuying group;
 	
 	//사용자 인덱스 
-	// @ManyToOne
-	private Long authorIdx;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="author_idx")
+	private User author;
 	
 	@Builder(builderClassName= "comment", builderMethodName = "commentBuilder")
-	 public CommentInfo(String content, CommentInfo parentIdx, Long groupIdx, Long authorIdx) {
+	 public CommentInfo(String content, CommentInfo parentIdx, GroupBuying group, User author) {
 		 this.content = content;
 		 this.parentIdx = parentIdx;
-		 this.groupIdx = groupIdx;
-		 this.authorIdx = authorIdx;
-		 this.isDeleted = "N";	
+		 this.group = group;
+		 this.author = author;
+		 this.isDeleted = "N";
 	 }
 	
 	// 수정

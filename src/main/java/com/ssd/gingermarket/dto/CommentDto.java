@@ -24,6 +24,8 @@ public class CommentDto {
 		private String nickname; // 사용자 닉네임
 		
 		private List<CommentDto.ChildInfo> childCommentList;
+		
+		private boolean isPostAuthor; //작성자 여부
 	}
 	
 	@NoArgsConstructor
@@ -40,6 +42,8 @@ public class CommentDto {
 		private Long authorIdx; // 사용자 idx
 		private String imageUrl; // 사용자 프로필 사진
 		private String nickname; // 사용자 닉네임
+		
+		private boolean isPostAuthor; //작성자 여부
 	}
 	
 	@NoArgsConstructor

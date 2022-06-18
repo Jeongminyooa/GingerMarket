@@ -3,6 +3,7 @@ package com.ssd.gingermarket.domain;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -63,7 +64,9 @@ public class GroupBuying extends BaseTime{
 		 
 		 @OneToMany(mappedBy = "groupBuying", fetch = FetchType.EAGER)
 		 private List<Apply> applyList;
-
+		 
+		 @OneToMany(mappedBy="group", fetch = FetchType.LAZY)
+		 private List<CommentInfo> commentList = new ArrayList<>();
 		 
 		 public void updatePost(String title, String category, int recruitNum, String website, int price, String descr, LocalDate endDate, Long imageIdx) {
 		        this.title = title;
