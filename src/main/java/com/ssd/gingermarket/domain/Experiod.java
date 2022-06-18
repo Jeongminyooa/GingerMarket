@@ -16,34 +16,30 @@ public class Experiod extends BaseTime{
 	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ExperiodSequence")
 	 @SequenceGenerator(sequenceName = "ExperiodSequence", name = "ExperiodSequenceGenerator", allocationSize = 1)
 	 @Column(name = "experiod_idx",unique = true)
-	 private Long id;
+	 private Long experiodIdx;
 	 
-	 // 후에 참조 관계 추가, author 컬럼명으로 변경
-	 @Column(nullable = false)
-	 private Long userId;
+	 @ManyToOne(fetch = FetchType.LAZY)
+	 @JoinColumn(name = "author_idx")
+	 private User author;
 	
 	 @Column(length = 22)
 	 private String category;
 	 
 	 private LocalDate endDate;
 	 
-	 private int dDay;
+	 @Enumerated(value = EnumType.STRING)
+	 private ExperiodType dDay;
 	 
 	 @Builder(builderClassName= "experiod", builderMethodName = "experiodBuilder")
-	 public Experiod(Long userId, String category, int dDay) {
-		 this.userId = userId;
+	 public Experiod(User author, String category, ExperiodType dDay) {
+		 this.author = author;
 		 this.category = category;
 		 this.dDay = dDay;
-		 
-		 // 마감일 계산
-		 //this.endDate = getCreatedDate().toLocalDate().plusDays(dDay);
-	
 	 }
 	 
-	 // 디데이 업데이트
-	 public int updateDday() {
-		 this.dDay--;
-		 return dDay;
+	// 마감일 계산
+	 public void caculateEndDate(int day) {
+		 this.endDate = getCreatedDate().toLocalDate().plusDays(day);
 	 }
 	 
 }

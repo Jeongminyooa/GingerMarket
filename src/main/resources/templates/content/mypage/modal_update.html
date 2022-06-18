@@ -63,13 +63,14 @@
 					<div class="mb-3">
 						<label for="updateCategory" class="form-label">생필품 카테고리 선택</label> 
 						<b class="text-danger">*</b>
-						<select class="category-select selectpicker w-100" th:field="*{items}" multiple data-live-search="true">
+						<select class="selectpicker w-100" th:field="*{items}" multiple data-live-search="true">
   							<option th:each="item: ${items}" 
     								th:value="${item}" 
     								th:text="${item}">
     						</option>
 						</select>
 					</div>
+					
 					<div class="mb-1 text-center">
 						<button type="button" class="quit_btn w-75">수정 완료</button>
 					</div>
