@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -46,14 +48,30 @@ public class GetMyPageController {
 		return category;
 	}
 	
+	@ModelAttribute("phone1")
+	public List<String> phone1List() {
+		List<String> phone1 = new ArrayList<>();
+		phone1.add("010");
+		phone1.add("016");
+		phone1.add("017");
+		phone1.add("018");
+		phone1.add("019");
+		return phone1;
+	}
+	
+	@ModelAttribute("userInfo")
+	public UserDto.Response formBackingObject(HttpServletRequest request) 
+			throws Exception  {
+		// session에서 id 값 받아오기 
+		long userIdx = 3;
+		return userService.getUserInfo(userIdx);
+	}
+	
 	@GetMapping("")
 	public ModelAndView getMyPage(@RequestParam(value="category", required=false) String category) {
-	
-		long userIdx = 3;
-		UserDto.Info userInfo = userService.getUserInfo(userIdx);
-		
 		ModelAndView mav = new ModelAndView("content/mypage/mypage");
-		mav.addObject("userInfo", userInfo);
+		
+		long userIdx = 3;
 		
 		if(category != null) {
 			mav.addObject("category", category);

@@ -24,11 +24,20 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	@Transactional
-	public void modifyUser(Long userIdx,UserDto.Request dto) {
-		User user = userRepository.findById(userIdx).orElseThrow(); 
-		user.updateUser(dto.getUserId(), dto.getPassword(), dto.getName(),
-				dto.getPhone1()+dto.getPhone2()+dto.getPhone3(), 
-				dto.getAddr(), dto.getItems()[0], dto.getItems()[1], dto.getItems()[2]);
+	public void modifyUser(Long userIdx,UserDto.Response dto) {
+		User user = userRepository.findById(userIdx).orElseThrow();
+		
+		String phone = dto.getPhone1() + dto.getPhone2() + dto.getPhone3();
+		
+		// 비밀번호는 미리보기로 주어지지 않아서 변경하지 않으면 공백이 들어올 수 있음.
+		if(!dto.getPassword().equals("")) {
+			user.updatePassword(dto.getPassword());
+		}
+		
+		user.updateUser(dto.getName(),
+				phone, 
+				dto.getAddress(),
+				dto.getItems());
 	}
 	
 	@Override
@@ -51,14 +60,11 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	@Transactional(readOnly = true)
-	public UserDto.Info getUserInfo(Long userIdx) {
+	public UserDto.Response getUserInfo(Long userIdx) {
 		User userEntity = userRepository.findById(userIdx).orElseThrow();
 		
-		return new UserDto.Info(userEntity.getUserIdx(), userEntity.getUserId(), userEntity.getName(),
-				(userEntity.getImage() == null ? null : userEntity.getImage().getUrl()),
-				userEntity.getPhone(),
-				userEntity.getItem1(), userEntity.getItem2(), userEntity.getItem3(), userEntity.getAddress());
-		
+		String phone = userEntity.getPhone();
+		return new UserDto.Response(userEntity);
 	}
 	
 }

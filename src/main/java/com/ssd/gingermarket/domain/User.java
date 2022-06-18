@@ -71,18 +71,28 @@ public class User {
 		return newPassword.equals(password);
 	} 
 
-	public void updateUser(String userId, String password, String name,String phone,
-			String address,String item1,String item2, String item3) {
-		this.userId=userId;
-		this.password=password;
-		this.name=name;
-		this.phone=phone;
-		this.address=address;
-		this.item1=item1;
-		this.item2=item2;
-		this.item3=item3;
+	public void updateUser(String name,String phone,
+			String address, String[] items) {
+		this.name = name;
+		this.phone = phone;
+		this.address = address;
+		this.item1 = items[0];
+		if(items.length == 1) {
+			this.item2 = null;
+			this.item3 = null;
+		}
+		else if(items.length == 2) {
+			this.item2 = items[1];
+			this.item3 = null;
+		} else {
+			this.item2 = items[1];
+			this.item3 = items[2];
+		}
 	}
 	
+	public void updatePassword(String password) {
+		this.password = password;
+	}
 }
 
 	
