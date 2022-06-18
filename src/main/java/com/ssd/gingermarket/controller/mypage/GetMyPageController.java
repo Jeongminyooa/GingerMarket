@@ -1,27 +1,27 @@
-package com.ssd.gingermarket.controller;
+package com.ssd.gingermarket.controller.mypage;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ssd.gingermarket.controller.ExperiodController;
 import com.ssd.gingermarket.dto.ExperiodDto;
 import com.ssd.gingermarket.service.ExperiodService;
 
 import lombok.RequiredArgsConstructor;
 
-//@Slf4j //로그 
-@RestController 
+@Controller
 @RequestMapping("/mypage")
 @RequiredArgsConstructor
-public class MyPageController {
-	
+public class GetMyPageController {
+
 	private final ExperiodService experiodService;
 	
 	@ModelAttribute("items")
@@ -60,4 +60,5 @@ public class MyPageController {
 		}
 		return mav;
 	}
+	
 }

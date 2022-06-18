@@ -4,17 +4,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.scheduling.annotation.Scheduled;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.ssd.gingermarket.dto.ExperiodDto;
@@ -52,25 +51,22 @@ public class ExperiodController {
 	
 	// 생성
 	@PostMapping("")
-	public RedirectView createExperiod(@RequestParam(value = "category") String category) {
-		long id = 1; // test..
+	public RedirectView createExperiod(@RequestParam(value = "category") String category,
+			HttpServletRequest req) { 
+		
+//		HttpSession session = req.getSession(false);
+//		Long authorIdx = (Long) session.getAttribute("userIdx");
+		
+		Long authorIdx = (long) 1;
 		
 		// 카테고리에 따른 d-day
 		Map<String, Integer> map = categoryExperiodMap();
 		int period = map.get(category);
 		
-		experiodService.addExperiod(id, category, period);
+		experiodService.addExperiod(authorIdx, category, period);
+		
 		return new RedirectView("/mypage?category=experiod");
 	}
-	
-	
-	// 교체주기 d-day 업데이트
-	//@Scheduled(cron = "*/10 0 0 * * *")
-	public void updateExperiod() {
-		// 자정마다 1씩 줄어듦
-		experiodService.updateExperiodDday();
-	}
-	
 	
 	// 삭제
 	@DeleteMapping("/{eid}")
