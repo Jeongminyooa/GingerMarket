@@ -493,7 +493,7 @@
 								<button type="button" class="btn" id="small_content" th:if="${userIdx == childComm.authorIdx}" onclick="transUpdateForm(this)">수정</button>
 							</div>
 							<div class="col col-lg-1">
-								<button type="button" class="btn" id="small_content" th:if="${userIdx == childComm.authorIdx}" th:onclick="[[${childComm.commentIdx}]]">삭제</button>
+								<button type="button" class="btn" id="small_content" th:if="${userIdx == childComm.authorIdx}" th:onclick="deleteComment([[${childComm.commentIdx}]])">삭제</button>
 							</div>
 						</div>
 					</div>
