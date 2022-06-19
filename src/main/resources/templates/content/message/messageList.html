@@ -64,10 +64,10 @@
 					<!-- receiver name & last content -->
 					<div class="col-lg-9 text-left ps-5 mt-2">
 						<div class="row">
-							<div th:if="${userIdx} == ${room.sender.name}" th:text="${room.sender.name}" class="col-2" id="main_content">
+							<div th:if="${userIdx} == ${room.post.author.name}" th:text="${room.sender.name}" class="col-2" id="main_content">
 								<b>김매미</b>
 							</div>
-							<div th:unless="${userIdx} == ${room.sender.name}" th:text="${room.post.author.name}" class="col-2" id="main_content">
+							<div th:unless="${userIdx} == ${room.post.author.name}" th:text="${room.post.author.name}" class="col-2" id="main_content">
 								<b>김매미</b>
 							</div>
 							<div th:text="${#temporals.format(room.post.createdDate, 'yyyy/MM/dd HH:mm')}" class="col" id="small_content">2022/05/18 16:04</div>
