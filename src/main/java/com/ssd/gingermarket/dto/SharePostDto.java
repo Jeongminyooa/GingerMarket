@@ -49,7 +49,11 @@ public class SharePostDto {
 			this.category = sharePost.getCategory();
 			this.descr = sharePost.getDescr();
 			this.address = sharePost.getAddress();
-			this.imgUrl = this.uploadDirLocal + sharePost.getImage().getUrl();
+			try {
+				this.imgUrl = this.uploadDirLocal + sharePost.getImage().getUrl();
+			}catch (Exception e ) {	           
+				this.imgUrl = "";
+			}
 			this.authorIdx = sharePost.getAuthorIdx();
 		}
 	}
@@ -88,12 +92,12 @@ public class SharePostDto {
 			}
 			this.address = sharePost.getAddress();
 			boolean prog;
-			if(sharePost.getProgress().equals("'Y'"))
+			if(sharePost.getProgress().equals("Y"))
 				prog = true;
 			else
 				prog = false;
 			this.progress = prog;
-			this.msgCount = sharePost.getMessageCnt();
+			this.msgCount = sharePost.getRooms().size();
 		}
 	}
 	
@@ -128,13 +132,13 @@ public class SharePostDto {
 			}
 			this.descr = sharePost.getDescr();
 			boolean prog;
-			if(sharePost.getProgress().equals("'Y'"))
+			if(sharePost.getProgress().equals("Y"))
 				prog = true;
 			else
 				prog = false;
 			this.progress = prog;
 			this.enrollDate = sharePost.getCreatedDate();
-			this.msgCount = sharePost.getMessageCnt();
+			this.msgCount = sharePost.getRooms().size();
 		}
 	}
 	
