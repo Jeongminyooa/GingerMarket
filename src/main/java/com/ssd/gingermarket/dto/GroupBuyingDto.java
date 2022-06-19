@@ -73,6 +73,7 @@ public class GroupBuyingDto {
 		private Long imageIdx;
 		private int price;
 		private int progress;
+		private String keyword;
 	
 		public CardResponse(GroupBuying groupBuying) {
 			this.groupIdx = groupBuying.getGroupIdx();

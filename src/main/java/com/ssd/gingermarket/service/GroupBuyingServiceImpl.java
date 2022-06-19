@@ -25,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 public class GroupBuyingServiceImpl implements GroupBuyingService {
 
 	private final GroupBuyingRepository groupBuyingRepository;
-	private final ApplyRepository applyRepository;
 
 	// 포스트 등록
 	@Override
@@ -82,27 +81,6 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
     	groupBuyingRepository.deleteById(groupIdx);
     }
 
-	// 공구 신청 조회
-    @Override
-	@Transactional(readOnly = true)
-	public List<ApplyDto.Response> getAllApply() {
-		List<Apply> applyList = applyRepository.findAll(Sort.by(Direction.DESC, "applyIdx"));
-	 
-		return applyList.stream().map(ApplyDto.Response::new).collect(Collectors.toList());	
-	}
-    
-    // 공구 신청 등록
-    @Override
-	@Transactional
-	public void addApply(ApplyDto.Request apply, Long groupIdx) {
-		applyRepository.save(apply.toEntity());
-		GroupBuying groupBuying = groupBuyingRepository.findById(groupIdx).orElseThrow();
-		groupBuying.updateParticipate();
-		
-		int progress = updateProgress(groupBuying.getParticipateNum(), groupBuying.getRecruitNum());
-		groupBuying.updateProgress(progress);
-
-	}
     
     //공구 진행 상태
    	public int updateProgress(int partipateNum, int recruitNum) {
@@ -117,7 +95,25 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
        	else
    			return 0;
    	}
-
+   	
+   	//공구 포스트 제목 검색 
+    @Override
+ 	@Transactional
+	public List<GroupBuyingDto.CardResponse> getAllPostByTitle(String keyword) {
+    	List<GroupBuying> groupBuyingList = groupBuyingRepository.findByKeyword(keyword);
+    	return groupBuyingList.stream().map(GroupBuyingDto.CardResponse::new).collect(Collectors.toList());	
+    	
+    }
+    
+ 	//공구 포스트 카테고리 검색 
+    @Override
+ 	@Transactional
+	public List<GroupBuyingDto.CardResponse> getAllPostByCategory(String category) {
+    	List<GroupBuying> groupBuyingList = groupBuyingRepository.findByCategory(category);
+    	return groupBuyingList.stream().map(GroupBuyingDto.CardResponse::new).collect(Collectors.toList());	
+    	
+    }
+   
 }
 	
 
