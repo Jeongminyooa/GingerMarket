@@ -4,7 +4,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/default_layout}">
 
-<th:block layout:fragment="head">
+<th:block layout:fragment="head (userIdx=${userIdx})">
 	<title>나눔 포스트 리스트</title>
 	<meta charset="utf-8">
 
@@ -95,7 +95,7 @@
 
 			<!-- 새 글 등록 BTN -->
 			<div class="d-grid gap-2 mt-5">
-				<a th:href="@{/share/addForm}"
+				<a th:href="@{/share-posts/new}"
 				class="btn btn-outline-success" role="button" id="btn-newPost">새 글 등록</a>
 			</div>
 		</div>

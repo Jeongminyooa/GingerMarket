@@ -16,19 +16,23 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.ssd.gingermarket.domain.Image;
+import com.ssd.gingermarket.dto.ImageDto;
 import com.ssd.gingermarket.dto.SharePostDto;
 import com.ssd.gingermarket.dto.SharePostDto.Request;
+import com.ssd.gingermarket.service.ImageService;
 import com.ssd.gingermarket.service.SharePostService;
 
 import lombok.RequiredArgsConstructor;
 
 //@Slf4j //로그 
 @RestController 
-@RequestMapping("/share")
+@RequestMapping("/share-posts")
 @RequiredArgsConstructor
 public class ModifySharePostController {
 	
 	private final SharePostService sharePostService;
+	private final ImageService imageService;
 	
 	@ModelAttribute("categoryList")
 	public List<String> categoryList(){
@@ -46,10 +50,11 @@ public class ModifySharePostController {
 	}
 	
 	
-	@GetMapping("/{postIdx}/updateForm")
-	public ModelAndView goUpdateForm(@PathVariable Long postIdx) { 
+	@GetMapping("/{postIdx}/edit")
+	public ModelAndView getUpdateForm(@PathVariable Long postIdx) { 
 		Long userIdx = (long) 1;//user session으로 추후 수정 
 		
+		System.out.println("postIdx : " + postIdx);
 		SharePostDto.Request req = sharePostService.getPostForModify(postIdx);
 		
 		ModelAndView mav = new ModelAndView("content/sharePost/sharePost_update");
@@ -64,10 +69,17 @@ public class ModifySharePostController {
 	{
 		Long authorIdx = (long) 1; //session구현 후 변경
 		
+		if(!post.getFile().getOriginalFilename().equals("")) {
+			ImageDto.Request imgDto = new ImageDto.Request(post.getFile());
+			Image img = imageService.uploadFile(imgDto.getImageFile());
+			post.setImage(img);
+		}
+			
 		post.setAuthorIdx(authorIdx);
+	
 		sharePostService.modifyPost(postIdx, post);
 		
-        return new RedirectView("/share/" + postIdx);
+        return new RedirectView("/share-posts/" + postIdx);
     }
 	
 	@PutMapping("/{postIdx}/progress")
@@ -76,7 +88,7 @@ public class ModifySharePostController {
 		boolean prog = sharePostService.getPost(postIdx).isProgress();
 		sharePostService.modifyProgress(postIdx, prog);
 		
-		return new RedirectView("/share/" + postIdx);
+		return new RedirectView("/share-posts/" + postIdx);
 	}
 	
 	
