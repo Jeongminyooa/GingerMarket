@@ -4,7 +4,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/default_layout}">
 
-<th:block layout:fragment="head">
+<th:block layout:fragment="head (userIdx=${userIdx})">
 	<title>나눔 포스트 리스트</title>
 	<meta charset="utf-8">
 

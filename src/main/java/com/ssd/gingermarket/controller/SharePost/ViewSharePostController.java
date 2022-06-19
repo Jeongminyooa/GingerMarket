@@ -33,9 +33,10 @@ public class ViewSharePostController {
      */
 	@GetMapping("/{postIdx}")
 	public ModelAndView getPost(@PathVariable Long postIdx){
+		Long sessionIdx = (long) 3;
 		ModelAndView mav = new ModelAndView("content/sharePost/sharePost_view");
 		mav.addObject("postInfo", sharePostService.getPost(postIdx));
-		
+		mav.addObject("senderIdx", sessionIdx);
 		return mav;
 	}
 	
