@@ -132,7 +132,7 @@
 	
 									<div class="d-flex mx-auto pt-5 mb-3 text-center">
 										<button type="button" class="btn btn-secondary me-1" data-bs-dismiss="modal">취소</button>
-										<form th:id="inProgress" th:action="@{/share/{postIdx}/progress(postIdx=${postInfo.postIdx})}" th:method="PUT">
+										<form th:id="inProgress" th:action="@{/share-posts/{postIdx}/progress(postIdx=${postIdx})}" th:method="PUT">
 					               			<button type="submit" class="btn btn-secondary" id="btn-isProg">확인</button>
 					               		</form>
 									</div>
@@ -160,7 +160,7 @@
 	
 									<div class="d-flex mx-auto pt-5 mb-3 text-center">
 										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-										<form th:id="notInProgress" th:action="@{/share/{postIdx}/progress(postIdx=${postInfo.postIdx})}" th:method="PUT">
+										<form th:id="notInProgress" th:action="@{/share-posts/{postIdx}/progress(postIdx=${postIdx})}" th:method="PUT">
 					               			<button type="submit" class="btn btn-secondary" id="btn-isDone">확인</button>
 					               		</form>
 									</div>
@@ -200,15 +200,29 @@
 			</div>
 
 			<!--Send message BTN -->
-			<div th:if="${postInfo.progress} == false" class="d-grid gap-2 mt-3">
-				<a class="btn btn-outline-success rounded-pill" th:href="@{/message/{postIdx}(postIdx=${postInfo.postIdx})}"
+			
+			
+
+			
+			<div th:if="${postInfo.progress} == false and ${postInfo.authorIdx} != ${senderIdx}" class="d-grid gap-2 mt-3">
+				<a class="btn btn-outline-success rounded-pill" th:href="@{/messages/{postIdx}/sender/{senderIdx}(postIdx=${postIdx}, senderIdx=${senderIdx})}"
 					role="button" id="btn-sendMsg">쪽지 보내기</a>
 			</div>
 			
-			<div th:unless="${postInfo.progress} == false" class="d-grid gap-2 mt-3">
+			
+			<!-- session Id가 작성자이면서 나눔이 진행중일때 -->
+			<div th:if="(${postInfo.progress} == false) and (${postInfo.authorIdx} == ${senderIdx})" class="d-grid gap-2 mt-3">
+				<a class="btn btn-outline-success rounded-pill"
+					role="button" id="btn-enableSendMsg" th:href="@{/messages/{userIdx}/list(userIdx=${senderIdx})}">쪽지함</a>
+			</div>
+			
+			<!-- session Id가 작성자 이면서 나눔이 완료되었을때 -->
+			<div th:if="${postInfo.progress == true} and (${postInfo.authorIdx} == ${senderIdx} or ${postInfo.authorIdx} != ${senderIdx})" class="d-grid gap-2 mt-3">
 				<a class="btn btn-outline-success rounded-pill"
 					role="button" id="btn-enableSendMsg">나눔이 완료된 상품입니다.</a>
 			</div>
+			
+			
 		</div>
 	</div>
 
