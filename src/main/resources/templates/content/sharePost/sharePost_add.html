@@ -26,6 +26,18 @@
 
 <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" th:src="@{/js/fileUpload.js}"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+window.onload = function(){
+	$('#address_kakao').click(function() {
+		new daum.Postcode({
+        	oncomplete: function(data) {
+        		$('#inputAddr').attr("value", data.sido + " " + data.sigungu + " " + data.bname);
+        	}
+		}).open();
+	});
+}
+</script>
 <body>
 
 	<th:block layout:fragment="nav" th:include="@{/fragments/nav}"></th:block>
@@ -45,7 +57,7 @@
 				
 				<!-- 사진 업로드 -->
 				<div class="row">
-					<div class="col-1" id="div-addImg"><!-- style="display: none;" -->
+					<div class="col-1" id="div-addImg">
 						
 						<button class="btn" id="icon">
 							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="72" height="72" fill="#91A77F">
@@ -71,9 +83,16 @@
 				</div>
 
 				<hr>
-				<div class="mb-3">
-					<label for="inputAddr" class="form-label">사용자 주소</label> <b class="text-danger">*</b> 
-					<input type="text" class="form-control" id="inputAddr" th:field="*{address}" placeholder="원래 사용자 주소">
+				
+					
+				<label for="inputAddr" class="form-label">사용자 주소</label> <b class="text-danger">*</b> 
+				<div class="mb-3 row">
+					<div class="col">
+						<input type="text" class="form-control" id="inputAddr" th:field="*{address}" th:value="${address}">
+					</div>
+					<div class="col">
+						<input type="button" class="btn btn-outline-secondary btn-sm pt-2 pb-2" id="address_kakao" value="주소 찾기"/>
+					</div>
 				</div>
 
 				<hr>

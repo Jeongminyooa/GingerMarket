@@ -52,7 +52,7 @@ public class ModifySharePostController {
 	
 	@GetMapping("/{postIdx}/edit")
 	public ModelAndView getUpdateForm(@PathVariable Long postIdx) { 
-		Long userIdx = (long) 1;//user session으로 추후 수정 
+		Long userIdx = (long) 2;//user session으로 추후 수정 
 		
 		System.out.println("postIdx : " + postIdx);
 		SharePostDto.Request req = sharePostService.getPostForModify(postIdx);

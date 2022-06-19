@@ -11,10 +11,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssd.gingermarket.domain.SharePost;
+import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.SharePostDto;
 import com.ssd.gingermarket.dto.SharePostDto.DetailResponse;
 import com.ssd.gingermarket.dto.TestDto;
 import com.ssd.gingermarket.repository.SharePostRepository;
+import com.ssd.gingermarket.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,11 +26,14 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class SharePostServiceImpl implements SharePostService {
 	private final SharePostRepository sharePostRepository;
+	private final UserRepository userRepositroy;
 
 	//게시글 등록
 	@Override
 	@Transactional
 	public void addPost(SharePostDto.Request dto) {
+		User author = userRepositroy.findById(dto.getAuthorIdx()).orElseThrow();
+		dto.setAuthor(author);
 		sharePostRepository.save(dto.toEntity());
 	}
 
