@@ -39,8 +39,20 @@
 			<hr>
 
 			<!-- 쪽지함 리스트  -->
+			<div th:if="${#lists.size(roomList) == 0}" class="pt-1 w-75 text-center mx-auto">
+				<br>
+					<div class="mx-auto">
+						주고 받은 쪽지가 없습니다. <br>
+						다양한 나눔 상품에 쪽지를 보내보세요!
+					</div>
+				<br>
+				<div class="d-grid gap-2 mt-3">
+					<a class="btn btn-outline-success rounded-pill"
+						role="button" id="btn-sendMsg" th:href="@{/share-posts}">나눔 게시물로 가기</a>
+				</div>
+			</div>	
 			<th:block th:each="room : ${roomList}">
-			
+		
 				<!--message list -->
 				<div class="row pt-1 w-75 mx-auto msg-list rounded-3 position-relative">
 					<!-- receiver profile -->
@@ -52,10 +64,13 @@
 					<!-- receiver name & last content -->
 					<div class="col-lg-9 text-left ps-5 mt-2">
 						<div class="row">
-							<div class="col-2" id="main_content">
+							<div th:if="${userIdx} == ${room.sender.name}" th:text="${room.sender.name}" class="col-2" id="main_content">
 								<b>김매미</b>
 							</div>
-							<div th:text="${#temporals.format(room.enrollDate, 'yyyy/MM/dd HH:mm')}" class="col" id="small_content">2022/05/18 16:04</div>
+							<div th:unless="${userIdx} == ${room.sender.name}" th:text="${room.post.author.name}" class="col-2" id="main_content">
+								<b>김매미</b>
+							</div>
+							<div th:text="${#temporals.format(room.post.createdDate, 'yyyy/MM/dd HH:mm')}" class="col" id="small_content">2022/05/18 16:04</div>
 						</div>
 
 						<div th:text=${room.content} class="mt-1" id="main_content">안녕하세요!</div>
@@ -72,8 +87,8 @@
 					</div>
 					
 					<div class="col-lg-1">
-						<a th:href="@{/messages/{postIdx}/sender/{senderIdx}(postIdx=${room.postIdx}, senderIdx=${room.senderIdx})}" class="stretched-link"> 
-						<img th:if = "${not #strings.isEmpty(room.imgUrl)}" th:src="@{${room.imgUrl}}" src="/image/postList.JPG" alt="..." id="img-post" class="rounded-3"></a>
+						<a th:href="@{/messages/{postIdx}/sender/{senderIdx}(postIdx=${room.post.postIdx}, senderIdx=${room.sender.userIdx})}" class="stretched-link"> 
+						<img th:if = "${not #strings.isEmpty(room.postImgUrl)}" th:src="@{${room.postImgUrl}}" src="/image/postList.JPG" alt="..." id="img-post" class="rounded-3"></a>
 					</div>
 					
 				</div>

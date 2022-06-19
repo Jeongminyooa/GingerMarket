@@ -35,15 +35,17 @@ public class MessageRoom extends BaseTime {
 	@Column(unique=true)
 	private Long roomIdx;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "post_idx")
 	private SharePost post;
 	
-	@Column(nullable = false) //추후 User 참조 
-	private Long authorIdx;
+	@ManyToOne
+	@JoinColumn(name = "author_idx") 
+	private User author;
 	
-	@Column(nullable = false) //추후 User 참조
-	private Long senderIdx;
+	@ManyToOne
+	@JoinColumn(name = "sender_idx")
+	private User sender;
 	
 	@OneToMany(mappedBy="room", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<MessageInfo> messages = new ArrayList<MessageInfo>();

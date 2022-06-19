@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import com.ssd.gingermarket.domain.MessageInfo;
 import com.ssd.gingermarket.domain.MessageRoom;
 import com.ssd.gingermarket.domain.SharePost;
+import com.ssd.gingermarket.domain.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,15 +17,15 @@ public class MessageDto {
 	@NoArgsConstructor
 	@Data
 	public static class Info{
-		//private String uploadDirLocal = "/upload/";
-		
+
 		private Long roomIdx;
-		private Long postIdx;
-		private String title;
-		private String imgUrl;
-		private LocalDateTime enrollDate;
+		private SharePost post;
+		private String postImgUrl;
+//		private String title;
+//		private String imgUrl;
+//		private LocalDateTime enrollDate;
 		
-		private Long senderIdx;
+		private User sender;
 		
 		private String content;
 		
@@ -35,17 +36,19 @@ public class MessageDto {
 	public static class Request{
 		 
 		private String content;
+		private User sender;
 		private Long senderIdx;
 		private SharePost post;
 		private MessageRoom room;
+		private User author;
 		private Long authorIdx;
 		private Long roomIdx;
 		
 		public MessageRoom toRoomEntity() {
 			return MessageRoom.builder()
 					.post(post)
-					.authorIdx(authorIdx)
-					.senderIdx(senderIdx)
+					.author(author)
+					.sender(sender)
 					.build();
 		}
 		
@@ -53,7 +56,7 @@ public class MessageDto {
 			return MessageInfo.builder()
 					.room(room)
 					.content(content)
-					.senderIdx(senderIdx)
+					.sender(sender)
 					.build();
 		}
 	}
@@ -80,7 +83,7 @@ public class MessageDto {
 		private LocalDateTime sendDate;
 		private boolean isRead;
 		
-		private Long senderIdx;
+		private User sender;
 		
 		
 		public MessageResponse(MessageInfo message) {
@@ -95,7 +98,7 @@ public class MessageDto {
 				isRead = false;
 			this.isRead = isRead;
 		
-			this.senderIdx = message.getSenderIdx();
+			this.sender = message.getSender();
 			
 			
 		}

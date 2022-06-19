@@ -30,7 +30,7 @@
 var postIdx = [[${postIdx}]];
 var senderIdx = [[${senderIdx}]];
 var roomIdx = [[${roomIdx}]];
-var authorIdx = [[${postInfo.authorIdx}]];
+var authorIdx = [[${postInfo.author.userIdx}]];
 $( document ).ready(function() {
 	
 	getMsgList(roomIdx);
@@ -128,13 +128,13 @@ function getMsgList(roomIdx) {
 			<div id="msg-container">
 			<th:block th:each="msg : ${msgList}">
 				<!-- receiver section -->
-				<div th:if = "${userIdx} != ${msg.senderIdx}" class="mt-1">
+				<div th:if = "${userIdx} != ${msg.sender.userIdx}" class="mt-1">
 					<!-- receiver info -->	
 					<div class="d-flex">
 						<div>
 							<img src="/image/yellow.JPG" alt="..." id="img-author-msg" class="rounded-pill">
 						</div>
-						<div class="ms-3" id="main_content">
+						<div th:text="${msg.sender.name}" class="ms-3" id="main_content">
 							김매미
 						</div>
 					</div>
@@ -148,7 +148,7 @@ function getMsgList(roomIdx) {
 				
 				<!-- sender section -->
 				
-				<div th:if = "${userIdx} == ${msg.senderIdx}" class="mt-1 me-3" align="right">
+				<div th:if = "${userIdx} == ${msg.sender.userIdx}" class="mt-1 me-3" align="right">
 					<!-- sender message -->
 					<div class="">
 						<div th:text=${msg.content} id="main_content" class="msg-bubble-right">안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~ v안녕하세요~안녕하세요~안녕하세요~안녕하세요~</div>

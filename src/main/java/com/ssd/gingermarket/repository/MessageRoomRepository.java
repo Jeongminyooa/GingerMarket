@@ -21,19 +21,19 @@ public interface MessageRoomRepository extends JpaRepository<MessageRoom, Long>{
 	@Query(value = "SELECT r.roomIdx "
 			+ "FROM MessageRoom r "
 			+ "WHERE r.post.postIdx = ?1 "
-			+ "AND r.post.authorIdx = ?2 AND r.senderIdx = ?3")
+			+ "AND r.author.userIdx = ?2 AND r.sender.userIdx = ?3")
 	public Long existsByIds(Long postIdx, Long authorIdx, Long senderIdx);
 
 	//roomIdx 찾기 
 	@Query(value = "SELECT r.roomIdx "
 			+ "FROM MessageRoom r "
-			+ "WHERE r.post.postIdx = ?1 AND r.senderIdx = ?2")
+			+ "WHERE r.post.postIdx = ?1 AND r.sender.userIdx = ?2")
 	public Long findByPostIdAndSenderId(Long postIdx, Long senderIdx);
 	
 	//쪽지함들 불러오기
 	@Query(value = "SELECT r "
 			+ "FROM MessageRoom r "
-			+ "WHERE r.post.authorIdx = ?1 OR r.senderIdx = ?2 "
+			+ "WHERE r.author.userIdx = ?1 OR r.sender.userIdx = ?2 "
 			+ "ORDER BY r.createdDate DESC")
 	List<MessageRoom> findByAuthorIdx(Long authorIdx, Long senderIdx);
 }

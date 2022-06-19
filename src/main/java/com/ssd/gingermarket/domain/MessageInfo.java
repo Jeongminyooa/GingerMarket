@@ -2,6 +2,7 @@ package com.ssd.gingermarket.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,8 +41,9 @@ public class MessageInfo extends BaseTime {
 	@Column(length = 1)
 	private String isRead;
 	
-	@Column(nullable = false) //추후 User 참조
-	private Long senderIdx;
+	@ManyToOne
+	@JoinColumn(name = "sender_idx")
+	private User sender;
 	
 	
 	@PrePersist

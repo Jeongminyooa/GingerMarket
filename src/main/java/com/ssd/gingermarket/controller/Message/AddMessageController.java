@@ -33,7 +33,7 @@ public class AddMessageController {
 	
 	@PostMapping("/{postIdx}")
 	public Long sendMessage(@PathVariable Long postIdx, @RequestBody MessageDto.Request req) {	
-		Long sessionIdx = (long) 3; //session구현 후 변경
+		Long sessionIdx = (long) 2; //session구현 후 변경
 		
 		Long authorIdx = req.getAuthorIdx();
 		Long senderIdx = sessionIdx;
