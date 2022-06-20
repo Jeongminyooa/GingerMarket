@@ -1,6 +1,7 @@
 package com.ssd.gingermarket.service;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -11,10 +12,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssd.gingermarket.domain.SharePost;
+import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.SharePostDto;
 import com.ssd.gingermarket.dto.SharePostDto.DetailResponse;
 import com.ssd.gingermarket.dto.TestDto;
 import com.ssd.gingermarket.repository.SharePostRepository;
+import com.ssd.gingermarket.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class SharePostServiceImpl implements SharePostService {
 	private final SharePostRepository sharePostRepository;
+	private final UserRepository userRepository;
 
 	//게시글 등록
 	@Override
@@ -49,6 +53,24 @@ public class SharePostServiceImpl implements SharePostService {
         return new SharePostDto.Request(entity);
     }
 	
+	//사용자가 작성한 포스트리스트 조회
+	public List<SharePostDto.MyPageInfo> getPostByUserId(Long userIdx) {
+		User author = userRepository.findById(userIdx).orElseThrow();
+		
+		List<SharePost> postEntityList = sharePostRepository.findAllByAuthorIdx(author);
+		
+		List<SharePostDto.MyPageInfo> postList = postEntityList.stream().map(post -> new SharePostDto.MyPageInfo(
+				post.getPostIdx(),
+				//post.getImage().getUrl(),
+				"",
+				post.getTitle(),
+				(post.getProgress().equals("Y") ? "나눔 완료" : "진행중"),
+				post.getCreatedDate())
+				).collect(Collectors.toList());
+		
+		return postList;
+	}
+		
 	//게시글 리스트 조회
 	@Override
 	@Transactional(readOnly = true)

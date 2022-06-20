@@ -7,7 +7,7 @@
 	</div>
 </div>
 <!-- list -->
-<th:block th:each="num : ${#numbers.sequence(1,5)}">
+<th:block th:each="group : ${groupList}">
 <div class="row pt-1 border-top"></div>
 <div class="row p-3">
 	<div class="col col-lg-2" id="main_content">
@@ -15,15 +15,17 @@
 	</div>
 	<div class="col col-lg-6" id="main_content">
 		<div class="d-inline-block text-truncate">
-			<a href="#">두루마리 휴지 공구할 분</a>
+			<a th:href="@{/group-buying/{groupIdx}(groupIdx = ${group.groupIdx})}" th:text="${group.title}">제목</a>
 		</div>
-		<div class="font-grey">참여</div>
+		<div class="font-grey" th:if="${group.progress == 0}">진행중</div>
+		<div class="font-grey" th:if="${group.progress == 0}">마감임박</div>
+		<div class="font-grey" th:if="${group.progress == 0}">마감</div>
 	</div>
 	<div class="col col-lg-2 position-relative" id="middle_title">
-		<b class="position-absolute bottom-0 end-0">1200원</b>
+		<b class="position-absolute bottom-0 end-0" th:text="${group.price}">1200원</b>
 	</div>
 	<div class="col col-lg-2 position-relative" id="main_content">
-		<div class="position-absolute bottom-0 start-0 ps-3 pb-1">2022/05/10</div>
+		<div class="position-absolute bottom-0 start-0 ps-3 pb-1" th:text="${group.endDate}">2022/05/10</div>
 	</div>
 </div>
 </th:block>

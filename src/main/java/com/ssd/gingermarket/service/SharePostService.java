@@ -19,6 +19,9 @@ public interface SharePostService {
 	//포스트 상세조회(update)
 	public SharePostDto.Request getPostForModify(Long postIdx);
 	
+	//사용자가 작성한 포스트리스트 조회
+	public List<SharePostDto.MyPageInfo> getPostByUserId(Long userIdx);
+	
 	//전체 포스트리스트 조회 
 	public List<SharePostDto.CardResponse> getAllPost();
 	

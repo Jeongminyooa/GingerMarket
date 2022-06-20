@@ -88,7 +88,12 @@ public class ExperiodServiceImpl implements ExperiodService {
 		List<Experiod> experiodList = experiodRepository.findAllByAuthor(author);
 		
 		// entity -> dto 변환
-		List<ExperiodDto.Info> dto = experiodList.stream().map(ex -> new ExperiodDto.Info(ex.getExperiodIdx(), ex.getCategory(), ex.getEndDate(), getPeriod(ex.getStatus(), ex.getEndDate()))).collect(Collectors.toList());
+		List<ExperiodDto.Info> dto = experiodList.stream().map(ex -> new ExperiodDto.Info(
+				ex.getExperiodIdx(),
+				ex.getCategory(),
+				ex.getEndDate(),
+				getPeriod(ex.getStatus(), ex.getEndDate()))
+				).collect(Collectors.toList());
 		
 		return dto;
 	}
