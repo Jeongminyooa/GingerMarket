@@ -9,6 +9,6 @@ import com.ssd.gingermarket.domain.SharePost;
 import com.ssd.gingermarket.domain.User;
 
 public interface SharePostRepository extends JpaRepository<SharePost, Long>{
-	public List<SharePost> findAllByAuthorIdx(User author);
+	public List<SharePost> findAllByAuthor(User author);
 	public SharePost findTop1ByCategoryOrderByCreatedDateDesc(String category);
 }
