@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -15,9 +16,11 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssd.gingermarket.domain.GroupBuying;
 import com.ssd.gingermarket.domain.SharePost;
 import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.SharePostDto;
+import com.ssd.gingermarket.dto.SharePostDto.CardResponse;
 import com.ssd.gingermarket.dto.SharePostDto.DetailResponse;
 import com.ssd.gingermarket.dto.TestDto;
 import com.ssd.gingermarket.repository.SharePostRepository;
@@ -60,7 +63,7 @@ public class SharePostServiceImpl implements SharePostService {
     }
 	
 	//사용자가 작성한 포스트리스트 조회
-  @Transactional
+	@Transactional
 	public List<SharePostDto.MyPageInfo> getPostByUserId(Long userIdx) {
 		User author = userRepository.findById(userIdx).orElseThrow();
 		
@@ -81,10 +84,11 @@ public class SharePostServiceImpl implements SharePostService {
 	//게시글 리스트 조회
 	@Override
 	@Transactional(readOnly = true)
-    public List<SharePostDto.CardResponse> getAllPost() {
-		List<SharePost> postList = sharePostRepository.findAll(Sort.by(Direction.DESC, "createdDate"));
+    public Page<SharePostDto.CardResponse> getAllPost(int page) {
+		Pageable pageable = PageRequest.of(page, 8, Sort.by(Direction.DESC, "createdDate"));
+		Page<SharePost> postList = sharePostRepository.findAll(pageable);
 		
-        return postList.stream().map(SharePostDto.CardResponse::new).collect(Collectors.toList());
+        return postList.map(SharePostDto.CardResponse::new);
     }
 	
 	//선호 카테고리 게시글 리스트 조회 
@@ -139,6 +143,28 @@ public class SharePostServiceImpl implements SharePostService {
     public void modifyProgress(Long postIdx, boolean prog) {
     	SharePost entity = sharePostRepository.findById(postIdx).orElseThrow(); 
     	entity.updateProgress(prog);
+    }
+    
+   //공구 포스트 검색 (제목, 카테고리)
+    @Override
+ 	@Transactional
+	public Page<SharePostDto.CardResponse> getAllPostByKeyword(String keyword, int page, String option, String type) {
+    	Pageable pageable = PageRequest.of(page, 8, Sort.by(Direction.DESC, "created_date") );
+  
+    	if(option.equals("title")) {
+    		if(type.equals("key")) {
+	    		Page<SharePost> postList = sharePostRepository.findByKeyword(keyword, pageable);
+	    		return postList.map(SharePostDto.CardResponse::new);
+    		}
+    		else {
+    			Page<SharePost> postList = sharePostRepository.findByAddress(keyword, pageable);
+    			return postList.map(SharePostDto.CardResponse::new);
+    		}
+    	} else {
+    		Page<SharePost> postList = sharePostRepository.findByCategory(keyword,pageable);
+    		return postList.map(SharePostDto.CardResponse::new);
+    	}
+	
     }
     
 
