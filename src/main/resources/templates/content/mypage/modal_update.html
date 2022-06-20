@@ -34,9 +34,9 @@
 		let $name = $('#name');
 		
 		if($name.val() == "") {
-			//$name.focus();
-			//alert('닉네임을 입력해주세요.');
-			//return;
+			$name.focus();
+			alert('닉네임을 입력해주세요.');
+			return;
 		}
 		
 		//3. 전화번호
@@ -108,7 +108,7 @@
 						<label for="updateName" class="form-label">이름</label> <b
 							class="text-danger">*</b> <input type="text" class="form-control"
 							 th:field="*{name}" placeholder="닉네임 입력">
-						<div class="field-error" th:errors="*{name}">
+						<div class="field-error" th:errors="*{name}"></div>
 					</div>
 
 					<div class="mb-3">
@@ -133,7 +133,7 @@
 						<label for="updateAddress" class="form-label">주소</label> 
 						<b class="text-danger">*</b>
 						<input type="text" class="form-control"  th:field="*{address}" placeholder="주소 입력" readonly>
-						<input type="button" class="btn btn-outline-dark btn-sm w-100" id="address_kakao" value="주소 찾기"/>
+						<input type="button" class="btn btn-outline-secondary btn-sm w-100" id="address_kakao" value="주소 찾기"/>
 					</div>
 			
 					<div class="mb-3">

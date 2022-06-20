@@ -1,6 +1,8 @@
 package com.ssd.gingermarket.service;
 
 
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,6 +59,25 @@ public class SharePostServiceImpl implements SharePostService {
         return new SharePostDto.Request(entity);
     }
 	
+	//사용자가 작성한 포스트리스트 조회
+  @Transactional
+	public List<SharePostDto.MyPageInfo> getPostByUserId(Long userIdx) {
+		User author = userRepository.findById(userIdx).orElseThrow();
+		
+		List<SharePost> postEntityList = sharePostRepository.findAllByAuthorIdx(author);
+		
+		List<SharePostDto.MyPageInfo> postList = postEntityList.stream().map(post -> new SharePostDto.MyPageInfo(
+				post.getPostIdx(),
+				//post.getImage().getUrl(),
+				"",
+				post.getTitle(),
+				(post.getProgress().equals("Y") ? "나눔 완료" : "진행중"),
+				post.getCreatedDate())
+				).collect(Collectors.toList());
+		
+		return postList;
+	}
+		
 	//게시글 리스트 조회
 	@Override
 	@Transactional(readOnly = true)

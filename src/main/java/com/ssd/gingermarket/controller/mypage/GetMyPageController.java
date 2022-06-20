@@ -15,6 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ssd.gingermarket.controller.ExperiodController;
 import com.ssd.gingermarket.dto.ExperiodDto;
+import com.ssd.gingermarket.dto.GroupBuyingDto;
+import com.ssd.gingermarket.dto.SharePostDto;
 import com.ssd.gingermarket.dto.UserDto;
 import com.ssd.gingermarket.service.ExperiodService;
 import com.ssd.gingermarket.service.GroupBuyingService;
@@ -83,12 +85,16 @@ public class GetMyPageController {
 				
 				Map<String, Integer> categoryMap = ExperiodController.categoryExperiodMap();
 				mav.addObject("categoryMap", categoryMap);
-			} else if(category.equals("group")) {
+			} 
+			else if(category.equals("group")) {
 				// 공동구매 섹션
-				
-			} else {
+				List<GroupBuyingDto.MyPageInfo> dto = groupBuyingService.getGroupBuyingByUserId(userIdx);
+				mav.addObject("groupList", dto);
+			} 
+			else {
 				// 나눔 섹션
-				
+				List<SharePostDto.MyPageInfo> dto = sharePostService.getPostByUserId(userIdx);
+				mav.addObject("shareList", dto);
 			}
 		}
 		return mav;

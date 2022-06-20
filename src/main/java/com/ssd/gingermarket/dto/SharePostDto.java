@@ -148,5 +148,15 @@ public class SharePostDto {
 		}
 	}
 	
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Data
+	public static class MyPageInfo {
+		private Long postIdx;
+		private String imageUrl;
+		private String title;
+		private String status;
+		private LocalDateTime enrollDate;
+	}
 
 }
