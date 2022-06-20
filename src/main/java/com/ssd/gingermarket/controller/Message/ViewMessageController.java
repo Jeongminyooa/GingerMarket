@@ -34,9 +34,21 @@ public class ViewMessageController {
 	private final SharePostService sharePostService;
 	private final MessageService messageService;
 	
+	@GetMapping("/{postIdx}/room/{roomIdx}")
+	public ModelAndView getRoom(@PathVariable Long postIdx, @PathVariable Long roomIdx){
+		ModelAndView mav = new ModelAndView("content/message/messageInfo");
+
+		mav.addObject("postInfo", sharePostService.getPost(postIdx));
+
+		mav.addObject("roomIdx", roomIdx); 
+		
+		return mav;
+	}
+	
+	
 	//해당 쪽지방으로 가기 	
 	@GetMapping("/{postIdx}/sender/{senderIdx}")
-	public ModelAndView getRoom(@PathVariable Long postIdx, @PathVariable Long senderIdx){
+	public ModelAndView getRoom2(@PathVariable Long postIdx, @PathVariable Long senderIdx){
 		ModelAndView mav = new ModelAndView("content/message/messageInfo");
 	
 		mav.addObject("postIdx", postIdx);
@@ -81,13 +93,15 @@ public class ViewMessageController {
 	public String getMessages(@PathVariable Long roomIdx, Model model){
 				
 		Long sessionIdx = (long) 2; //현재 세션의 유저 
-		
+		messageService.updateIsRead(sessionIdx, roomIdx);
 		List<MessageDto.MessageResponse> msgList = messageService.getAllMessage(roomIdx);
 		
 		model.addAttribute("msgList", msgList);
 		model.addAttribute("userIdx", sessionIdx);
 		model.addAttribute("roomIdx", roomIdx);
 		model.addAttribute("senderIdx", sessionIdx);
+		
+		
 		
 		return "content/message/messageInfo :: #msg-container";
 			

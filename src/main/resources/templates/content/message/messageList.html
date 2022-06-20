@@ -77,8 +77,18 @@
 					</div>
 					
 					<!-- post img -->
-					<div class="col-lg-2 ps-5">
-						<a th:href="@{/messages/{postIdx}/sender/{senderIdx}(postIdx=${room.post.postIdx}, senderIdx=${room.sender.userIdx})}" class="stretched-link"> 
+					
+					<div class="col-lg-1 pt-4 ps-5">
+						 <div th:if="${room.isRead} == false"> 
+						<!-- 읽지 않은 새 메세지 알림 아이콘 -->
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"fill="#91A77F" class="bi bi-asterisk" viewBox="0 0 16 16">
+  							<path d="M8 0a1 1 0 0 1 1 1v5.268l4.562-2.634a1 1 0 1 1 1 1.732L10 8l4.562 2.634a1 1 0 1 1-1 1.732L9 9.732V15a1 1 0 1 1-2 0V9.732l-4.562 2.634a1 1 0 1 1-1-1.732L6 8 1.438 5.366a1 1 0 0 1 1-1.732L7 6.268V1a1 1 0 0 1 1-1z" />
+						</svg>
+					 </div> 
+					</div>
+					
+					<div class="col-lg-1 ps-5">
+						<a th:href="@{/messages/{postIdx}/room/{roomIdx}(postIdx=${room.post.postIdx}, roomIdx=${room.roomIdx})}" class="stretched-link"> 
 						<img th:if = "${not #strings.isEmpty(room.postImgUrl)}" th:src="@{${room.postImgUrl}}" src="/image/postList.JPG" alt="..." id="img-post" class="rounded-3"></a>
 					</div>
 					

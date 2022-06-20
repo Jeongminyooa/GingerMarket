@@ -28,6 +28,7 @@ public class MessageDto {
 		private User sender;
 		
 		private String content;
+		private boolean isRead;
 		
 	}
 

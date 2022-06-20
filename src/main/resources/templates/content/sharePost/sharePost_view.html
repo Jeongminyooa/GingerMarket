@@ -205,8 +205,10 @@
 
 			<!--Send message BTN -->
 			<div th:if="${postInfo.progress} == false and ${postInfo.author.userIdx} != ${senderIdx}" class="d-grid gap-2 mt-3">
-				<a class="btn btn-outline-success rounded-pill" th:href="@{/messages/{postIdx}/sender/{senderIdx}(postIdx=${postIdx}, senderIdx=${senderIdx})}"
-					role="button" id="btn-sendMsg">쪽지 보내기</a>
+				<form th:action="@{/messages/{postIdx}/room(postIdx=${postInfo.postIdx})}" th:method="post">
+					<button id="btn-sendMsg" type="submit" class="btn btn-outline-success rounded-pill w-100">쪽지 보내기</button>
+				</form>
+				
 			</div>
 			
 			
