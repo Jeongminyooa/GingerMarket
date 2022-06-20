@@ -47,20 +47,18 @@ $( document ).ready(function() {
 
 		function sendMessage(insertData){		
 			$.ajax({
-				url : '/messages/' + postIdx, 
+				url : '/messages/' + roomIdx, 
 				type : 'POST',
 				datatype : 'json',
 				contentType : 'application/json; charset=UTF-8',
 				data : JSON.stringify({
-					'content' : insertData,
-					'senderIdx' : senderIdx,
-					'authorIdx' : authorIdx
+					'content' : insertData
 				}),
 				success : function(data){
 					if(data != 0){
 						$('#content').val('');
-						alert("성공!" + data);
-						roomIdx = data;
+						alert("성공!");
+
 						location.reload();
 					}
 					else
@@ -145,6 +143,7 @@ function getMsgList(roomIdx) {
 					<!-- receiver message -->
 					<div class="ms-5">
 						<div th:text=${msg.content} id="main_content" class="msg-bubble">안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~ v안녕하세요~안녕하세요~안녕하세요~안녕하세요~</div>
+						<span th:text=${msg.isRead}></span>
 						<div th:text="${#temporals.format(msg.sendDate, 'yyyy/MM/dd HH:mm')}" id="small_content" class="ms-1" >2022/05/19 23:36</div>				
 					</div>
 				</div>
@@ -155,6 +154,7 @@ function getMsgList(roomIdx) {
 					<!-- sender message -->
 					<div class="">
 						<div th:text=${msg.content} id="main_content" class="msg-bubble-right">안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~ v안녕하세요~안녕하세요~안녕하세요~안녕하세요~</div>
+						<span th:text=${msg.isRead}></span>
 						<div th:text="${#temporals.format(msg.sendDate, 'MM/dd HH:mm')}" id="small_content" class="ms-1">2022/05/19 23:36</div>				
 					</div>
 				</div>

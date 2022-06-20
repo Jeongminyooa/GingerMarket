@@ -18,10 +18,10 @@ public interface MessageService {
 
 	public Long existRoom(Long postIdx, Long authorIdx, Long senderIdx);
 	//쪽지함 생성
-	public void addRoom(MessageDto.Request req, Long postIdx);
+	public Long addRoom(Long postIdx, Long senderIdx);
 	
 	//쪽지 보내기 
-	public Long sendMessage(MessageDto.Request req, Long roomIdx);
+	//public Long sendMessage(MessageDto.Request req, Long roomIdx);
 	
 	//쪽지 리스트 조회 
 	public List<MessageResponse> getAllMessage(Long roomIdx);
@@ -31,6 +31,16 @@ public interface MessageService {
 	
 	//쪽지함 상세 조회
 	public Long getRoom(Long postIdx, Long senderIdx);
+	
+	
+	public Long existRoom(Long postIdx, Long senderIdx);
+	
+	
+	public void sendMessage(MessageDto.Request req, Long senderIdx, Long roomIdx);
+	public Long sendMessage2(MessageDto.Request req, Long roomIdx);
+	
+	
+	public void updateIsRead(Long senderIdx, Long roomIdx);
 	
 	
 }

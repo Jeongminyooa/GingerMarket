@@ -1,6 +1,7 @@
 package com.ssd.gingermarket.service;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import com.ssd.gingermarket.domain.MessageRoom;
 import com.ssd.gingermarket.domain.SharePost;
 import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.MessageDto;
+import com.ssd.gingermarket.dto.MessageDto.Info;
 import com.ssd.gingermarket.dto.MessageDto.MessageResponse;
 import com.ssd.gingermarket.dto.MessageDto.RoomResponse;
 import com.ssd.gingermarket.dto.SharePostDto;
@@ -48,19 +50,28 @@ public class MessageServiceImpl<T> implements MessageService {
 		return messageRoomRepository.existsByIds(postIdx, authorIdx, senderIdx);
 	}
 	
+	//쪽지함 존재 확인 -> roomIdx
+	@Override
+	@Transactional	
+	public Long existRoom(Long postIdx, Long senderIdx) {
+		SharePost post = sharePostRepository.findById(postIdx).orElseThrow();
+		User sender = userRepository.findById(senderIdx).orElseThrow();
+		return messageRoomRepository.findByPostAndSender(post, sender).getRoomIdx();
+	}
+	
 	//쪽지함 생성  
 	@Override
 	@Transactional	
-	public void addRoom(MessageDto.Request req, Long postIdx) {
+	public Long addRoom(Long postIdx, Long senderIdx) {
 		SharePost post = sharePostRepository.findById(postIdx).orElseThrow();
-		User author = userRepository.findById(req.getAuthorIdx()).orElseThrow();
-		User sender = userRepository.findById(req.getSenderIdx()).orElseThrow();
+		User author = userRepository.findById(post.getAuthor().getUserIdx()).orElseThrow();
+		User sender = userRepository.findById(senderIdx).orElseThrow();
 		
-		req.setPost(post);
-		req.setAuthor(author);
-		req.setSender(sender);
+		MessageRoom room = MessageRoom.builder().author(author).post(post).sender(sender).build();
 			
-		messageRoomRepository.saveAndFlush(req.toRoomEntity());
+		Long roomIdx = messageRoomRepository.saveAndFlush(room).getRoomIdx();
+		
+		return roomIdx;
 	}
 	
 	//쪽지함 정보 조회   
@@ -70,11 +81,22 @@ public class MessageServiceImpl<T> implements MessageService {
 		return messageRoomRepository.findByPostIdAndSenderId(postIdx, senderIdx);		
 	}	
 	
+	//쪽지 보내기 
+		@Override
+		@Transactional
+		public void sendMessage(MessageDto.Request req, Long senderIdx, Long roomIdx) {
+			MessageRoom room = messageRoomRepository.findById(roomIdx).orElseThrow();
+			User sender = userRepository.findById(senderIdx).orElseThrow();
+			
+			MessageInfo msgInfo = MessageInfo.builder().content(req.getContent()).room(room).sender(sender).build();
+			
+		    messageRepository.saveAndFlush(msgInfo);
+		}
 
 	//쪽지 보내기 
 	@Override
 	@Transactional
-	public Long sendMessage(MessageDto.Request req, Long roomIdx) {
+	public Long sendMessage2(MessageDto.Request req, Long roomIdx) {
 		MessageRoom room = messageRoomRepository.findById(roomIdx).orElseThrow();
 		User sender = userRepository.findById(req.getSenderIdx()).orElseThrow();
 		System.out.println("sender : " + sender.getUserIdx());
@@ -99,21 +121,63 @@ public class MessageServiceImpl<T> implements MessageService {
 	@Transactional(readOnly = true)
 	public List<MessageDto.Info> getAllRoom(Long userIdx) {
 		
-		List<MessageRoom> list = messageRoomRepository.findByAuthorIdx(userIdx, userIdx);
 		
-		List<MessageDto.Info> roomList = list.stream().map(msg -> new MessageDto.Info(
-				msg.getRoomIdx(),
-				msg.getPost(),
-				
-				(msg.getPost().getImage() == null ? "" : "/upload/" + msg.getPost().getImage().getUrl()),
-				
-				msg.getSender(),
-				
-				msg.getMessages().get(msg.getMessages().size() - 1).getContent()))
-				
-				.collect(Collectors.toList());
+		List<MessageRoom> list = messageRoomRepository.findByAuthorIdx(userIdx, userIdx);
+		List<MessageDto.Info> roomList = new ArrayList<MessageDto.Info>();
+		
+		for(MessageRoom room : list) {
+			MessageInfo m = messageRepository.findTop1ByRoomOrderByCreatedDateDesc(room);
+			
+			boolean isRead;
+			if(m.getSender().getUserIdx() == userIdx) {
+				isRead = true;
+			} else {
+				if(m.getIsRead().equals("N")) {
+					isRead = false;
+				} else {
+					isRead = true;
+				}
+			}
+			MessageDto.Info info = new MessageDto.Info(
+					room.getRoomIdx(),
+					room.getPost(),
+					
+					(room.getPost().getImage() == null ? "" : "/upload/" + room.getPost().getImage().getUrl()),
+					
+					room.getSender(),
+					
+					room.getMessages().get(room.getMessages().size() - 1).getContent(),
+					isRead
+					);
+			roomList.add(info);
+		}
+		
+		
+//		List<MessageDto.Info> roomList = list.stream().map(msg -> new MessageDto.Info(
+//				msg.getRoomIdx(),
+//				msg.getPost(),
+//				
+//				(msg.getPost().getImage() == null ? "" : "/upload/" + msg.getPost().getImage().getUrl()),
+//				
+//				msg.getSender(),
+//				
+//				msg.getMessages().get(msg.getMessages().size() - 1).getContent()))
+//				
+//				.collect(Collectors.toList());
 		
 		return roomList;
 	}  
+	
+	//쪽지
+	@Override
+	@Transactional
+	public void updateIsRead(Long senderIdx, Long roomIdx) {
+		System.out.println(senderIdx + " : " + roomIdx);
+	messageRepository.updateIsRead(senderIdx, roomIdx);
+		
+		
+	}  
+	
+	
 
 }
