@@ -1,4 +1,70 @@
 <!-- User Update Modal -->
+<script>
+	function onCheckPassword() {
+		$('.mismatch').remove();
+		
+		let password = $('#password').val();
+		let check = $('#checkPassword').val();
+		
+		if(password != check) {
+			let $appendNode = $("<div class=\'mismatch pt-1 text-danger\'>비밀번호가 일치하지 않습니다.</div>");
+			$('#checkPassword').after($appendNode);
+		}
+	}
+	
+	// form 입력값 검증
+	function submitUpdateForm() {
+		let form = $('#userUpdateForm');
+		
+		//1. 비밀번호
+		let password = $('#password').val();
+		let check = $('#checkPassword').val();
+		
+		if(password != check) {
+			$('.mismatch').remove();
+			let $appendNode = $("<div class=\'mismatch pt-1 text-danger\'>비밀번호가 일치하지 않습니다.</div>");
+			$('#checkPassword').after($appendNode);
+			
+			$('#checkPassword').focus();
+			alert('비밀번호가 일치하지 않습니다.');
+			return;
+		}
+		
+		// 2. 이름
+		let $name = $('#name');
+		
+		if($name.val() == "") {
+			//$name.focus();
+			//alert('닉네임을 입력해주세요.');
+			//return;
+		}
+		
+		//3. 전화번호
+		let $phone2 = $('#phone2');
+		let $phone3 = $('#phone3');
+		
+		if($phone2.val() == "") {
+			$phone2.focus();
+			alert('핸드폰 번호를 입력해주세요.');
+			return;
+		}
+		
+		if($phone3.val() == "") {
+			$phone3.focus();
+			alert('핸드폰 번호를 입력해주세요.');
+			return;
+		}
+		
+		// 4. 생필품
+		if(!$('#category-select > option:selected').val()) {
+    		alert("선호하는 생필품은 적어도 하나 선택해야 합니다.");
+    		return;
+		}
+		
+		form.submit();
+		alert('정보 수정이 완료되었습니다.');
+	}
+</script>
 <div class="modal fade" id="userUpdateModal" tabindex="-1"
 	aria-labelledby="userUpdateModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -11,10 +77,10 @@
 				<div id="page_title" class="text-center">
 					<b>프로필 변경</b>
 				</div>
-				<form class="ps-5 pe-5">
+				<form class="ps-5 pe-5" id="userUpdateForm" th:action="@{/user/{userIdx}(userIdx = ${userInfo.userIdx})}" th:object="${userInfo}" th:method="PUT">
 					<div class="profile pt-3 text-center">
-						<img src="/image/profile2.jpg" class="rounded-circle profile-img"
-							alt="image">
+						<img src="/image/profile.png" th:if="*{imageUrl}" th:src="*{imageUrl}" class="rounded-circle profile-img" alt="image">
+    					<img src="/image/profile.png" th:unless="*{imageUrl}" class="rounded-circle profile-img" alt="image">
 					</div>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
 						fill="currentColor" class="bi bi-camera" viewBox="0 0 16 16">
@@ -24,55 +90,64 @@
 							d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" />
 					</svg>
 					<div class="mt-3 mb-2">
-						<input type="text" class="form-control" id="showId" value="사용자ID"
-							disabled>
+						<input type="text" class="form-control" th:field="*{userId}" value="사용자ID" disabled>
 					</div>
 					<div class="mb-3">
 						<input type="password" class="form-control" id="showPassword"
-							value="사용자비밀번호" disabled>
+							th:value="*{password}" value="사용자비밀번호" disabled>
 					</div>
 
 					<div class="pt-3">
-						<input type="text" class="form-control" id="updatePassword"
-							placeholder="비밀번호를 변경하는 경우 입력하세요.">
+						<input type="text" class="form-control" id="password" name="password" placeholder="비밀번호를 변경하는 경우 입력하세요.">
 					</div>
 					<div class="mb-3">
-						<input type="text" class="form-control" id="updateCheckPassword"
-							placeholder="비밀번호 확인">
+						<input type="text" class="form-control" id="checkPassword" onkeyup="onCheckPassword()" placeholder="비밀번호 확인">
 					</div>
 
 					<div class="mb-3">
 						<label for="updateName" class="form-label">이름</label> <b
 							class="text-danger">*</b> <input type="text" class="form-control"
-							id="updateName" placeholder="닉네임 입력">
+							 th:field="*{name}" placeholder="닉네임 입력">
+						<div class="field-error" th:errors="*{name}">
 					</div>
 
 					<div class="mb-3">
 						<label for="updatePhone" class="form-label">전화번호</label> <b
-							class="text-danger">*</b> <input type="text" class="form-control"
-							id="updatePhone" placeholder="전화번호 입력">
+							class="text-danger">*</b> 
+						<div class="input-group">
+							<select class="selectpicker w-25" id="tel" th:field="*{phone1}">
+	    						<option th:each="phone1: ${phone1}" 
+	    							th:value="${phone1}" 
+	    							th:text="${phone1}">
+	    						</option>
+    						</select>
+	    					<span class="input-group-text">-</span>
+							<input type="text" class="form-control w-25" th:field="*{phone2}" size="4" maxlength="4" pattern="[0-9]{3,4}">
+							<span class="input-group-text">-</span>
+							<input type="text" class="form-control w-25" th:field="*{phone3}" size="4" maxlength="4" pattern="[0-9]{4}"><br>
+						</div>
+						
 					</div>
 
 					<div class="mb-3">
 						<label for="updateAddress" class="form-label">주소</label> 
 						<b class="text-danger">*</b>
-							 <input type="text" class="form-control"
-							id="updateAddress" placeholder="주소 입력">
+						<input type="text" class="form-control"  th:field="*{address}" placeholder="주소 입력" readonly>
+						<input type="button" class="btn btn-outline-dark btn-sm w-100" id="address_kakao" value="주소 찾기"/>
 					</div>
-
+			
 					<div class="mb-3">
 						<label for="updateCategory" class="form-label">생필품 카테고리 선택</label> 
 						<b class="text-danger">*</b>
-						<select class="selectpicker w-100" th:field="*{items}" multiple data-live-search="true">
+						<select class="selectpicker w-100" id="category-select" th:field="*{items}" multiple data-live-search="true">
   							<option th:each="item: ${items}" 
     								th:value="${item}" 
     								th:text="${item}">
     						</option>
 						</select>
 					</div>
-					
 					<div class="mb-1 text-center">
-						<button type="button" class="quit_btn w-75">수정 완료</button>
+						<button type="button" class="quit_btn w-75" onclick="submitUpdateForm()">수정 완료</button>
 					</div>
 				</form>
 			</div>
