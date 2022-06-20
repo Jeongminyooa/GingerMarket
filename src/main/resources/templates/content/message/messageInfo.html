@@ -38,7 +38,10 @@ $( document ).ready(function() {
 	
 	$('#btn_reply').click(function(){
 		var insertData = $('#content').val();
-		sendMessage(insertData);
+		if(insertData != null && insertData != "")
+			sendMessage(insertData);
+		else
+			alert("메세지를 입력하세요!");
 	});
 	
 
