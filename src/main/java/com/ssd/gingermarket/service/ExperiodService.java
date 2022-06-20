@@ -22,9 +22,6 @@ public interface ExperiodService {
 	// 교체주기 날짜로 가져오기
 	public List<ExperiodDto.Info> getExperiodByDate(Long userId, String date);
 	
-	// 교체주기 업데이트
-	public void updateExperiodDday();
-	
 	// 교체주기 삭제
 	public void removeExperiod(Long experiodIdx);
 }

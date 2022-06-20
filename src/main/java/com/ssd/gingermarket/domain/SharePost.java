@@ -1,10 +1,22 @@
 package com.ssd.gingermarket.domain;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -18,7 +30,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Getter
-@DynamicInsert //null인 필드값이 insert 시 제외되게하며, default값을 넣어주기 위함 
+//null인 필드값이 insert 시 제외되게하며, default값을 넣어주기 위함 
 @Table(name="sharepost")
 public class SharePost extends BaseTime {
 	@Id
@@ -39,32 +51,44 @@ public class SharePost extends BaseTime {
 	@Column(length = 50)
 	private String address;
 	
-	@Column(length = 3)
-	@ColumnDefault("'N'")
+	@Column(length = 1)
 	private String progress;
 	
-	@ColumnDefault("0")
-	private int messageCnt;
+	@OneToOne
+	@JoinColumn(name="image_idx")
+	private Image image;
 	
-	@ColumnDefault("0")
-	private Long imageIdx;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "author_idx")
+	private User author;
 	
-	@Column(nullable = false)
-	private Long authorIdx;
+	@OneToMany(mappedBy="post", cascade = CascadeType.ALL)
+	private List<MessageRoom> rooms = new ArrayList<MessageRoom>();
 	
-	public void updatePost(String title, String category, String descr, String address, Long imageIdx) {
+	@PrePersist
+	public void prePersist(){
+		this.progress = this.progress == null ? "N" : this.progress;
+	}
+
+	
+	public void updatePost(String title, String category, String descr, String address) {
         this.title = title;
         this.category = category;
         this.descr = descr;
         this.address = address;
-        this.imageIdx = imageIdx;
     }
+	
+	public void updatePostImg(Image image) {
+		this.image = image;
+	}
 	
 	public void updateProgress(boolean prog) {
 		if(prog)
-			this.progress = "'N'";
+			this.progress = "N";
 		else
-			this.progress = "'Y'";
+			this.progress = "Y";
 	}
+	
+	
 	
 }

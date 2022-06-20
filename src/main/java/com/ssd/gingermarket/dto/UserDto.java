@@ -1,5 +1,8 @@
 package com.ssd.gingermarket.dto;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssd.gingermarket.domain.User;
@@ -54,25 +57,32 @@ public class UserDto {
 		private Long userIdx;
 		private String userId;
 		private String password;
+		@NotEmpty(message="{notnull.name}")
 		private String name;
-		private String phone;
-		private String item1;
-		private String item2;
-		private String item3;
+		private String phone1;
+		private String phone2;
+		private String phone3;
+		private String[] items;
 		private String address;
-		private Long img;
+		private String imageUrl;
 		
 		public Response(User user) {
-			this.userIdx=user.getUserIdx();
-			this.userId=user.getUserId();
-			this.password=user.getPassword();
-			this.name=user.getName();
-			this.phone=user.getPhone();
-			this.item1=user.getItem1();
-			this.item2=user.getItem2();
-			this.item3=user.getItem3();
-			this.img=user.getImg();
-			this.address=user.getAddress();
+			this.userIdx = user.getUserIdx();
+			this.userId = user.getUserId();
+			this.password = user.getPassword();
+			this.name = user.getName();
+			setPhoneNumber(user.getPhone());
+			items = new String[] {user.getItem1(), user.getItem2(), user.getItem3()};
+			if(user.getImage() != null)
+				this.imageUrl = user.getImage().getUrl();
+			this.address = user.getAddress();
+		}
+		
+		// 전화번호를 3개로 나누어 출력하기 위함
+		public void setPhoneNumber(String phone) {
+			this.phone1 = phone.substring(0, 3);
+			this.phone2 = phone.substring(3, 7);
+			this.phone3 = phone.substring(7, 11);
 		}
 	}
 	

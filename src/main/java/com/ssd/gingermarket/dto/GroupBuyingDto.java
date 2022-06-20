@@ -81,6 +81,7 @@ public class GroupBuyingDto {
 			private LocalDate endDate;
 			private String descr;
 			private int progress;
+			private int commentCnt;
 			
 			public DetailResponse(GroupBuying groupBuying) {
 				this.groupIdx = groupBuying.getGroupIdx();
@@ -96,6 +97,7 @@ public class GroupBuyingDto {
 				this.endDate = groupBuying.getEndDate();
 				this.descr = groupBuying.getDescr();
 				this.progress = groupBuying.getProgress();
+				this.commentCnt = groupBuying.getCommentList().size();
 
 			}
 			

@@ -10,22 +10,33 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.ssd.gingermarket.domain.Image;
+import com.ssd.gingermarket.dto.ImageDto;
 import com.ssd.gingermarket.dto.SharePostDto;
+import com.ssd.gingermarket.dto.SharePostDto.Request;
+import com.ssd.gingermarket.service.ImageService;
 import com.ssd.gingermarket.service.SharePostService;
+import com.ssd.gingermarket.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
 //@Slf4j //로그 
 @RestController 
-@RequestMapping("/share")
+@RequestMapping("/share-posts")
 @RequiredArgsConstructor
 public class AddSharePostController {
 	
+	private String uploadDirLocal;
+
+	private final ImageService imageService;
 	private final SharePostService sharePostService;
+	private final UserService userService;
 	
 	@ModelAttribute("categoryList")
 	public List<String> categoryList(){
@@ -43,24 +54,44 @@ public class AddSharePostController {
 	}
 	
 	
-	@GetMapping("/addForm")
-	public ModelAndView goAddForm() { 
-		long userIdx = 2;//user session으로 추후 수정 
+	@GetMapping("/new")
+	public ModelAndView getAddForm() { 
+		Long userIdx = (long) 2;//user session으로 추후 수정 
 		
 		ModelAndView mav = new ModelAndView("content/sharePost/sharePost_add");
-		mav.addObject("postReq", new SharePostDto.Request());
+		
+		SharePostDto.Request req = new SharePostDto.Request();
+		
+		String addr = userService.getUser(userIdx).getAddress();
+		System.out.println("addr : " + addr);
+
+		req.setAddress(addr);
+		mav.addObject("postReq", req);
 		
 		return mav;
 	}
 	
 	@PostMapping("")
 	public RedirectView createPost(SharePostDto.Request post) {	
-		Long authorIdx = (long) 1; //session구현 후 변경
+		Long authorIdx = (long) 2; //session구현 후 변경
+		
+		if(post.getFile().getOriginalFilename().equals("")) {
+			post.setImage(null);
+			System.out.println("사진이 없음"); 
+		}
+		else {
+			ImageDto.Request imgDto = new ImageDto.Request(post.getFile());
+		
+			Image img = imageService.uploadFile(imgDto.getImageFile());
+			
+			
+			post.setImage(img);
+		}
 		
 		post.setAuthorIdx(authorIdx);
 		sharePostService.addPost(post);
 		
-        return new RedirectView("/share/posts");
+        return new RedirectView("/share-posts");
     }
 	
 	

@@ -15,7 +15,7 @@ public class ExperiodDto {
 		private Long experiodIdx;
 		private String category;
 		private LocalDate endDate;
-		private int dDay;
+		private long dDay;
 	}
 
 }
