@@ -1,19 +1,16 @@
 package com.ssd.gingermarket.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
-import com.ssd.gingermarket.domain.Apply;
 import com.ssd.gingermarket.domain.GroupBuying;
-import com.ssd.gingermarket.dto.ApplyDto;
-
 import com.ssd.gingermarket.dto.GroupBuyingDto;
-import com.ssd.gingermarket.repository.ApplyRepository;
 import com.ssd.gingermarket.repository.GroupBuyingRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -39,10 +36,10 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
 	// 포스트 전체 조회
 	@Override
 	@Transactional(readOnly = true)
-	public List<GroupBuyingDto.CardResponse> getAllPost() {
-		List<GroupBuying> groupBuyingList = groupBuyingRepository.findAll(Sort.by(Direction.DESC, "createdDate"));
+	public Page<GroupBuying> getAllPost(int page) {
+		Pageable pageable = PageRequest.of(page, 8, Sort.by(Direction.DESC, "createdDate") );
 		
-		return groupBuyingList.stream().map(GroupBuyingDto.CardResponse::new).collect(Collectors.toList());	
+		return this.groupBuyingRepository.findAll(pageable);
 	}
 
 	// 포스트 상세 조회
@@ -96,22 +93,18 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
    			return 0;
    	}
    	
-   	//공구 포스트 제목 검색 
+   	//공구 포스트 검색 (제목, 카테고리)
     @Override
  	@Transactional
-	public List<GroupBuyingDto.CardResponse> getAllPostByTitle(String keyword) {
-    	List<GroupBuying> groupBuyingList = groupBuyingRepository.findByKeyword(keyword);
-    	return groupBuyingList.stream().map(GroupBuyingDto.CardResponse::new).collect(Collectors.toList());	
+	public Page<GroupBuying> getAllPostByKeyword(String keyword, int page, String option) {
+    	Pageable pageable = PageRequest.of(page, 8, Sort.by(Direction.DESC, "created_date") );
     	
-    }
-    
- 	//공구 포스트 카테고리 검색 
-    @Override
- 	@Transactional
-	public List<GroupBuyingDto.CardResponse> getAllPostByCategory(String category) {
-    	List<GroupBuying> groupBuyingList = groupBuyingRepository.findByCategory(category);
-    	return groupBuyingList.stream().map(GroupBuyingDto.CardResponse::new).collect(Collectors.toList());	
-    	
+    	if(option.equals("title")) {
+    		return this.groupBuyingRepository.findByKeyword(keyword, pageable);
+    	} else {
+    		return this.groupBuyingRepository.findByCategory(keyword,pageable);
+    	}
+	
     }
    
 }

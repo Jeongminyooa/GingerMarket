@@ -4,6 +4,7 @@ package com.ssd.gingermarket.controller.GroupBuying;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ssd.gingermarket.domain.GroupBuying;
 import com.ssd.gingermarket.dto.GroupBuyingDto;
 import com.ssd.gingermarket.service.GroupBuyingService;
 
@@ -41,11 +43,12 @@ public class ViewGroupBuyingController {
 
 	//전체 공구 포스트 조회
 	@GetMapping("")
-	public ModelAndView getPostList(GroupBuyingDto.DetailResponse groupBuying) {
+	public ModelAndView getPostList(@RequestParam(value="page", defaultValue="0") int page) {
 		
 		ModelAndView mav = new ModelAndView("content/groupBuyingPost/groupPostList");
-	
-		mav.addObject("groupBuyingList", groupBuyingService.getAllPost());	
+		
+		mav.addObject("groupBuyingList", groupBuyingService.getAllPost(page));	
+		
 		return mav;
 	}
 	
@@ -59,22 +62,17 @@ public class ViewGroupBuyingController {
 		return mav;
 	}
 	
-	//제목별 검색 공구 포스트 조회
-	@GetMapping("/search")
-	public ModelAndView getSearchListByKeyword(@RequestParam String keyword) {
+	//검색
+	@GetMapping(value="/search/{option}")
+	public ModelAndView getSearchList(@PathVariable("option") String option,
+			@RequestParam String keyword
+			, @RequestParam(value="page", defaultValue="0") int page) {
 		
 		ModelAndView mav = new ModelAndView("content/groupBuyingPost/groupPostList");
-		mav.addObject("groupBuyingList", groupBuyingService.getAllPostByTitle(keyword));	
-		return mav;
-	}
-	
-
-	//카테고리별 검색 공구 포스트 조회
-	@GetMapping("/searchC")
-	public ModelAndView getSearchListByCategory(@RequestParam String category) {
 		
-		ModelAndView mav = new ModelAndView("content/groupBuyingPost/groupPostList");
-		mav.addObject("groupBuyingList", groupBuyingService.getAllPostByCategory(category));	
+		mav.addObject("groupBuyingList", groupBuyingService.getAllPostByKeyword(keyword, page, option));
+		mav.addObject("keyword", keyword);
+		
 		return mav;
 	}
 

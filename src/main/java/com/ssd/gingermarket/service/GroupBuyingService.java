@@ -1,11 +1,12 @@
 package com.ssd.gingermarket.service;
 
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import com.ssd.gingermarket.domain.GroupBuying;
 import com.ssd.gingermarket.dto.GroupBuyingDto;
+
 
 @Service
 public interface GroupBuyingService {
@@ -14,16 +15,10 @@ public interface GroupBuyingService {
 	public void addPost(GroupBuyingDto.Request groupBuying);
 
 	// 공구 포스트 전체 조회
-	public List<GroupBuyingDto.CardResponse> getAllPost();
+	public Page<GroupBuying> getAllPost(int page);
 	
 	// 카테고리 검색 포스트 리스트 가져오기
-	//public List<GroupBuyingDto.CardResponse> getAllPostByCategory(String category);
-	
-	// 카테고리 검색 포스트 리스트 가져오기
-	public List<GroupBuyingDto.CardResponse> getAllPostByCategory(String category);
-	
-	// 제목 검색 포스트 리스트 가져오기
-	public List<GroupBuyingDto.CardResponse> getAllPostByTitle(String keyword);
+	public Page<GroupBuying> getAllPostByKeyword(String keyword, int page, String option);
 	
 	// 공구 포스트 상세 조회
 	public GroupBuyingDto.DetailResponse getPost(Long groupIdx);
