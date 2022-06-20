@@ -64,12 +64,11 @@ public class SharePostServiceImpl implements SharePostService {
 	public List<SharePostDto.MyPageInfo> getPostByUserId(Long userIdx) {
 		User author = userRepository.findById(userIdx).orElseThrow();
 		
-		List<SharePost> postEntityList = sharePostRepository.findAllByAuthorIdx(author);
+		List<SharePost> postEntityList = sharePostRepository.findAllByAuthor(author);
 		
 		List<SharePostDto.MyPageInfo> postList = postEntityList.stream().map(post -> new SharePostDto.MyPageInfo(
 				post.getPostIdx(),
-				//post.getImage().getUrl(),
-				"",
+				(post.getImage() == null ? "" : post.getImage().getUrl()),
 				post.getTitle(),
 				(post.getProgress().equals("Y") ? "나눔 완료" : "진행중"),
 				post.getCreatedDate())

@@ -17,12 +17,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 public class SharePostDto {
+	public static String getUploadDirPath(String imageUrl) {
+		return "/upload/" + imageUrl;
+	}
+	
 	@NoArgsConstructor
 	@AllArgsConstructor
 	@Data
 	public static class Request{
-		private String uploadDirLocal = "/upload/";
-		
 		private String title;
 		private String category;
 		private String descr;
@@ -52,7 +54,7 @@ public class SharePostDto {
 			this.descr = sharePost.getDescr();
 			this.address = sharePost.getAddress();
 			try {
-				this.imgUrl = this.uploadDirLocal + sharePost.getImage().getUrl();
+				this.imgUrl = getUploadDirPath(sharePost.getImage().getUrl());
 			}catch (Exception e ) {	           
 				this.imgUrl = "";
 			}
@@ -64,10 +66,6 @@ public class SharePostDto {
 	@AllArgsConstructor
 	@Data
 	public static class CardResponse{
-		//@Value("/upload/")
-		private String uploadDirLocal = "/upload/";
-		
-		
 		private Long postIdx;
 		
 		//추후 User 객체 참조
@@ -88,7 +86,7 @@ public class SharePostDto {
 			this.title = sharePost.getTitle();
 			
 			try {
-				this.imgUrl = this.uploadDirLocal + sharePost.getImage().getUrl();
+				this.imgUrl = getUploadDirPath(sharePost.getImage().getUrl());
 			}catch (Exception e ) {	           
 				this.imgUrl = "";
 			}
@@ -107,8 +105,6 @@ public class SharePostDto {
 	@AllArgsConstructor
 	@Data
 	public static class DetailResponse{
-		private String uploadDirLocal = "/upload/";
-		
 		private Long postIdx;
 		
 		private User author;
@@ -130,7 +126,7 @@ public class SharePostDto {
 			this.title = sharePost.getTitle();
 			String url = "";
 			try {
-				url = this.uploadDirLocal + sharePost.getImage().getUrl();
+				url = getUploadDirPath(sharePost.getImage().getUrl());
 			}catch (Exception e ) {
 				url = "";
 			}finally {
@@ -157,6 +153,18 @@ public class SharePostDto {
 		private String title;
 		private String status;
 		private LocalDateTime enrollDate;
+		private Long roomIdx;
+		
+		public MyPageInfo(Long postIdx, String imageUrl, String title, String status, LocalDateTime enrollDate) {
+			this.postIdx = postIdx;
+			this.imageUrl = imageUrl;
+			if(!imageUrl.equals("")) {
+				this.imageUrl = getUploadDirPath(imageUrl);
+			}
+			this.title = title;
+			this.status = status;
+			this.enrollDate = enrollDate;
+		}
 	}
-
+	
 }
