@@ -40,7 +40,7 @@ public class ViewMessageController {
 		ModelAndView mav = new ModelAndView("content/message/messageInfo");
 	
 		mav.addObject("postIdx", postIdx);
-		mav.addObject("userIdx", senderIdx);
+		mav.addObject("userIdx", senderIdx); //fragment 용 
 		mav.addObject("senderIdx", senderIdx);
 
 		mav.addObject("postInfo", sharePostService.getPost(postIdx));
@@ -80,13 +80,14 @@ public class ViewMessageController {
 	@GetMapping("/{roomIdx}")
 	public String getMessages(@PathVariable Long roomIdx, Model model){
 				
-		Long sessionIdx = (long) 3; //현재 세션의 유저 
+		Long sessionIdx = (long) 2; //현재 세션의 유저 
 		
 		List<MessageDto.MessageResponse> msgList = messageService.getAllMessage(roomIdx);
 		
 		model.addAttribute("msgList", msgList);
 		model.addAttribute("userIdx", sessionIdx);
 		model.addAttribute("roomIdx", roomIdx);
+		model.addAttribute("senderIdx", sessionIdx);
 		
 		return "content/message/messageInfo :: #msg-container";
 			

@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssd.gingermarket.domain.Image;
 import com.ssd.gingermarket.domain.SharePost;
 import com.ssd.gingermarket.domain.TestEntity;
+import com.ssd.gingermarket.domain.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,6 +32,7 @@ public class SharePostDto {
 		private String imgUrl;
 		private MultipartFile file;
 		
+		private User author;
 		private Long authorIdx;
 			
 		public SharePost toEntity() {
@@ -40,7 +42,7 @@ public class SharePostDto {
 					.descr(descr)
 					.address(address)
 					.image(image)
-					.authorIdx(authorIdx)
+					.author(author)
 					.build();
 		}
 		
@@ -54,7 +56,7 @@ public class SharePostDto {
 			}catch (Exception e ) {	           
 				this.imgUrl = "";
 			}
-			this.authorIdx = sharePost.getAuthorIdx();
+			this.authorIdx = sharePost.getAuthor().getUserIdx();
 		}
 	}
 	
@@ -69,7 +71,7 @@ public class SharePostDto {
 		private Long postIdx;
 		
 		//추후 User 객체 참조
-		private Long userIdx;
+		private User author;
 		
 		private String category;
 		private String title;
@@ -81,7 +83,7 @@ public class SharePostDto {
 		
 		public CardResponse(SharePost sharePost) {
 			this.postIdx = sharePost.getPostIdx();
-			this.userIdx = sharePost.getAuthorIdx();
+			this.author = sharePost.getAuthor();
 			this.category = sharePost.getCategory();
 			this.title = sharePost.getTitle();
 			
@@ -108,7 +110,10 @@ public class SharePostDto {
 		private String uploadDirLocal = "/upload/";
 		
 		private Long postIdx;
-		private Long authorIdx;
+		
+		private User author;
+		private String address;
+		
 		private String category;
 		private String title;
 		private String imgUrl;
@@ -119,7 +124,8 @@ public class SharePostDto {
 		
 		public DetailResponse(SharePost sharePost) {
 			this.postIdx = sharePost.getPostIdx();
-			this.authorIdx = sharePost.getAuthorIdx();
+			this.author = sharePost.getAuthor();
+			this.address = sharePost.getAddress();
 			this.category = sharePost.getCategory();
 			this.title = sharePost.getTitle();
 			String url = "";

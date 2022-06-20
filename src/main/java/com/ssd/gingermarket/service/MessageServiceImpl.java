@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssd.gingermarket.domain.MessageInfo;
 import com.ssd.gingermarket.domain.MessageRoom;
 import com.ssd.gingermarket.domain.SharePost;
+import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.MessageDto;
 import com.ssd.gingermarket.dto.MessageDto.MessageResponse;
 import com.ssd.gingermarket.dto.MessageDto.RoomResponse;
@@ -26,6 +27,7 @@ import com.ssd.gingermarket.dto.TestDto;
 import com.ssd.gingermarket.repository.MessageInfoRepository;
 import com.ssd.gingermarket.repository.MessageRoomRepository;
 import com.ssd.gingermarket.repository.SharePostRepository;
+import com.ssd.gingermarket.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +39,7 @@ public class MessageServiceImpl<T> implements MessageService {
 	private final SharePostRepository sharePostRepository;
 	private final MessageInfoRepository messageRepository;
 	private final MessageRoomRepository messageRoomRepository;
+	private final UserRepository userRepository;
 	
 	//쪽지함 존재 확인 -> roomIdx
 	@Override
@@ -50,7 +53,12 @@ public class MessageServiceImpl<T> implements MessageService {
 	@Transactional	
 	public void addRoom(MessageDto.Request req, Long postIdx) {
 		SharePost post = sharePostRepository.findById(postIdx).orElseThrow();
+		User author = userRepository.findById(req.getAuthorIdx()).orElseThrow();
+		User sender = userRepository.findById(req.getSenderIdx()).orElseThrow();
+		
 		req.setPost(post);
+		req.setAuthor(author);
+		req.setSender(sender);
 			
 		messageRoomRepository.saveAndFlush(req.toRoomEntity());
 	}
@@ -68,9 +76,12 @@ public class MessageServiceImpl<T> implements MessageService {
 	@Transactional
 	public Long sendMessage(MessageDto.Request req, Long roomIdx) {
 		MessageRoom room = messageRoomRepository.findById(roomIdx).orElseThrow();
+		User sender = userRepository.findById(req.getSenderIdx()).orElseThrow();
+		System.out.println("sender : " + sender.getUserIdx());
 		req.setRoom(room);
+		req.setSender(sender);
 		
-		return messageRepository.save(req.toMsgEntity()).getRoom().getRoomIdx();
+		return messageRepository.saveAndFlush(req.toMsgEntity()).getRoom().getRoomIdx();
 	}
 	
 	//쪽지 리스트 조회 
@@ -92,12 +103,11 @@ public class MessageServiceImpl<T> implements MessageService {
 		
 		List<MessageDto.Info> roomList = list.stream().map(msg -> new MessageDto.Info(
 				msg.getRoomIdx(),
-				msg.getPost().getPostIdx(),
-				msg.getPost().getTitle(),
-				(msg.getPost().getImage() == null ? "" : "/upload/" + msg.getPost().getImage().getUrl()),
-				msg.getPost().getCreatedDate(),
+				msg.getPost(),
 				
-				msg.getSenderIdx(),
+				(msg.getPost().getImage() == null ? "" : "/upload/" + msg.getPost().getImage().getUrl()),
+				
+				msg.getSender(),
 				
 				msg.getMessages().get(msg.getMessages().size() - 1).getContent()))
 				
