@@ -182,7 +182,7 @@
 				<div th:text=${postInfo.title} id="middle_title">
 					<b>두루마리 휴지 나눔합니당</b>
 				</div>
-				<div th:text=${postInfo.category} id="main_content" style="color: silver;">#위생용품</div>
+				<div th:utext=|#${postInfo.category}| id="main_content" style="color: silver;">#위생용품</div>
 				<div th:text=${postInfo.descr} class="pt-3" id="main_content">상세설명</div>
 			</div>
 

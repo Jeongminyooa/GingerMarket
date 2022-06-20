@@ -64,7 +64,7 @@ public class ViewSharePostController {
 	@GetMapping("")
 	public ModelAndView getPostList(@RequestParam(value="page", defaultValue="0") int page) {
 		
-		Long userIdx = (long) 1;
+		Long userIdx = (long) 2;
 		
 		ModelAndView mav = new ModelAndView("content/sharePost/sharePostList");
 		mav.addObject("allPostList", sharePostService.getAllPost(page));

@@ -65,7 +65,7 @@ public class ViewMessageController {
 	public ModelAndView getRoomList(@PathVariable Long userIdx){
 		ModelAndView mav = new ModelAndView("content/message/messageList");
 		
-		userIdx = (long) 3; //현재 세션의 유저 
+		userIdx = (long) 2; //현재 세션의 유저 
 		
 
 		List<MessageDto.Info> roomList = messageService.getAllRoom(userIdx);
