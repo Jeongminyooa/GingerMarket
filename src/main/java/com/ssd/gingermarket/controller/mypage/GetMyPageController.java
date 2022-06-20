@@ -63,7 +63,7 @@ public class GetMyPageController {
 	public UserDto.Response formBackingObject(HttpServletRequest request) 
 			throws Exception  {
 		// session에서 id 값 받아오기 
-		long userIdx = 3;
+		long userIdx = 2;
 		return userService.getUserInfo(userIdx);
 	}
 	
@@ -71,7 +71,7 @@ public class GetMyPageController {
 	public ModelAndView getMyPage(@RequestParam(value="category", required=false) String category) {
 		ModelAndView mav = new ModelAndView("content/mypage/mypage");
 		
-		long userIdx = 3;
+		long userIdx = 2;
 		
 		if(category != null) {
 			mav.addObject("category", category);

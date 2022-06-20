@@ -34,9 +34,9 @@
 		let $name = $('#name');
 		
 		if($name.val() == "") {
-			$name.focus();
-			alert('닉네임을 입력해주세요.');
-			return;
+			//$name.focus();
+			//alert('닉네임을 입력해주세요.');
+			//return;
 		}
 		
 		//3. 전화번호
@@ -108,6 +108,7 @@
 						<label for="updateName" class="form-label">이름</label> <b
 							class="text-danger">*</b> <input type="text" class="form-control"
 							 th:field="*{name}" placeholder="닉네임 입력">
+						<div class="field-error" th:errors="*{name}">
 					</div>
 
 					<div class="mb-3">

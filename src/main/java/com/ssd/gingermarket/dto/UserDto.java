@@ -1,5 +1,8 @@
 package com.ssd.gingermarket.dto;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssd.gingermarket.domain.User;
@@ -54,6 +57,7 @@ public class UserDto {
 		private Long userIdx;
 		private String userId;
 		private String password;
+		@NotEmpty(message="{notnull.name}")
 		private String name;
 		private String phone1;
 		private String phone2;
