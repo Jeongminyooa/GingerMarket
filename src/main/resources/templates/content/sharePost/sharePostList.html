@@ -108,7 +108,7 @@
 			<th:block th:include="@{/content/sharePost/sharePost_allPostList}"></th:block>
 	
 			<div th:if="${!allPostList.isEmpty()}">
-		        <ul class="pagination justify-content-center my">
+		        <ul class="pagination justify-content-center share">
 		            <li class="page-item" th:classappend="${!allPostList.hasPrevious} ? 'disabled'">           
 		                 <a class="page-link" 
 		                    th:href="@{|?keyword=${keyword}&page=${allPostList.number-1}&type=${type}|}">
