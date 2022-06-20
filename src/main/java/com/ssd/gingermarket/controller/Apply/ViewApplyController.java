@@ -23,7 +23,7 @@ public class ViewApplyController {
 	public ModelAndView getApplyList() {
 		
 		ModelAndView mav = new ModelAndView("content/groupBuyingPost/groupPost_apply");
-		mav.addObject("applyList", groupBuyingService.getAllApply());
+		//mav.addObject("applyList", groupBuyingService.getAllApply());
 		return mav;
 	}
 	

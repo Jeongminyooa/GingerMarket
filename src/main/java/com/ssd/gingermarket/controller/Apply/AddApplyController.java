@@ -29,7 +29,7 @@ public class AddApplyController {
 		
 		apply.setUserIdx(userIdx);
 		apply.getMessage();
-		groupBuyingService.addApply(apply, groupIdx);
+		//groupBuyingService.addApply(apply, groupIdx);
 
 		return new RedirectView("/group-buying/" + groupIdx);
 	} 
