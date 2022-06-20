@@ -62,11 +62,14 @@ public class GroupBuying extends BaseTime{
 		 @Column(nullable = false)
 		 private Long authorIdx;
 		 
+		 /*
 		 @OneToMany(mappedBy = "groupBuying", fetch = FetchType.EAGER)
-		 private List<Apply> applyList;
+
+		 private List<Apply> applyList; */
 		 
 		 @OneToMany(mappedBy="group", fetch = FetchType.LAZY)
 		 private List<CommentInfo> commentList = new ArrayList<>();
+
 		 
 		 public void updatePost(String title, String category, int recruitNum, String website, int price, String descr, LocalDate endDate, Long imageIdx) {
 		        this.title = title;

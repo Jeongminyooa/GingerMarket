@@ -1,19 +1,16 @@
 package com.ssd.gingermarket.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
-import com.ssd.gingermarket.domain.Apply;
 import com.ssd.gingermarket.domain.GroupBuying;
-import com.ssd.gingermarket.dto.ApplyDto;
-
 import com.ssd.gingermarket.dto.GroupBuyingDto;
-import com.ssd.gingermarket.repository.ApplyRepository;
 import com.ssd.gingermarket.repository.GroupBuyingRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -25,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 public class GroupBuyingServiceImpl implements GroupBuyingService {
 
 	private final GroupBuyingRepository groupBuyingRepository;
-	private final ApplyRepository applyRepository;
 
 	// 포스트 등록
 	@Override
@@ -40,10 +36,10 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
 	// 포스트 전체 조회
 	@Override
 	@Transactional(readOnly = true)
-	public List<GroupBuyingDto.CardResponse> getAllPost() {
-		List<GroupBuying> groupBuyingList = groupBuyingRepository.findAll(Sort.by(Direction.DESC, "createdDate"));
+	public Page<GroupBuying> getAllPost(int page) {
+		Pageable pageable = PageRequest.of(page, 8, Sort.by(Direction.DESC, "createdDate") );
 		
-		return groupBuyingList.stream().map(GroupBuyingDto.CardResponse::new).collect(Collectors.toList());	
+		return this.groupBuyingRepository.findAll(pageable);
 	}
 
 	// 포스트 상세 조회
@@ -82,27 +78,6 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
     	groupBuyingRepository.deleteById(groupIdx);
     }
 
-	// 공구 신청 조회
-    @Override
-	@Transactional(readOnly = true)
-	public List<ApplyDto.Response> getAllApply() {
-		List<Apply> applyList = applyRepository.findAll(Sort.by(Direction.DESC, "applyIdx"));
-	 
-		return applyList.stream().map(ApplyDto.Response::new).collect(Collectors.toList());	
-	}
-    
-    // 공구 신청 등록
-    @Override
-	@Transactional
-	public void addApply(ApplyDto.Request apply, Long groupIdx) {
-		applyRepository.save(apply.toEntity());
-		GroupBuying groupBuying = groupBuyingRepository.findById(groupIdx).orElseThrow();
-		groupBuying.updateParticipate();
-		
-		int progress = updateProgress(groupBuying.getParticipateNum(), groupBuying.getRecruitNum());
-		groupBuying.updateProgress(progress);
-
-	}
     
     //공구 진행 상태
    	public int updateProgress(int partipateNum, int recruitNum) {
@@ -117,7 +92,21 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
        	else
    			return 0;
    	}
-
+   	
+   	//공구 포스트 검색 (제목, 카테고리)
+    @Override
+ 	@Transactional
+	public Page<GroupBuying> getAllPostByKeyword(String keyword, int page, String option) {
+    	Pageable pageable = PageRequest.of(page, 8, Sort.by(Direction.DESC, "created_date") );
+    	
+    	if(option.equals("title")) {
+    		return this.groupBuyingRepository.findByKeyword(keyword, pageable);
+    	} else {
+    		return this.groupBuyingRepository.findByCategory(keyword,pageable);
+    	}
+	
+    }
+   
 }
 	
 
