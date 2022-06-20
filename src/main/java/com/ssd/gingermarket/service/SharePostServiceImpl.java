@@ -1,11 +1,15 @@
 package com.ssd.gingermarket.service;
 
 
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
@@ -33,7 +37,9 @@ public class SharePostServiceImpl implements SharePostService {
 	@Override
 	@Transactional
 	public void addPost(SharePostDto.Request dto) {
-		sharePostRepository.save(dto.toEntity()).getPostIdx();
+		User author = userRepository.findById(dto.getAuthorIdx()).orElseThrow();
+		dto.setAuthor(author);
+		sharePostRepository.save(dto.toEntity());
 	}
 
 	
@@ -54,6 +60,7 @@ public class SharePostServiceImpl implements SharePostService {
     }
 	
 	//사용자가 작성한 포스트리스트 조회
+  @Transactional
 	public List<SharePostDto.MyPageInfo> getPostByUserId(Long userIdx) {
 		User author = userRepository.findById(userIdx).orElseThrow();
 		
@@ -76,6 +83,35 @@ public class SharePostServiceImpl implements SharePostService {
 	@Transactional(readOnly = true)
     public List<SharePostDto.CardResponse> getAllPost() {
 		List<SharePost> postList = sharePostRepository.findAll(Sort.by(Direction.DESC, "createdDate"));
+		
+        return postList.stream().map(SharePostDto.CardResponse::new).collect(Collectors.toList());
+    }
+	
+	//선호 카테고리 게시글 리스트 조회 
+	@Override
+	@Transactional(readOnly = true)
+    public List<SharePostDto.CardResponse> getFavPost(Long userIdx) {
+		User user = userRepository.findById(userIdx).orElseThrow();
+		
+		List<String> categories = new ArrayList<>();
+		String item = user.getItem1();
+		if(item != null)
+			categories.add(user.getItem1());
+		item = user.getItem2();
+		if(item != null)
+			categories.add(user.getItem2());
+		item = user.getItem3();
+		if(item != null)
+			categories.add(user.getItem3());
+		
+		List<SharePost> postList = new ArrayList<>();
+		
+		for(int i = 0; i < categories.size(); i++) {
+			Optional<SharePost> post = Optional.ofNullable(sharePostRepository.findTop1ByCategoryOrderByCreatedDateDesc(categories.get(i)));
+			if(post.isPresent())
+				postList.add(post.get());
+		}
+		
         return postList.stream().map(SharePostDto.CardResponse::new).collect(Collectors.toList());
     }
     
@@ -83,8 +119,11 @@ public class SharePostServiceImpl implements SharePostService {
     @Override
     @Transactional
     public void modifyPost(Long postIdx, SharePostDto.Request dto) {
-    	SharePost entity = sharePostRepository.findById(postIdx).orElseThrow(); 
-    	entity.updatePost(dto.getTitle(), dto.getCategory(), dto.getDescr(), dto.getAddress(), dto.getImageIdx());
+    	SharePost entity = sharePostRepository.findById(postIdx).orElseThrow();
+    	
+    	if(!dto.getFile().getOriginalFilename().equals(""))
+    		entity.updatePostImg(dto.getImage());
+    	entity.updatePost(dto.getTitle(), dto.getCategory(), dto.getDescr(), dto.getAddress());
     }
     
     //게시글 삭제  

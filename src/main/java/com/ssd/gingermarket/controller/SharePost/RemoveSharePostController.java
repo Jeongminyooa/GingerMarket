@@ -22,15 +22,15 @@ import lombok.RequiredArgsConstructor;
 
 //@Slf4j //로그 
 @RestController 
-@RequestMapping("/share")
+@RequestMapping("/share-posts")
 @RequiredArgsConstructor
 public class RemoveSharePostController {
 	private final SharePostService sharePostService;
 	
-	@DeleteMapping("{postIdx}")
+	@DeleteMapping("/{postIdx}")
     public RedirectView deletePost(@PathVariable Long postIdx) {
 		sharePostService.removePost(postIdx);
-        return new RedirectView("/share/posts");
+        return new RedirectView("/share-posts");
     }
 	
 	

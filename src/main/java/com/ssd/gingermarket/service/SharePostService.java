@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.ssd.gingermarket.dto.SharePostDto;
+import com.ssd.gingermarket.dto.SharePostDto.CardResponse;
 import com.ssd.gingermarket.dto.SharePostDto.Request;
 
 @Service
@@ -25,6 +26,9 @@ public interface SharePostService {
 	//전체 포스트리스트 조회 
 	public List<SharePostDto.CardResponse> getAllPost();
 	
+	//선호 포스트리스트 조회 
+	public List<CardResponse> getFavPost(Long userIdx);
+	
 	//포스트 업데이트 
 	public void modifyPost(Long postIdx, SharePostDto.Request dto);
 	
@@ -33,5 +37,7 @@ public interface SharePostService {
 
 	//나눔 상태 업데이트 
 	public void modifyProgress(Long postIdx, boolean prog);
+
+	
 	
 }

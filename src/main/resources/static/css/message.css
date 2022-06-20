@@ -1,7 +1,7 @@
 #img-post{
 	width:72px;
 	height:72px;
-	margin:auto;
+	border-radius:8px;
 }
 #small_content{
 	color:grey;
@@ -36,7 +36,11 @@
 	background-color : #91A77F;
 	color : white;
 }
-.msg-container{
+#btn_reply_none{
+	background-color : grey;
+	color : white;
+}
+#msg-container{
 	height : 450px;
 	overflow:scroll;
 }

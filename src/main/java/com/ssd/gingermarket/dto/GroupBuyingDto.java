@@ -58,33 +58,6 @@ public class GroupBuyingDto {
 		}
 
 	}
-	
-	@NoArgsConstructor
-	@AllArgsConstructor
-	@Data
-	public static class CardResponse{
-		private Long groupIdx;
-
-		// User 객체 참조
-		private Long authorIdx;
-		
-		private String category;
-		private String title;
-		private Long imageIdx;
-		private int price;
-		private int progress;
-	
-		public CardResponse(GroupBuying groupBuying) {
-			this.groupIdx = groupBuying.getGroupIdx();
-			this.authorIdx = groupBuying.getAuthorIdx();
-			this.category = groupBuying.getCategory();
-			this.title = groupBuying.getTitle();
-			this.imageIdx = groupBuying.getImageIdx();
-			this.price = groupBuying.getPrice();
-			this.progress = groupBuying.getProgress();
-
-		}
-	}
 		
 		@NoArgsConstructor
 		@AllArgsConstructor
