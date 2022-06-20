@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.ssd.gingermarket.domain.MessageInfo;
 import com.ssd.gingermarket.domain.MessageRoom;
 import com.ssd.gingermarket.domain.SharePost;
+import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.SharePostDto;
 import com.ssd.gingermarket.dto.SharePostDto.DetailResponse;
 
@@ -36,4 +37,7 @@ public interface MessageRoomRepository extends JpaRepository<MessageRoom, Long>{
 			+ "WHERE r.author.userIdx = ?1 OR r.sender.userIdx = ?2 "
 			+ "ORDER BY r.createdDate DESC")
 	List<MessageRoom> findByAuthorIdx(Long authorIdx, Long senderIdx);
+	
+	// 참여한 쪽지함
+	List<MessageRoom> findAllMessageBySender(User sender);
 }

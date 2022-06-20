@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.MessageDto;
 import com.ssd.gingermarket.dto.MessageDto.MessageResponse;
 import com.ssd.gingermarket.dto.MessageDto.RoomResponse;
@@ -32,5 +33,6 @@ public interface MessageService {
 	//쪽지함 상세 조회
 	public Long getRoom(Long postIdx, Long senderIdx);
 	
-	
+	//참여한 쪽지의 post 조회
+	public List<SharePostDto.MyPageInfo> getAllMessageBySender(Long userIdx);
 }

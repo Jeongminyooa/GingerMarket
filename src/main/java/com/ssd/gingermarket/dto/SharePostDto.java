@@ -145,7 +145,6 @@ public class SharePostDto {
 	}
 	
 	@NoArgsConstructor
-	@AllArgsConstructor
 	@Data
 	public static class MyPageInfo {
 		private Long postIdx;
@@ -164,6 +163,18 @@ public class SharePostDto {
 			this.title = title;
 			this.status = status;
 			this.enrollDate = enrollDate;
+		}
+		
+		public MyPageInfo(Long postIdx, String imageUrl, String title, String status, LocalDateTime enrollDate, Long roomIdx) {
+			this.postIdx = postIdx;
+			this.imageUrl = imageUrl;
+			if(!imageUrl.equals("")) {
+				this.imageUrl = getUploadDirPath(imageUrl);
+			}
+			this.title = title;
+			this.status = status;
+			this.enrollDate = enrollDate;
+			this.roomIdx = roomIdx;
 		}
 	}
 	
