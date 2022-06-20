@@ -2,6 +2,11 @@ package com.ssd.gingermarket.dto;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,9 +28,13 @@ public class SharePostDto {
 	public static class Request{
 		private String uploadDirLocal = "/upload/";
 		
+		@NotBlank(message="{notBlank.title}")
 		private String title;
+		@NotNull(message="{notNull.category}")
 		private String category;
+		@Length(max=1000, message="{size.descr}")
 		private String descr;
+		@Length(max=255, message="{size.address}")
 		private String address;
 		
 		private Image image;

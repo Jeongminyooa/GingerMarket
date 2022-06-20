@@ -3,6 +3,12 @@ package com.ssd.gingermarket.controller.SharePost;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +33,7 @@ import com.ssd.gingermarket.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 //@Slf4j //로그 
-@RestController 
+@Controller 
 @RequestMapping("/share-posts")
 @RequiredArgsConstructor
 public class AddSharePostController {
@@ -55,25 +61,26 @@ public class AddSharePostController {
 	
 	
 	@GetMapping("/new")
-	public ModelAndView getAddForm() { 
+	//
+	public ModelAndView getAddForm(@ModelAttribute("postReq")SharePostDto.Request post) { 
 		Long userIdx = (long) 2;//user session으로 추후 수정 
 		
 		ModelAndView mav = new ModelAndView("content/sharePost/sharePost_add");
 		
-		SharePostDto.Request req = new SharePostDto.Request();
-		
 		String addr = userService.getUser(userIdx).getAddress();
 		System.out.println("addr : " + addr);
 
-		req.setAddress(addr);
-		mav.addObject("postReq", req);
+		post.setAddress(addr);
 		
 		return mav;
 	}
 	
 	@PostMapping("")
-	public RedirectView createPost(SharePostDto.Request post) {	
+	public String createPost(@Validated @ModelAttribute("postReq") SharePostDto.Request post, Errors error) {	
 		Long authorIdx = (long) 2; //session구현 후 변경
+		
+		if(error.hasErrors())
+			return "content/sharePost/sharePost_add";
 		
 		if(post.getFile().getOriginalFilename().equals("")) {
 			post.setImage(null);
@@ -91,7 +98,7 @@ public class AddSharePostController {
 		post.setAuthorIdx(authorIdx);
 		sharePostService.addPost(post);
 		
-        return new RedirectView("/share-posts");
+		return "redirect:/share-posts";
     }
 	
 	

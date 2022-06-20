@@ -1,2 +1,8 @@
-notnull:
-  name : 이름은 필수로 입력해야 합니다.
+notBlank:
+  title : 제목은 필수로 입력해야 합니다.
+  address : 주소는 필수로 입력해야 합니다.
+notNull:
+  category : 카테고리를 선택해주세요.
+size:
+  descr : 상세 설명은 1000자를 넘을 수 없습니다.
+  address : 주소는 255자를 넘을 수 없습니다.

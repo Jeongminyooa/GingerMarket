@@ -76,12 +76,13 @@ window.onload = function(){
 
 				<hr>
 
-				<div class="mb-3">
+				<div class="mb-3 w-50">
 					<label for="inputTitle" class="form-label">글 제목</label> <b
 						class="text-danger">*</b> <input type="text" class="form-control"
-						id="inputTitle" th:field="*{title}" placeholder="글 제목">
+						id="inputTitle" th:field="*{title}"  placeholder="글 제목">	
 				</div>
-
+				<div class="error" th:errors="*{title}">Incorrect</div>
+				
 				<hr>
 				
 					
@@ -94,6 +95,7 @@ window.onload = function(){
 						<input type="button" class="btn btn-outline-secondary btn-sm pt-2 pb-2" id="address_kakao" value="주소 찾기"/>
 					</div>
 				</div>
+				<div class="error" th:errors="*{address}">Incorrect</div>
 
 				<hr>
 
@@ -109,12 +111,16 @@ window.onload = function(){
         				</option>
 					</select>
 				</div>
+				<div class="error" th:errors="*{category}">Incorrect</div>
+				
+				<hr>
 
 				<div class="mb-3">
 					<label for="inputDescr" class="form-label">상세설명</label>
 					<textarea class="form-control" th:field="*{descr}" aria-label="With textarea"
 						placeholder="나눔할 상품의 개수도 함께 작성해주세요." rows="10"></textarea>
 				</div>
+				<div class="error" th:errors="*{descr}">Incorrect</div>
 
 				<!-- Confirm BTN -->
 				<div class="d-grid gap-2 mt-5">
