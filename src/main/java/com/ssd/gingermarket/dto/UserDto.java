@@ -14,6 +14,10 @@ import lombok.NoArgsConstructor;
 
 public class UserDto {
 
+	public static String getUploadDirPath(String imageUrl) {
+		return "/upload/" + imageUrl;
+	}
+	
 	@NoArgsConstructor
 	@AllArgsConstructor
 	@Data 
@@ -57,7 +61,6 @@ public class UserDto {
 		private Long userIdx;
 		private String userId;
 		private String password;
-		@NotEmpty(message="{notnull.name}")
 		private String name;
 		private String phone1;
 		private String phone2;
@@ -65,6 +68,7 @@ public class UserDto {
 		private String[] items;
 		private String address;
 		private String imageUrl;
+		private MultipartFile file;
 		
 		public Response(User user) {
 			this.userIdx = user.getUserIdx();
@@ -74,7 +78,7 @@ public class UserDto {
 			setPhoneNumber(user.getPhone());
 			items = new String[] {user.getItem1(), user.getItem2(), user.getItem3()};
 			if(user.getImage() != null)
-				this.imageUrl = user.getImage().getUrl();
+				this.imageUrl = getUploadDirPath(user.getImage().getUrl());
 			this.address = user.getAddress();
 		}
 		
