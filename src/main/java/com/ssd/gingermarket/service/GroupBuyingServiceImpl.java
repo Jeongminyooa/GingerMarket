@@ -5,6 +5,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -105,7 +109,7 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
    	}
 
 	@Override
-  @Transcantional
+	@Transactional
 	public List<MyPageInfo> getGroupBuyingByUserId(Long userIdx) {
 		// TODO Auto-generated method stub
 		//사용자가 작성한 포스트리스트 조회
