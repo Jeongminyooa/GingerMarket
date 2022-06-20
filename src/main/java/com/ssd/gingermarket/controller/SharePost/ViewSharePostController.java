@@ -47,14 +47,17 @@ public class ViewSharePostController {
 	@GetMapping("")
 	public ModelAndView getPostList() {
 		
-		Long userIdx = (long) 1;
+		Long userIdx = (long) 2;
 		
 		ModelAndView mav = new ModelAndView("content/sharePost/sharePostList");
 		mav.addObject("allPostList", sharePostService.getAllPost());
+		mav.addObject("favPostList", sharePostService.getFavPost(userIdx));
+		
 		mav.addObject("userIdx", 1); //user session 구현 후 수정 예정 
 
 		
 		return mav;
 	}
+	
 	
 }
