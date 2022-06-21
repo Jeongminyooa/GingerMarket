@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,16 +53,15 @@ public class ExperiodController {
 	// 생성
 	@PostMapping("")
 	public RedirectView createExperiod(@RequestParam(value = "category") String category,
-			HttpServletRequest req) { 
+			HttpServletRequest request) { 
 		
-//		HttpSession session = req.getSession(false);
-//		Long authorIdx = (Long) session.getAttribute("userIdx");
-		
-		Long authorIdx = (long) 1;
-		
+		HttpSession session = request.getSession(false);
+		Long authorIdx = (Long) session.getAttribute("userIdx");
+
 		// 카테고리에 따른 d-day
 		Map<String, Integer> map = categoryExperiodMap();
 		int period = map.get(category);
+		System.out.println(period);
 		
 		experiodService.addExperiod(authorIdx, category, period);
 		
@@ -78,10 +78,14 @@ public class ExperiodController {
 	
 	// 날짜별 조회
 	@GetMapping("/date")
-	public String getExperiodByDate (Model model, @RequestParam(value="date") String date) {
-		long userId = 1;
+	public String getExperiodByDate (Model model,
+			@RequestParam(value="date") String date,
+			HttpServletRequest request) {
 		
-		List<ExperiodDto.Info> dto = experiodService.getExperiodByDate(userId, date);
+		HttpSession session = request.getSession(false);
+		Long userIdx = (Long) session.getAttribute("userIdx");
+		
+		List<ExperiodDto.Info> dto = experiodService.getExperiodByDate(userIdx, date);
 		
 		model.addAttribute("experiodList", dto);
 		return "content/mypage/mypage_experiod :: #experiodContent";
