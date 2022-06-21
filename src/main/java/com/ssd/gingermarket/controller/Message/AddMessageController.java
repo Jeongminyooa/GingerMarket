@@ -34,14 +34,14 @@ public class AddMessageController {
 	@PostMapping("/{postIdx}/room")
 	public RedirectView enterRoom(@PathVariable Long postIdx)
 	{
-		Long sessionIdx = (long)1;
+		Long sessionIdx = (long)2;
 		
 		Long roomIdx;
 		//처음 방 만들 때 
 		if(messageService.getRoom(postIdx, sessionIdx) == null) {
 			roomIdx = messageService.addRoom(postIdx, sessionIdx);
 		} else { //원래 있던 방일때 
-			roomIdx = messageService.existRoom(postIdx, sessionIdx);
+			roomIdx = messageService.getRoom(postIdx, sessionIdx);
 		}
 		
 		return new RedirectView("/messages/" + postIdx + "/room/" + roomIdx);
@@ -49,48 +49,11 @@ public class AddMessageController {
 	
 	@PostMapping("/{roomIdx}")
 	public int sendMessage(@PathVariable Long roomIdx, @RequestBody MessageDto.Request req) {	
-		Long sessionIdx = (long) 1; //session구현 후 변경
+		Long sessionIdx = (long) 2; //session구현 후 변경
 		
 		messageService.sendMessage(req, sessionIdx, roomIdx);
 		
         return 1;
     }
-	
-//	@PostMapping("/{postIdx}")
-//	public Long sendMessage2(@PathVariable Long postIdx, @RequestBody MessageDto.Request req) {	
-//		Long sessionIdx = (long) 2; //session구현 후 변경
-//		
-//		Long authorIdx = req.getAuthorIdx();
-//		Long senderIdx = sessionIdx;
-//		
-//		//보내는 이가 게시글 작성자라면 DB상 sender을 넣어주기 -> 방 존재 여부 확인 위함 
-//		if(senderIdx == authorIdx) {
-//			senderIdx = req.getSenderIdx(); 
-//			
-//		}
-//		
-//		//room 존재여부 확인 
-//		Long roomIdx; 
-//		if(messageService.existRoom(postIdx, authorIdx, senderIdx) == null) {
-//			roomIdx = (long) 0;
-//		}
-//		else
-//			roomIdx = messageService.existRoom(postIdx, authorIdx, senderIdx);
-//		
-//	
-//		// 방이 없을 때, 처음 보내는 것일 때 
-//		if(roomIdx == (long)0) { 
-//			req.setAuthorIdx(authorIdx);
-//			req.setSenderIdx(senderIdx);
-//			//messageService.addRoom(req, postIdx);
-//		}
-//		
-//		req.setSenderIdx(sessionIdx);
-//		Long existRoomIdx = messageService.existRoom(postIdx, authorIdx, senderIdx);
-//
-//		//Long result = messageService.sendMessage(req, existRoomIdx); //roomIdx 반환
-//		
-//        return result;
-//    }
 	
 }

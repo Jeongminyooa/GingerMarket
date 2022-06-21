@@ -21,14 +21,12 @@ public class MessageDto {
 		private Long roomIdx;
 		private SharePost post;
 		private String postImgUrl;
-//		private String title;
-//		private String imgUrl;
-//		private LocalDateTime enrollDate;
 		
 		private User sender;
 		
 		private String content;
 		private boolean isRead;
+		private LocalDateTime sendTime;
 		
 	}
 
@@ -60,19 +58,6 @@ public class MessageDto {
 					.sender(sender)
 					.build();
 		}
-	}
-	
-	@NoArgsConstructor
-	@Data
-	public static class RoomResponse{
-		private String uploadDirLocal = "/upload/";
-		
-		private Long idx;
-		private String title;
-		private String imgUrl;
-		private LocalDateTime enrollDate;
-		private boolean progress;
-		
 	}
 	
 	@NoArgsConstructor

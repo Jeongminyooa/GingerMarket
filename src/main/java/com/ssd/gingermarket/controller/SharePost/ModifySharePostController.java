@@ -64,6 +64,8 @@ public class ModifySharePostController {
 		mav.addObject("updateReq", req);
 		mav.addObject("postIdx", postIdx);
 		
+		mav.addObject("userIdx", 1);//session 
+		
 		return mav;
 	}
 	

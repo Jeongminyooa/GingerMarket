@@ -34,50 +34,26 @@ public class ViewMessageController {
 	private final SharePostService sharePostService;
 	private final MessageService messageService;
 	
+	//해당 쪽지방으로 가기 
 	@GetMapping("/{postIdx}/room/{roomIdx}")
 	public ModelAndView getRoom(@PathVariable Long postIdx, @PathVariable Long roomIdx){
 		ModelAndView mav = new ModelAndView("content/message/messageInfo");
 
 		mav.addObject("postInfo", sharePostService.getPost(postIdx));
 
+		mav.addObject("userIdx", (long) 2); //session
 		mav.addObject("roomIdx", roomIdx); 
 		
 		return mav;
 	}
 	
-	
-	//해당 쪽지방으로 가기 	
-	@GetMapping("/{postIdx}/sender/{senderIdx}")
-	public ModelAndView getRoom2(@PathVariable Long postIdx, @PathVariable Long senderIdx){
-		ModelAndView mav = new ModelAndView("content/message/messageInfo");
-	
-		mav.addObject("postIdx", postIdx);
-		mav.addObject("userIdx", senderIdx); //fragment 용 
-		mav.addObject("senderIdx", senderIdx);
-
-		mav.addObject("postInfo", sharePostService.getPost(postIdx));
-		
-		mav.addObject("msgReq", new MessageDto.Request());
-		
-		//room 찾아오기
-		Long roomIdx; 
-		if(messageService.getRoom(postIdx, senderIdx) == null) {
-			roomIdx = (long) 0;
-		}
-		else
-			roomIdx = messageService.getRoom(postIdx, senderIdx);
-		
-		mav.addObject("roomIdx", roomIdx); 
-		
-		return mav;
-	}
 	
 	//쪽지함리스트로 가기 
 	@GetMapping("/{userIdx}/list")
 	public ModelAndView getRoomList(@PathVariable Long userIdx){
 		ModelAndView mav = new ModelAndView("content/message/messageList");
 		
-		userIdx = (long) 2; //현재 세션의 유저 
+		userIdx = (long) 1; //현재 세션의 유저 
 		
 
 		List<MessageDto.Info> roomList = messageService.getAllRoom(userIdx);
@@ -94,15 +70,12 @@ public class ViewMessageController {
 				
 		Long sessionIdx = (long) 2; //현재 세션의 유저 
 		messageService.updateIsRead(sessionIdx, roomIdx);
+		
 		List<MessageDto.MessageResponse> msgList = messageService.getAllMessage(roomIdx);
 		
 		model.addAttribute("msgList", msgList);
 		model.addAttribute("userIdx", sessionIdx);
-		model.addAttribute("roomIdx", roomIdx);
-		model.addAttribute("senderIdx", sessionIdx);
-		
-		
-		
+
 		return "content/message/messageInfo :: #msg-container";
 			
 	}

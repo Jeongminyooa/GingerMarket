@@ -51,17 +51,4 @@ public class MessageRoom extends BaseTime {
 	private List<MessageInfo> messages = new ArrayList<MessageInfo>();
 	
 	
-	@PrePersist
-	public void prePersist(){
-		if(this.messages != null) {
-			Collections.sort(this.messages, new Comparator<MessageInfo>() {
-			    @Override
-			    public int compare(MessageInfo m1, MessageInfo m2) {
-			        // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
-			        return m1.getMessageIdx() > m2.getMessageIdx() ? -1 : (m1.getMessageIdx() < m2.getMessageIdx()) ? 1 : 0;
-			    }
-			});
-		}
-	}
-	
 }
