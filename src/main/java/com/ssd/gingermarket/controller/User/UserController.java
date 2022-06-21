@@ -1,13 +1,14 @@
 package com.ssd.gingermarket.controller.User;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.PrintWriter;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,15 +74,10 @@ public class UserController {
 			Image img = imageService.uploadFile(imgReq.getImageFile());
 			req.setImage(img);
 		}
-		
-	//	Long idx = userService.addUser(req);
-	//	UserDto.Info info = userService	.getUser(idx);
-		
 		if(!req.getPassword().equals(req.getRepeatedPassword())) {
 			out.println("<script>alert('비밀번호가 일치하지 않습니다.');  location.replace('/user/signup'); </script>");
 			out.flush();
 			return new RedirectView("/user/signup");
-			
 			}
 		else {
 			out.println("<script>alert('회원등록이 완료되었습니다.');  location.replace('/user/login'); </script>");
@@ -93,7 +89,7 @@ public class UserController {
 	}
 
 
-	@GetMapping("/user/quit/{id}")
+	@DeleteMapping("/user/quit/{id}")
 	public RedirectView quitUser(HttpServletRequest req) { 
 		HttpSession session = req.getSession(false);
 		Long userIdx = (Long) session.getAttribute("userIdx");
