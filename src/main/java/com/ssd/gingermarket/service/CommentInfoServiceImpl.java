@@ -85,7 +85,7 @@ public class CommentInfoServiceImpl implements CommentInfoService {
 		GroupBuying groupBuyingPost = groupBuyingRepository.findById(groupIdx).orElseThrow();
 		User author = groupBuyingPost.getAuthor();
 		
-		List<CommentInfo> commentInfoList = commentInfoRepository.findByGroupIdx(groupIdx);
+		List<CommentInfo> commentInfoList = commentInfoRepository.findByParentIdxIsNullAndGroupOrderByCreatedDateAsc(groupBuyingPost);
 		
 		List<CommentDto.Info> dto = commentInfoList.stream().map(co -> new CommentDto.Info(
 				co.getId(),
