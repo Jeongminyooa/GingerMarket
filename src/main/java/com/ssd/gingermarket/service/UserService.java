@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.ssd.gingermarket.domain.Image;
 import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.UserDto;
 
@@ -14,6 +15,9 @@ public interface UserService {
 	
 	//회원 정보 수정
 	public void modifyUser(Long userIdx,UserDto.Response dto);
+	
+	// 회원 프로필 변경
+	public void modifyUserImage(Long userIdx, Image img);
 	
 	//회원 탈퇴
 	public void removeUser(Long userIdx);

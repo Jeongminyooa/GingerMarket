@@ -90,6 +90,10 @@ public class User {
 		}
 	}
 	
+	public void updateProfileImage(Image image) {
+		this.image = image;
+	}
+	
 	public void updatePassword(String password) {
 		this.password = password;
 	}

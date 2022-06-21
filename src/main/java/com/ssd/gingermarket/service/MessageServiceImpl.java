@@ -143,6 +143,24 @@ public class MessageServiceImpl<T> implements MessageService {
 		
 		return roomList;
 	}  
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<SharePostDto.MyPageInfo> getAllMessageBySender(Long userIdx) {
+		User sender = userRepository.findById(userIdx).orElseThrow();
+		List<MessageRoom> roomList = messageRoomRepository.findAllMessageBySender(sender);
+		
+		List<SharePostDto.MyPageInfo> postList = roomList.stream().map(msg -> new SharePostDto.MyPageInfo(
+				msg.getPost().getPostIdx(),
+				(msg.getPost().getImage() == null ? "" : msg.getPost().getImage().getUrl()),
+				msg.getPost().getTitle(),
+				(msg.getPost().getProgress().equals("Y") ? "나눔 완료" : "진행중"),
+				msg.getPost().getCreatedDate(),
+				msg.getRoomIdx()))
+				.collect(Collectors.toList());
+		
+		return postList;
+	}
 	
 	//쪽지 읽음 처리 
 	@Override
@@ -152,4 +170,5 @@ public class MessageServiceImpl<T> implements MessageService {
 		messageInfoRepository.updateIsRead(senderIdx, roomIdx);
 			
 	}  
+
 }

@@ -24,5 +24,6 @@ public interface MessageRoomRepository extends JpaRepository<MessageRoom, Long>{
 	//쪽지함들 불러오기 
 	public List<MessageRoom> findByAuthorOrSenderOrderByCreatedDateDesc(User author, User sender);
 	
-	
+	// 참여한 쪽지함
+	List<MessageRoom> findAllMessageBySender(User sender);
 }
