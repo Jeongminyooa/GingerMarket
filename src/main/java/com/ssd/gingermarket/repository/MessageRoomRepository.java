@@ -19,11 +19,16 @@ import com.ssd.gingermarket.dto.SharePostDto.DetailResponse;
 public interface MessageRoomRepository extends JpaRepository<MessageRoom, Long>{
 
 	//Room ID 찾기 
-	public Long findRoomIdxByPostAndSender(SharePost post, User sender);
+	@Query(value = "SELECT r.roomIdx "
+			+ "FROM MessageRoom r "
+			+ "WHERE r.post.postIdx = ?1 AND r.sender.userIdx =?2")
+	public Long findRoomIdxByPostAndSender(Long postIdx, Long senderIdx);
 
 	//쪽지함들 불러오기 
 	public List<MessageRoom> findByAuthorOrSenderOrderByCreatedDateDesc(User author, User sender);
 	
 	// 참여한 쪽지함
 	List<MessageRoom> findAllMessageBySender(User sender);
+
+	//public Long findRoomIdxByPostAndSender(Long postIdx, Long senderIdx);
 }
