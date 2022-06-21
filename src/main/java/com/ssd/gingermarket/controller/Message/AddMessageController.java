@@ -34,7 +34,7 @@ public class AddMessageController {
 	@PostMapping("/{postIdx}/room")
 	public RedirectView enterRoom(@PathVariable Long postIdx)
 	{
-		Long sessionIdx = (long)2;
+		Long sessionIdx = (long)1;
 		
 		Long roomIdx;
 		//처음 방 만들 때 
@@ -49,7 +49,7 @@ public class AddMessageController {
 	
 	@PostMapping("/{roomIdx}")
 	public int sendMessage(@PathVariable Long roomIdx, @RequestBody MessageDto.Request req) {	
-		Long sessionIdx = (long) 2; //session구현 후 변경
+		Long sessionIdx = (long) 1; //session구현 후 변경
 		
 		messageService.sendMessage(req, sessionIdx, roomIdx);
 		

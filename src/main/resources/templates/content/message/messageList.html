@@ -57,20 +57,30 @@
 				<div class="row pt-1 w-75 mx-auto msg-list rounded-3 position-relative">
 					<!-- receiver profile -->
 					<div class="col-lg-1">
-						<img src="/image/yellow.JPG" alt="..." id="img-author"
-							class="rounded-pill">
+					
+						<!-- 작성자일때 -->
+						<th:block th:if="${userIdx} == ${room.authorIdx}">
+							<img th:if="${not #strings.isEmpty(room.senderImgUrl)}" th:src="@{${room.senderImgUrl}}" src="/image/profile.png" class="card-img-top rounded-pill" id="img-author">
+						</th:block>
+		
+							
+						<!-- 작성자 아닐때 -->
+						<th:block th:unless="${userIdx} == ${room.authorIdx}">
+							<img th:if="${userIdx} != ${room.authorIdx} and ${not #strings.isEmpty(room.authorImgUrl)}" th:src="@{${room.authorImgUrl}}" src="/image/profile.png" class="card-img-top rounded-pill" 
+							id="img-author">
+						</th:block>
 					</div>
 					
 					<!-- receiver name & last content -->
 					<div class="col-lg-9 text-left ps-5 mt-2">
 						<div class="d-flex">
-							<div th:if="${userIdx} == ${room.post.author.userIdx}" th:text="${room.sender.name}" class="font-weight-bolder" id="main_content">
+							<!-- 작성자일때 -->
+							<div th:if="${userIdx} == ${room.authorIdx}" th:text="${room.senderName}" class="font-weight-bolder" id="main_content">
 								<b>김매미</b>
 								
 							</div>
-							
-						 
-							<div th:unless="${userIdx} == ${room.post.author.userIdx}" th:text="${room.post.author.name}" class="font-weight-bolder" id="main_content">
+							<!-- 작성자가 아닐때 -->
+							<div th:unless="${userIdx} == ${room.authorIdx}" th:text="${room.authorName}" class="font-weight-bolder" id="main_content">
 								<b>김매미</b>
 								
 							</div>
@@ -93,7 +103,7 @@
 					</div>
 					
 					<div class="col-lg-1 ps-5">
-						<a th:href="@{/messages/{postIdx}/room/{roomIdx}(postIdx=${room.post.postIdx}, roomIdx=${room.roomIdx})}" class="stretched-link"> 
+						<a th:href="@{/messages/{postIdx}/room/{roomIdx}(postIdx=${room.postIdx}, roomIdx=${room.roomIdx})}" class="stretched-link"> 
 						<img th:if = "${not #strings.isEmpty(room.postImgUrl)}" th:src="@{${room.postImgUrl}}" src="/image/postList.JPG" alt="..." id="img-post" class="rounded-3"></a>
 					</div>
 					

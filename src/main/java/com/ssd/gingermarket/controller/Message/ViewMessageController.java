@@ -41,7 +41,7 @@ public class ViewMessageController {
 
 		mav.addObject("postInfo", sharePostService.getPost(postIdx));
 
-		mav.addObject("userIdx", (long) 2); //session
+		mav.addObject("userIdx", (long) 1); //session
 		mav.addObject("roomIdx", roomIdx); 
 		
 		return mav;
@@ -68,7 +68,7 @@ public class ViewMessageController {
 	@GetMapping("/{roomIdx}")
 	public String getMessages(@PathVariable Long roomIdx, Model model){
 				
-		Long sessionIdx = (long) 2; //현재 세션의 유저 
+		Long sessionIdx = (long) 1; //현재 세션의 유저 
 		messageService.updateIsRead(sessionIdx, roomIdx);
 		
 		List<MessageDto.MessageResponse> msgList = messageService.getAllMessage(roomIdx);

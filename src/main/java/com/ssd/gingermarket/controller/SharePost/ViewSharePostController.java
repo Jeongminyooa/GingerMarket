@@ -49,7 +49,7 @@ public class ViewSharePostController {
      */
 	@GetMapping("/{postIdx}")
 	public ModelAndView getPost(@PathVariable Long postIdx){
-		Long sessionIdx = (long)2;
+		Long sessionIdx = (long)1;
 		ModelAndView mav = new ModelAndView("content/sharePost/sharePost_view");
 		mav.addObject("postInfo", sharePostService.getPost(postIdx));
 		mav.addObject("senderIdx", sessionIdx);
@@ -65,13 +65,13 @@ public class ViewSharePostController {
 	@GetMapping("")
 	public ModelAndView getPostList(@RequestParam(value="page", defaultValue="0") int page) {
 		
-		Long userIdx = (long) 2;
+		Long userIdx = (long) 1;
 		
 		ModelAndView mav = new ModelAndView("content/sharePost/sharePostList");
 		mav.addObject("allPostList", sharePostService.getAllPost(page));
 		mav.addObject("favPostList", sharePostService.getFavPost(userIdx));
 		
-		mav.addObject("userIdx", 2); //user session 구현 후 수정 예정 
+		mav.addObject("userIdx", 1); //user session 구현 후 수정 예정 
 		mav.addObject("type", "none");
 		
 		return mav;

@@ -36,7 +36,7 @@ $( document ).ready(function() {
 		getMsgList(roomIdx)
 	}, 3000);
 	
-	
+	//전송 버튼으로 보내기 
 	$('#btn_reply').click(function(){
 		var insertData = $('#content').val();
 		if(insertData != null && insertData != "")
@@ -47,7 +47,7 @@ $( document ).ready(function() {
 
 });
 
-
+//메세지 보내기 
 function sendMessage(insertData){		
 			$.ajax({
 				url : '/messages/' + roomIdx, 
@@ -84,6 +84,7 @@ function getMsgList(roomIdx) {
 		  });
 	}
 	
+// 엔터키로 전	
 function enterkey() {
 	if (window.event.keyCode == 13) {
 		window.event.preventDefault();
@@ -91,7 +92,7 @@ function enterkey() {
 		if(insertData != null && insertData != "")
 			sendMessage(insertData);
 		else
-			alert("메세지를 입력하세요!");// 엔터키가 눌렸을 때
+			alert("메세지를 입력하세요!");
     }
 }
 	
@@ -139,13 +140,27 @@ function enterkey() {
 			<div id="msg-container">
 			<th:block th:each="msg : ${msgList}">
 				<!-- receiver section -->
-				<div th:if = "${userIdx} != ${msg.sender.userIdx}"  class="mt-1">
+				
+				<div th:if = "${userIdx} != ${msg.senderIdx}"  class="mt-1">
 					<!-- receiver info -->	
-					<div class="d-flex">
+					<!-- 작성자일때 -->
+					<div th:if="${userIdx} == ${msg.authorIdx}" class="d-flex">
 						<div>
-							<img src="/image/yellow.JPG" alt="..." id="img-author-msg" class="rounded-pill">
+							<img th:if="${not #strings.isEmpty(msg.authorImgUrl)}" th:src="@{${msg.authorImgUrl}}" src="/image/profile.png" class="rounded-pill" 
+							id="img-author-msg">
 						</div>
-						<div th:text="${msg.sender.name}" class="ms-3" id="main_content">
+						<div th:text="${postInfo.authorName}" class="ms-3" id="main_content">
+							김매미
+						</div>
+					</div>
+					
+					<!-- 작성자가 아닐때 -->
+					<div th:if="${userIdx} != ${msg.authorIdx}" class="d-flex">
+						<div>
+							<img th:if="${not #strings.isEmpty(msg.authorImgUrl)}" th:src="@{${msg.senderImgUrl}}" src="/image/profile.png" class="rounded-pill" 
+							id="img-author-msg">
+						</div>
+						<div th:text="${msg.senderName}" class="ms-3" id="main_content">
 							김매미
 						</div>
 					</div>
@@ -161,7 +176,7 @@ function enterkey() {
 				
 				<!-- sender section -->
 				
-				<div th:if = "${userIdx} == ${msg.sender.userIdx}" class="mt-1 me-3" align="right">
+				<div th:if = "${userIdx} == ${msg.senderIdx}" class="mt-1 me-3" align="right">
 					<!-- sender message -->
 					<div class="">
 						<span th:if="${msg.isRead} == false">1</span>
