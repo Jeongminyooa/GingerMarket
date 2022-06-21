@@ -2,6 +2,9 @@ package com.ssd.gingermarket.controller.Message;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -34,55 +37,37 @@ public class ViewMessageController {
 	private final SharePostService sharePostService;
 	private final MessageService messageService;
 	
+	//해당 쪽지방으로 가기 
 	@GetMapping("/{postIdx}/room/{roomIdx}")
-	public ModelAndView getRoom(@PathVariable Long postIdx, @PathVariable Long roomIdx){
+	public ModelAndView getRoom(HttpServletRequest req, @PathVariable Long postIdx, @PathVariable Long roomIdx){
+		HttpSession session = req.getSession(false);
+		Long userIdx = (long)session.getAttribute("userIdx");
+		
 		ModelAndView mav = new ModelAndView("content/message/messageInfo");
 
 		mav.addObject("postInfo", sharePostService.getPost(postIdx));
 
+		mav.addObject("userIdx", userIdx);
 		mav.addObject("roomIdx", roomIdx); 
 		
 		return mav;
 	}
 	
-	
-	//해당 쪽지방으로 가기 	
-	@GetMapping("/{postIdx}/sender/{senderIdx}")
-	public ModelAndView getRoom2(@PathVariable Long postIdx, @PathVariable Long senderIdx){
-		ModelAndView mav = new ModelAndView("content/message/messageInfo");
-	
-		mav.addObject("postIdx", postIdx);
-		mav.addObject("userIdx", senderIdx); //fragment 용 
-		mav.addObject("senderIdx", senderIdx);
-
-		mav.addObject("postInfo", sharePostService.getPost(postIdx));
-		
-		mav.addObject("msgReq", new MessageDto.Request());
-		
-		//room 찾아오기
-		Long roomIdx; 
-		if(messageService.getRoom(postIdx, senderIdx) == null) {
-			roomIdx = (long) 0;
-		}
-		else
-			roomIdx = messageService.getRoom(postIdx, senderIdx);
-		
-		mav.addObject("roomIdx", roomIdx); 
-		
-		return mav;
-	}
 	
 	//쪽지함리스트로 가기 
-	@GetMapping("/{userIdx}/list")
-	public ModelAndView getRoomList(@PathVariable Long userIdx){
+	@GetMapping("")
+	public ModelAndView getRoomList(HttpServletRequest req){
+		HttpSession session = req.getSession(false);
+		Long userIdx = (long)session.getAttribute("userIdx");
+		
 		ModelAndView mav = new ModelAndView("content/message/messageList");
 		
-		userIdx = (long) 2; //현재 세션의 유저 
-		
-
 		List<MessageDto.Info> roomList = messageService.getAllRoom(userIdx);
 		mav.addObject("roomList", roomList)	;
 		mav.addObject("userIdx", userIdx);
+		
+		System.out.println("userIdx : " + userIdx);
+		System.out.println("room.author : " + roomList.get(0).getAuthorIdx());
 	
 		return mav;
 	}
@@ -90,19 +75,20 @@ public class ViewMessageController {
 
 	//쪽지 상세 조회
 	@GetMapping("/{roomIdx}")
-	public String getMessages(@PathVariable Long roomIdx, Model model){
-				
-		Long sessionIdx = (long) 2; //현재 세션의 유저 
-		messageService.updateIsRead(sessionIdx, roomIdx);
+	public String getMessages(HttpServletRequest req, @PathVariable Long roomIdx, Model model){
+		HttpSession session = req.getSession(false);
+		Long userIdx = (long)session.getAttribute("userIdx");
+		
+		messageService.updateIsRead(userIdx, roomIdx);
+		
 		List<MessageDto.MessageResponse> msgList = messageService.getAllMessage(roomIdx);
 		
 		model.addAttribute("msgList", msgList);
-		model.addAttribute("userIdx", sessionIdx);
-		model.addAttribute("roomIdx", roomIdx);
-		model.addAttribute("senderIdx", sessionIdx);
+		model.addAttribute("userIdx", userIdx);
 		
-		
-		
+		System.out.println("쪽지 상세 조회 userIdx : " + userIdx);
+		System.out.println("쪽지 보낸이:" + msgList.get(0).getSenderIdx());
+
 		return "content/message/messageInfo :: #msg-container";
 			
 	}

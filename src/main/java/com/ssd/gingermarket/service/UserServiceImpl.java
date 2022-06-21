@@ -5,8 +5,12 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import com.ssd.gingermarket.domain.MessageInfo;
 import com.ssd.gingermarket.domain.MessageRoom;
+
+import com.ssd.gingermarket.domain.Image;
+
 import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.UserDto;
 import com.ssd.gingermarket.repository.GroupBuyingRepository;
@@ -52,6 +56,14 @@ public class UserServiceImpl implements UserService{
 				phone, 
 				dto.getAddress(),
 				dto.getItems());
+	}
+	
+	@Override
+	@Transactional
+	public void modifyUserImage(Long userIdx, Image img) {
+		User user = userRepository.findById(userIdx).orElseThrow();
+		
+		user.updateProfileImage(img);
 	}
 	
 	@Override

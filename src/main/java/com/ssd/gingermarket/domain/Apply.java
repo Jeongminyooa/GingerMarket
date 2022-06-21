@@ -30,21 +30,18 @@ public class Apply {
 	 @Column(length = 255)
 	 private String message;
 	 
-	 @ColumnDefault("0")
-	 private Long imageIdx;
+	 @OneToOne
+	 @JoinColumn(name="image_idx")
+	 private Image image;
 	 
-	 //추후 참조
-	 @Column(nullable = false)
-	 private Long userIdx;
+	 @ManyToOne
+	 @JoinColumn(name = "author_idx") 
+	 private User author;
 	 
-	 /*
-	 @ManyToOne    
-	 @JoinColumn(name = "user_idx")    
-	 private User user; */
 	 
-	 @ManyToOne    
+	 @ManyToOne(fetch = FetchType.LAZY)
 	 @JoinColumn(name = "group_idx")  
-	 private GroupBuying groupBuying;
+	 private GroupBuying groupBuying; 
 	
 
 }

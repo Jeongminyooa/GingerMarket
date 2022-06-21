@@ -3,6 +3,9 @@ package com.ssd.gingermarket.controller.SharePost;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
@@ -54,23 +57,28 @@ public class ModifySharePostController {
 	
 	
 	@GetMapping("/{postIdx}/edit")
-	public ModelAndView getUpdateForm(@PathVariable Long postIdx) { 
-		Long userIdx = (long) 2;//user session으로 추후 수정 
+	public ModelAndView getUpdateForm(HttpServletRequest req, @PathVariable Long postIdx) { 
+		HttpSession session = req.getSession();
+		Long userIdx = (long)session.getAttribute("userIdx");
 		
 		System.out.println("postIdx : " + postIdx);
-		SharePostDto.Request req = sharePostService.getPostForModify(postIdx);
+		SharePostDto.Request updateReq = sharePostService.getPostForModify(postIdx);
 		
 		ModelAndView mav = new ModelAndView("content/sharePost/sharePost_update");
-		mav.addObject("updateReq", req);
+		mav.addObject("updateReq", updateReq);
 		mav.addObject("postIdx", postIdx);
+		
+		mav.addObject("userIdx", userIdx);
 		
 		return mav;
 	}
 	
 	@PutMapping("/{postIdx}")
-    public String updatePost(@Validated @ModelAttribute("updateReq")SharePostDto.Request post,Errors error, @PathVariable Long postIdx) 
+    public String updatePost(HttpServletRequest req, @Validated @ModelAttribute("updateReq")SharePostDto.Request post,Errors error, @PathVariable Long postIdx) 
 	{
-		Long authorIdx = (long) 2; //session구현 후 변경
+		HttpSession session = req.getSession();
+		Long userIdx = (long)session.getAttribute("userIdx");
+		
 		if(error.hasErrors())
 			return "content/sharePost/sharePost_update";
 			
@@ -80,7 +88,7 @@ public class ModifySharePostController {
 			post.setImage(img);
 		}
 			
-		post.setAuthorIdx(authorIdx);
+		post.setAuthorIdx(userIdx);
 	
 		sharePostService.modifyPost(postIdx, post);
 		

@@ -2,7 +2,7 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-<th:block layout:fragment="head (userIdx)">
+<th:block layout:fragment="head">
 	<meta charset="utf-8">
 
 	<!-- css -->
@@ -19,19 +19,19 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-white p-4 px-5">
 	<div class="container-fluid">
 		<!--로고 및 이름 -->
-		<a class="navbar-brand ms-5" id="logo" href="#"> 
+		<a class="navbar-brand ms-5" id="logo" href="#" th:href="@{/share-posts}"> 
 		<img src="/image/logo.png" alt="" width="40" height="40" class="d-inline-block"> 
 			생강마켓</a>
 		
 		<div class="collapse navbar-collapse " id="navbarSupportedContent">
 			<ul class="navbar-nav ms-5 me-auto mb-2 mb-lg-0 ">
-				<li class="nav-item ms-5 me-5"><a class="nav-link" href="#">나눔</a></li>
-				<li class="nav-item ms-5 me-5"><a class="nav-link" href="#">공동구매</a></li>
-				<li class="nav-item ms-5"><a class="nav-link" th:href="@{/messages/{userIdx}/list(userIdx=${userIdx})}">쪽지함</a></li>
+				<li class="nav-item ms-5 me-5"><a class="nav-link" th:href="@{/share-posts}">나눔</a></li>
+				<li class="nav-item ms-5 me-5"><a class="nav-link" th:href="@{/group-buying}">공동구매</a></li>
+				<li class="nav-item ms-5"><a class="nav-link" th:href="@{/messages}">쪽지함</a></li>
 			</ul>
 			<div class="d-flex flex-row-reverse bd-highlight me-5">
 	  			<div class="p-2 me-5 bd-highlight">
-	  				<a class="" href="#" role="button" onClick="location.href='/logout'"> 
+	  				<a th:href="@{/logout}"> 
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-door-open" viewBox="0 0 16 16">
 						  <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z"/>
 						  <path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117zM11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5zM4 1.934V15h6V1.077l-6 .857z"/>
@@ -39,7 +39,7 @@
 					</a>
 	  			</div>
 	  			<div class="p-2 bd-highlight">
-	  				<a class="" href="#"> 
+	  				<a th:href="@{/mypage}"> 
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
  							<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
   							<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>

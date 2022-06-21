@@ -3,29 +3,36 @@
 		<b>공동구매내역</b>
 	</div>
 	<div class="col col-lg-2" id="main_content">
-		<a href="#">등록한 공구</a> | <a href="#">참여한 공구</a>
+		<span onclick="getHistory('group')">등록한 공구</span> | <span onclick="getHistory('apply')">신청한 공구</span>
 	</div>
 </div>
 <!-- list -->
-<th:block th:each="group : ${groupList}">
-<div class="row pt-1 border-top"></div>
-<div class="row p-3">
-	<div class="col col-lg-2" id="main_content">
-		<img src="/image/profile2.jpg" class="img-fluid" alt="image">
-	</div>
-	<div class="col col-lg-6" id="main_content">
-		<div class="d-inline-block text-truncate">
-			<a th:href="@{/group-buying/{groupIdx}(groupIdx = ${group.groupIdx})}" th:text="${group.title}">제목</a>
+<div id="listContent">
+	<th:block th:each="group : ${groupList}">
+	<div class="row pt-1 border-top"></div>
+	<div class="row p-3">
+		<div class="col col-lg-2" id="main_content">
+			<img th:if="${not #strings.isEmpty(group.imageUrl)}" th:src="@{${group.imageUrl}}" class="img-fluid" alt="image">
+			<div th:unless = "${not #strings.isEmpty(group.imageUrl)}" class="bg-light">
+				<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="silver" class="ms-5 mt-4 mb-4" viewBox="0 0 16 16">
+				<path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zM4 15h3v-5H4v5zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3zm3 0h-2v3h2v-3z"/>
+				</svg>
+			</div>
 		</div>
-		<div class="font-grey" th:if="${group.progress == 0}">진행중</div>
-		<div class="font-grey" th:if="${group.progress == 0}">마감임박</div>
-		<div class="font-grey" th:if="${group.progress == 0}">마감</div>
+		<div class="col col-lg-6" id="main_content">
+			<div class="d-inline-block text-truncate">
+				<a th:href="@{/group-buying/{groupIdx}(groupIdx = ${group.groupIdx})}" th:text="${group.title}">제목</a>
+			</div>
+			<div class="font-grey" th:if="${group.progress == 0}">진행중</div>
+			<div class="font-grey" th:if="${group.progress == 1}">마감임박</div>
+			<div class="font-grey" th:if="${group.progress == 2}">마감</div>
+		</div>
+		<div class="col col-lg-2 position-relative" id="middle_title">
+			<b class="position-absolute bottom-0 end-0" th:text="${group.price}">1200원</b>
+		</div>
+		<div class="col col-lg-2 position-relative" id="main_content">
+			<div class="position-absolute bottom-0 start-0 ps-3 pb-1" th:text="${group.endDate}">2022/05/10</div>
+		</div>
 	</div>
-	<div class="col col-lg-2 position-relative" id="middle_title">
-		<b class="position-absolute bottom-0 end-0" th:text="${group.price}">1200원</b>
-	</div>
-	<div class="col col-lg-2 position-relative" id="main_content">
-		<div class="position-absolute bottom-0 start-0 ps-3 pb-1" th:text="${group.endDate}">2022/05/10</div>
-	</div>
+	</th:block>
 </div>
-</th:block>

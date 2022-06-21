@@ -3,6 +3,8 @@ package com.ssd.gingermarket.controller.SharePost;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -37,8 +39,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/share-posts")
 @RequiredArgsConstructor
 public class AddSharePostController {
-	
-	private String uploadDirLocal;
 
 	private final ImageService imageService;
 	private final SharePostService sharePostService;
@@ -61,23 +61,24 @@ public class AddSharePostController {
 	
 	
 	@GetMapping("/new")
-	//
-	public ModelAndView getAddForm(@ModelAttribute("postReq")SharePostDto.Request post) { 
-		Long userIdx = (long) 2;//user session으로 추후 수정 
+	public ModelAndView getAddForm(HttpServletRequest req, @ModelAttribute("postReq")SharePostDto.Request post) { 
+		HttpSession session = req.getSession(false);
+		Long userIdx = (long)session.getAttribute("userIdx");
 		
 		ModelAndView mav = new ModelAndView("content/sharePost/sharePost_add");
 		
 		String addr = userService.getUser(userIdx).getAddress();
-		System.out.println("addr : " + addr);
-
 		post.setAddress(addr);
+		
+		mav.addObject("userIdx", userIdx);
 		
 		return mav;
 	}
 	
 	@PostMapping("")
-	public String createPost(@Validated @ModelAttribute("postReq") SharePostDto.Request post, Errors error) {	
-		Long authorIdx = (long) 2; //session구현 후 변경
+	public String createPost(HttpServletRequest req, @Validated @ModelAttribute("postReq") SharePostDto.Request post, Errors error) {	
+		HttpSession session = req.getSession(false);
+		Long userIdx = (long)session.getAttribute("userIdx");
 		
 		if(error.hasErrors())
 			return "content/sharePost/sharePost_add";
@@ -95,7 +96,7 @@ public class AddSharePostController {
 			post.setImage(img);
 		}
 		
-		post.setAuthorIdx(authorIdx);
+		post.setAuthorIdx(userIdx);
 		sharePostService.addPost(post);
 		
 		return "redirect:/share-posts";

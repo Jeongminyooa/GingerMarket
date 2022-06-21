@@ -12,6 +12,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 public class MessageDto {
+	public static String getUploadDirPath(String imageUrl) {
+		return "/upload/" + imageUrl;
+	}
 	
 	@AllArgsConstructor
 	@NoArgsConstructor
@@ -19,16 +22,21 @@ public class MessageDto {
 	public static class Info{
 
 		private Long roomIdx;
-		private SharePost post;
-		private String postImgUrl;
-//		private String title;
-//		private String imgUrl;
-//		private LocalDateTime enrollDate;
 		
-		private User sender;
+		private Long postIdx;
+		private Long authorIdx;
+		private String authorName;
+		private String authorImgUrl;
+		private String title;
+		private String postImgUrl;
+		
+		private Long senderIdx;
+		private String senderName;
+		private String senderImgUrl;
 		
 		private String content;
 		private boolean isRead;
+		private LocalDateTime sendTime;
 		
 	}
 
@@ -64,19 +72,6 @@ public class MessageDto {
 	
 	@NoArgsConstructor
 	@Data
-	public static class RoomResponse{
-		private String uploadDirLocal = "/upload/";
-		
-		private Long idx;
-		private String title;
-		private String imgUrl;
-		private LocalDateTime enrollDate;
-		private boolean progress;
-		
-	}
-	
-	@NoArgsConstructor
-	@Data
 	public static class MessageResponse{
 		
 		private Long messageIdx;
@@ -84,7 +79,13 @@ public class MessageDto {
 		private LocalDateTime sendDate;
 		private boolean isRead;
 		
-		private User sender;
+		private Long senderIdx;
+		private String senderName;
+		private String senderImgUrl;
+		
+		private Long authorIdx;
+		private String authorName;
+		private String authorImgUrl;
 		
 		
 		public MessageResponse(MessageInfo message) {
@@ -99,8 +100,22 @@ public class MessageDto {
 				isRead = false;
 			this.isRead = isRead;
 		
-			this.sender = message.getSender();
+			this.senderIdx = message.getSender().getUserIdx();
+			this.senderName = message.getSender().getName();
 			
+			try {
+				this.senderImgUrl = getUploadDirPath(message.getSender().getImage().getUrl());
+			}catch (Exception e ) {	           
+				this.senderImgUrl = "";
+			}
+			
+			this.authorIdx = message.getRoom().getPost().getAuthor().getUserIdx();
+			this.authorName = message.getRoom().getPost().getAuthor().getName();
+			try {
+				this.authorImgUrl = getUploadDirPath(message.getRoom().getPost().getAuthor().getImage().getUrl());
+			}catch (Exception e ) {	           
+				this.authorImgUrl = "";
+			}
 			
 		}
 	}

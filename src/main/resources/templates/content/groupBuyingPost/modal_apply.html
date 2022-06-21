@@ -1,12 +1,4 @@
-<script>
 
-$('#applyModal').on('show.bs.modal',function(e){
-	var phone = $(e.relatedTarget).data('phone');
-	var message = $(e.relatedTarget).data('message');
-	document.getElementById("phone").innerHTML = phone;
-	document.getElementById("message").innerHTML = message;
-});
-</script>
 		<div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 		    <div class="modal-content"> 
@@ -16,7 +8,7 @@ $('#applyModal').on('show.bs.modal',function(e){
 		      <div class="modal-body justify-content-md-center ps-5 pe-5">
 		        <div id="page_title" class="text-center"><b>신청 폼 작성</b></div>
 		       
-		        <form class="ps-5 pe-5" th:id="addApply" th:action="@{/group-buying/{groupIdx}/apply(groupIdx=${postInfo.groupIdx})}" th:method="POST">  
+		        <form class="ps-5 pe-5" th:id="addApply" th:action="@{/group-buying/{groupIdx}/apply-form(groupIdx=${postInfo.groupIdx})}" th:method="POST">  
 					  
 					   <div class="mb-3">
 					  	<label for="phone" class="form-label">전화번호</label> <b class="text-danger">*</b>
@@ -31,7 +23,7 @@ $('#applyModal').on('show.bs.modal',function(e){
 	
 					<div class="mb-1 pt-3 text-center">
 						<button type="submit" class="apply_btn w-75" >신청하기</button>
-					</div>
+					</div>           		
 		        </form>
 		      </div> 
 		    </div>

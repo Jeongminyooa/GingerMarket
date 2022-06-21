@@ -2,16 +2,20 @@ package com.ssd.gingermarket.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.format.annotation.DateTimeFormat;
-
+import com.ssd.gingermarket.domain.Image;
 import com.ssd.gingermarket.domain.GroupBuying;
-
+import com.ssd.gingermarket.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 public class GroupBuyingDto {
+	
+	public static String getUploadDirPath(String imageUrl) {
+		return "/upload/" + imageUrl;
+	}
 	
 	@NoArgsConstructor
 	@AllArgsConstructor
@@ -25,10 +29,15 @@ public class GroupBuyingDto {
 		private LocalDate endDate;
 		private String descr;
 		private int price;
-		private Long imageIdx;
-		private Long authorIdx;
 		private int progress;
-
+		
+		private Image image;
+		private String imgUrl;
+		private MultipartFile file;
+		
+		private User author;
+		private Long authorIdx;
+		
 		public GroupBuying toEntity(){
 			return GroupBuying.builder()
 					.title(title)
@@ -38,9 +47,9 @@ public class GroupBuyingDto {
 					.endDate(endDate)
 					.descr(descr)
 					.price(price)
-					.imageIdx(imageIdx)
-					.authorIdx(authorIdx)
 					.progress(progress)
+					.image(image)
+					.author(author)
 					.build();
 		}
 		
@@ -52,9 +61,13 @@ public class GroupBuyingDto {
 			this.endDate = groupBuying.getEndDate();
 			this.descr = groupBuying.getDescr();
 			this.price = groupBuying.getPrice();
-			this.imageIdx = groupBuying.getImageIdx();
-			this.authorIdx = groupBuying.getAuthorIdx();
 			this.progress = groupBuying.getProgress();
+			try {
+				this.imgUrl = getUploadDirPath(groupBuying.getImage().getUrl());
+			}catch (Exception e ) {	           
+				this.imgUrl = "";
+			}
+			this.authorIdx = groupBuying.getAuthor().getUserIdx();
 		}
 
 	}
@@ -63,15 +76,15 @@ public class GroupBuyingDto {
 		@AllArgsConstructor
 		@Data
 		public static class DetailResponse{
-					
+			
+			private String uploadDirLocal = "/upload/";
+			
 			private Long groupIdx;
-
-			// User 객체 참조
-			private Long authorIdx;
+			private User author;
 			
 			private String category;
 			private String title;
-			private Long imageIdx;
+			private String imgUrl;
 			private int recruitNum;
 			private int participateNum;
 			private int price;
@@ -85,10 +98,17 @@ public class GroupBuyingDto {
 			
 			public DetailResponse(GroupBuying groupBuying) {
 				this.groupIdx = groupBuying.getGroupIdx();
-				this.authorIdx = groupBuying.getAuthorIdx();
+				this.author = groupBuying.getAuthor();
 				this.category = groupBuying.getCategory();
 				this.title = groupBuying.getTitle();
-				this.imageIdx = groupBuying.getImageIdx();
+				String url = "";
+				try {
+					url = getUploadDirPath(groupBuying.getImage().getUrl());
+				}catch (Exception e ) {
+					url = "";
+				}finally {
+					this.imgUrl = url;
+				}
 				this.recruitNum =  groupBuying.getRecruitNum();
 				this.participateNum = groupBuying.getParticipateNum();
 				this.price = groupBuying.getPrice();
@@ -104,7 +124,6 @@ public class GroupBuyingDto {
 		}
 		
 		@NoArgsConstructor
-		@AllArgsConstructor
 		@Data
 		public static class MyPageInfo {
 			// 마이페이지 제공되는 정보
@@ -115,6 +134,18 @@ public class GroupBuyingDto {
 			private int price;
 			@DateTimeFormat(pattern = "yyyy-MM-dd")
 			private LocalDate endDate;
+			
+			public MyPageInfo(Long groupIdx, String imageUrl, String title, int progress, int price, LocalDate endDate) {
+				this.groupIdx = groupIdx;
+				this.imageUrl = imageUrl;
+				if(!imageUrl.equals("")) {
+					this.imageUrl = getUploadDirPath(imageUrl);
+				}
+				this.title = title;
+				this.progress = progress;
+				this.price = price;
+				this.endDate = endDate;
+			}
 		}
 		 
 }

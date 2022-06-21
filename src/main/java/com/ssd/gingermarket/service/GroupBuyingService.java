@@ -22,8 +22,11 @@ public interface GroupBuyingService {
 	// 카테고리 검색 포스트 리스트 가져오기
 	public Page<GroupBuying> getAllPostByKeyword(String keyword, int page, String option);
 	
+	// 선호 포스트 조회
+	public List<GroupBuyingDto.DetailResponse> getFavPost(Long userIdx);
+  
 	// 사용자가 작성한 공구 포스트 리스트
-	public List<GroupBuyingDto.MyPageInfo> getGroupBuyingByUserId(Long userIdx);
+	public List<GroupBuyingDto.MyPageInfo> getGroupBuyingByUserIdx(Long userIdx);
 	
 	// 공구 포스트 상세 조회
 	public GroupBuyingDto.DetailResponse getPost(Long groupIdx);

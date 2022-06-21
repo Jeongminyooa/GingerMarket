@@ -1,7 +1,10 @@
 package com.ssd.gingermarket.dto;
 
+import java.util.List;
+
 import com.ssd.gingermarket.domain.Apply;
 import com.ssd.gingermarket.domain.GroupBuying;
+import com.ssd.gingermarket.domain.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,55 +15,32 @@ public class ApplyDto {
 	@NoArgsConstructor
 	@AllArgsConstructor
 	@Data
-	public static class Request{
-		private Long id;
+	public static class Info{
+		private Long applyIdx;
 		private String phone;
 		private String message;
-		private Long userIdx;
-		//private User user;
+		private User author;
+		private String imgUrl;
+		private Long authorIdx;
 		
 		public Apply toEntity(){
 			return Apply.builder()
-					.applyIdx(id)
 					.phone(phone)
 					.message(message)
-					.userIdx(userIdx)
+					.author(author)
 					.build();
 		}
 		
-		public Request(Apply apply) {
-			this.id = apply.getApplyIdx();
+		public Info(Apply apply) {
+			this.applyIdx = apply.getApplyIdx();
 			this.phone = apply.getPhone();
 			this.message = apply.getMessage();
-			this.userIdx = apply.getUserIdx();
+			this.author = apply.getAuthor();
+			this.authorIdx = apply.getAuthor().getUserIdx();
 		}
 
 	
 	}
 	
 	
-	@NoArgsConstructor
-	@AllArgsConstructor
-	@Data
-	public static class Response{
-		private Long id;
-		private String phone;
-		private String message;
-		private Long imageIdx;
-		private Long userIdx;
-		private Long groupIdx;
-		private String userId;
-
-		public Response(Apply apply) {
-			this.id = apply.getApplyIdx();
-			this.phone = apply.getPhone();
-			this.message = apply.getMessage();
-			this.imageIdx = apply.getImageIdx();
-			this.userIdx = apply.getUserIdx();
-			this.groupIdx = apply.getGroupBuying().getGroupIdx();
-			//this.userId = apply.getUser().getUserId();
-	
-		}
-	
-	}
 }

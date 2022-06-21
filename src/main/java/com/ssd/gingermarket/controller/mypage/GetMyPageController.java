@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,16 +65,21 @@ public class GetMyPageController {
 	@ModelAttribute("userInfo")
 	public UserDto.Response formBackingObject(HttpServletRequest request) 
 			throws Exception  {
-		// session에서 id 값 받아오기 
-		long userIdx = 2;
+		
+		HttpSession session = request.getSession();
+	    long userIdx = (long) session.getAttribute("userIdx");
+
 		return userService.getUserInfo(userIdx);
 	}
 	
 	@GetMapping("")
-	public ModelAndView getMyPage(@RequestParam(value="category", required=false) String category) {
+	public ModelAndView getMyPage(@RequestParam(value="category", required=false) String category,
+			HttpServletRequest request) {
+	
+		HttpSession session = request.getSession();	
+	    long userIdx = (long) session.getAttribute("userIdx");
+	    
 		ModelAndView mav = new ModelAndView("content/mypage/mypage");
-		
-		long userIdx = 2;
 		
 		if(category != null) {
 			mav.addObject("category", category);
@@ -88,7 +94,7 @@ public class GetMyPageController {
 			} 
 			else if(category.equals("group")) {
 				// 공동구매 섹션
-				List<GroupBuyingDto.MyPageInfo> dto = groupBuyingService.getGroupBuyingByUserId(userIdx);
+				List<GroupBuyingDto.MyPageInfo> dto = groupBuyingService.getGroupBuyingByUserIdx(userIdx);
 				mav.addObject("groupList", dto);
 			} 
 			else {

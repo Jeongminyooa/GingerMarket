@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.ssd.gingermarket.domain.Image;
+import com.ssd.gingermarket.dto.ImageDto;
 import com.ssd.gingermarket.dto.UserDto;
+import com.ssd.gingermarket.service.ImageService;
 import com.ssd.gingermarket.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -22,16 +25,21 @@ import lombok.RequiredArgsConstructor;
 public class ModifyUserInfoController {
 
 	private final UserService userService;
+	private final ImageService imageService;
 	
-	@PutMapping("/{user-idx}")
-	public String updateUserInfo(@PathVariable("user-idx")Long userIdx,
-			@Validated @ModelAttribute("userInfo") UserDto.Response dto,
-			Errors error) {
-		if(error.hasErrors()) {
-			return "content/mypage/mypage";
+	@PutMapping("/{userIdx}")
+	public RedirectView updateUserInfo(@PathVariable("userIdx")Long userIdx,
+			@ModelAttribute("userInfo") UserDto.Response dto) {
+		
+		// 프로필 사진 파일이 들어온다면
+		if(!dto.getFile().getOriginalFilename().equals("")) {
+			ImageDto.Request imgDto = new ImageDto.Request(dto.getFile());
+			Image img = imageService.uploadFile(imgDto.getImageFile());
+			userService.modifyUserImage(userIdx, img);
 		}
+		
 		userService.modifyUser(userIdx, dto);
 		
-		return "content/mypage/mypage";
+		return new RedirectView("/mypage");
 	}
 }

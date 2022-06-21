@@ -4,7 +4,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/default_layout}">
 
-<th:block layout:fragment="head (userIdx=${userIdx})">
+<th:block layout:fragment="head">
 	<title>쪽지함 리스트</title>
 	<meta charset="utf-8">
 
@@ -57,27 +57,45 @@
 				<div class="row pt-1 w-75 mx-auto msg-list rounded-3 position-relative">
 					<!-- receiver profile -->
 					<div class="col-lg-1">
-						<img src="/image/yellow.JPG" alt="..." id="img-author"
-							class="rounded-pill">
+					
+						<!-- 작성자일때 -->
+						<th:block th:if="${userIdx} == ${room.authorIdx}">
+							<img th:if="${not #strings.isEmpty(room.senderImgUrl)}" th:src="@{${room.senderImgUrl}}" src="/image/profile.png" class="card-img-top rounded-pill" id="img-author">
+						</th:block>
+		
+							
+						<!-- 작성자 아닐때 -->
+						<th:block th:if="${userIdx} != ${room.authorIdx}">
+							<img th:if="${not #strings.isEmpty(room.authorImgUrl)}" th:src="@{${room.authorImgUrl}}" src="/image/profile.png" class="card-img-top rounded-pill" 
+							id="img-author">
+						</th:block>
 					</div>
 					
 					<!-- receiver name & last content -->
-					<div class="col-lg-9 text-left ps-5 mt-2">
+					<div th:if="${userIdx} == ${room.authorIdx}" class="col-lg-9 text-left ps-5">
+						<!-- 작성자일때 -->
 						<div class="d-flex">
-							<div th:if="${userIdx} == ${room.post.author.name}" th:text="${room.sender.name}" class="font-weight-bold" id="main_content">
-								<b>김매미</b>
+							<div  th:text="${room.senderName}" class="font-weight-bolder" id="main_content">
+								<b>김매미</b>							
 							</div>
-							<div th:unless="${userIdx} == ${room.post.author.name}" th:text="${room.post.author.name}" class="font-weight-bold" id="main_content">
-								<b>김매미</b>
-							</div>
-							<div th:text="${#temporals.format(room.post.createdDate, 'yyyy/MM/dd HH:mm')}" class="ms-3" id="small_content">2022/05/18 16:04</div>
+							<div th:text="${#temporals.format(room.sendTime, 'yyyy/MM/dd HH:mm')}" class="ms-3 mt-1" id="small_content">2022/05/18 16:04</div>
 						</div>
-
-						<div th:text=${room.content} class="mt-1" id="main_content">안녕하세요!</div>
+						<div th:text=${room.content} class="mt-3" id="main_content">안녕하세요!</div>
+					</div>
+						
+					<div th:unless="${userIdx} == ${room.authorIdx}" class="col-lg-9 text-left ps-5 mt-2">			
+						<!-- 작성자가 아닐때 -->
+						<div class="d-flex">
+							<div th:if="${userIdx} != ${room.authorIdx}" th:text="${room.authorName}" class="font-weight-bolder" id="main_content">
+								<b>김매미</b>
+							</div>
+							<span class="ms-2 ps-2 badge rounded-pill text-light author" id="small_content">작성자</span>
+							<div th:text="${#temporals.format(room.sendTime, 'yyyy/MM/dd HH:mm')}" class="ms-3" id="small_content">2022/05/18 16:04</div>
+						</div>	
+						<div th:text=${room.content} class="mt-3" id="main_content">안녕하세요!</div>
 					</div>
 					
-					<!-- post img -->
-					
+					<!-- post img & alarm -->
 					<div class="col-lg-1 pt-4 ps-5">
 						 <div th:if="${room.isRead} == false"> 
 						<!-- 읽지 않은 새 메세지 알림 아이콘 -->
@@ -88,7 +106,7 @@
 					</div>
 					
 					<div class="col-lg-1 ps-5">
-						<a th:href="@{/messages/{postIdx}/room/{roomIdx}(postIdx=${room.post.postIdx}, roomIdx=${room.roomIdx})}" class="stretched-link"> 
+						<a th:href="@{/messages/{postIdx}/room/{roomIdx}(postIdx=${room.postIdx}, roomIdx=${room.roomIdx})}" class="stretched-link"> 
 						<img th:if = "${not #strings.isEmpty(room.postImgUrl)}" th:src="@{${room.postImgUrl}}" src="/image/postList.JPG" alt="..." id="img-post" class="rounded-3"></a>
 					</div>
 					

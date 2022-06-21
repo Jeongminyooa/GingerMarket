@@ -3,6 +3,9 @@ package com.ssd.gingermarket.controller.SharePost;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,7 +31,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ViewSharePostController {
 	private final SharePostService sharePostService;
-	private final ImageService imageService;
 
 	@ModelAttribute("categoryList")
 	public List<String> categoryList(){
@@ -49,12 +51,14 @@ public class ViewSharePostController {
      * 게시글 상세 조회
      */
 	@GetMapping("/{postIdx}")
-	public ModelAndView getPost(@PathVariable Long postIdx){
-		Long sessionIdx = (long)1;
+	public ModelAndView getPost(HttpServletRequest req, @PathVariable Long postIdx){
+		HttpSession session = req.getSession(false);
+		Long userIdx = (long)session.getAttribute("userIdx");
+		
 		ModelAndView mav = new ModelAndView("content/sharePost/sharePost_view");
 		mav.addObject("postInfo", sharePostService.getPost(postIdx));
-		mav.addObject("senderIdx", sessionIdx);
-		mav.addObject("sessionIdx", sessionIdx);
+		
+		mav.addObject("userIdx", userIdx);
 		return mav;
 	}
 	
@@ -62,15 +66,14 @@ public class ViewSharePostController {
      * 게시글 리스트 조회
      */
 	@GetMapping("")
-	public ModelAndView getPostList(@RequestParam(value="page", defaultValue="0") int page) {
-		
-		Long userIdx = (long) 2;
-		
+	public ModelAndView getPostList(HttpServletRequest req, @RequestParam(value="page", defaultValue="0") int page) {
+		HttpSession session = req.getSession(false);
+		Long userIdx = (long)session.getAttribute("userIdx");
+
 		ModelAndView mav = new ModelAndView("content/sharePost/sharePostList");
 		mav.addObject("allPostList", sharePostService.getAllPost(page));
 		mav.addObject("favPostList", sharePostService.getFavPost(userIdx));
-		
-		mav.addObject("userIdx", 1); //user session 구현 후 수정 예정 
+		 
 		mav.addObject("type", "none");
 		
 		return mav;
@@ -78,19 +81,21 @@ public class ViewSharePostController {
 	
 	//검색
 	@GetMapping(value="/search/{option}")
-	public ModelAndView getSearchList(@PathVariable("option") String option,
+	public ModelAndView getSearchList(HttpServletRequest req, @PathVariable("option") String option,
 								@RequestParam String keyword, 
 								@RequestParam(value="page", defaultValue="0") int page, 
 								@RequestParam(value="type") String type) {
-			
+		
+		HttpSession session = req.getSession(false);
+		Long userIdx = (long)session.getAttribute("userIdx");
+		
 		ModelAndView mav = new ModelAndView("content/sharePost/sharePostList");
 		
-//		System.out.println("option: " + option);
-//		if(option.equals("category"))
-//			type = "category";
 		mav.addObject("allPostList", sharePostService.getAllPostByKeyword(keyword, page, option, type));
 		mav.addObject("type", type);
 		mav.addObject("keyword", keyword);
+		
+		mav.addObject("userIdx", userIdx);
 			
 		return mav;
 	}

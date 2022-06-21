@@ -18,28 +18,17 @@ import com.ssd.gingermarket.dto.SharePostDto.DetailResponse;
 
 public interface MessageRoomRepository extends JpaRepository<MessageRoom, Long>{
 
-	//방이 존재하는지 확인 
+	//Room ID 찾기 
 	@Query(value = "SELECT r.roomIdx "
 			+ "FROM MessageRoom r "
-			+ "WHERE r.post.postIdx = ?1 "
-			+ "AND r.author.userIdx = ?2 AND r.sender.userIdx = ?3")
-	public Long existsByIds(Long postIdx, Long authorIdx, Long senderIdx);
+			+ "WHERE r.post.postIdx = ?1 AND r.sender.userIdx =?2")
+	public Long findRoomIdxByPostAndSender(Long postIdx, Long senderIdx);
 
-	//roomIdx 찾기 
-	@Query(value = "SELECT r.roomIdx "
-			+ "FROM MessageRoom r "
-			+ "WHERE r.post.postIdx = ?1 AND r.sender.userIdx = ?2")
-	public Long findByPostIdAndSenderId(Long postIdx, Long senderIdx);
+	//쪽지함들 불러오기 
+	public List<MessageRoom> findByAuthorOrSenderOrderByCreatedDateDesc(User author, User sender);
 	
-	//쪽지함들 불러오기
-	@Query(value = "SELECT r "
-			+ "FROM MessageRoom r "
-			+ "WHERE r.author.userIdx = ?1 OR r.sender.userIdx = ?2 "
-			+ "ORDER BY r.createdDate DESC")
-	List<MessageRoom> findByAuthorIdx(Long authorIdx, Long senderIdx);
+	// 참여한 쪽지함
+	List<MessageRoom> findAllMessageBySender(User sender);
 
-	
-	public MessageRoom findByPostAndSender(SharePost post, User sender);
-	
-	
+	//public Long findRoomIdxByPostAndSender(Long postIdx, Long senderIdx);
 }
