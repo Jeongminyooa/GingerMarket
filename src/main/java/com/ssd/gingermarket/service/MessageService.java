@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.MessageDto;
 import com.ssd.gingermarket.dto.MessageDto.MessageResponse;
-import com.ssd.gingermarket.dto.MessageDto.RoomResponse;
 import com.ssd.gingermarket.dto.SharePostDto;
 import com.ssd.gingermarket.dto.SharePostDto.DetailResponse;
 import com.ssd.gingermarket.dto.SharePostDto.Request;
@@ -17,12 +16,8 @@ import com.ssd.gingermarket.dto.SharePostDto.Request;
 @Service
 public interface MessageService {
 
-	public Long existRoom(Long postIdx, Long authorIdx, Long senderIdx);
 	//쪽지함 생성
-	public void addRoom(MessageDto.Request req, Long postIdx);
-	
-	//쪽지 보내기 
-	public Long sendMessage(MessageDto.Request req, Long roomIdx);
+	public Long addRoom(Long postIdx, Long senderIdx);
 	
 	//쪽지 리스트 조회 
 	public List<MessageResponse> getAllMessage(Long roomIdx);
@@ -35,4 +30,10 @@ public interface MessageService {
 	
 	//참여한 쪽지의 post 조회
 	public List<SharePostDto.MyPageInfo> getAllMessageBySender(Long userIdx);
+
+	//쪽지 보내기 
+	public void sendMessage(MessageDto.Request req, Long senderIdx, Long roomIdx);
+	
+	//쪽지 읽음 처리
+	public void updateIsRead(Long senderIdx, Long roomIdx);
 }

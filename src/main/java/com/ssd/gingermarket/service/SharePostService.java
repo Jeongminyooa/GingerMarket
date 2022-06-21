@@ -2,8 +2,11 @@ package com.ssd.gingermarket.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import com.ssd.gingermarket.domain.GroupBuying;
+import com.ssd.gingermarket.domain.SharePost;
 import com.ssd.gingermarket.dto.SharePostDto;
 import com.ssd.gingermarket.dto.SharePostDto.CardResponse;
 import com.ssd.gingermarket.dto.SharePostDto.Request;
@@ -24,7 +27,7 @@ public interface SharePostService {
 	public List<SharePostDto.MyPageInfo> getPostByUserId(Long userIdx);
 	
 	//전체 포스트리스트 조회 
-	public List<SharePostDto.CardResponse> getAllPost();
+	public Page<SharePostDto.CardResponse> getAllPost(int page);
 	
 	//선호 포스트리스트 조회 
 	public List<CardResponse> getFavPost(Long userIdx);
@@ -37,6 +40,8 @@ public interface SharePostService {
 
 	//나눔 상태 업데이트 
 	public void modifyProgress(Long postIdx, boolean prog);
+
+	public Page<SharePostDto.CardResponse> getAllPostByKeyword(String keyword, int page, String option, String type);
 
 	
 	

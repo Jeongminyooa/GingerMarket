@@ -3,6 +3,9 @@ package com.ssd.gingermarket.controller.SharePost;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -26,7 +29,7 @@ import com.ssd.gingermarket.service.SharePostService;
 import lombok.RequiredArgsConstructor;
 
 //@Slf4j //로그 
-@RestController 
+@Controller 
 @RequestMapping("/share-posts")
 @RequiredArgsConstructor
 public class ModifySharePostController {
@@ -61,14 +64,18 @@ public class ModifySharePostController {
 		mav.addObject("updateReq", req);
 		mav.addObject("postIdx", postIdx);
 		
+		mav.addObject("userIdx", 1);//session 
+		
 		return mav;
 	}
 	
 	@PutMapping("/{postIdx}")
-    public RedirectView updatePost(SharePostDto.Request post, @PathVariable Long postIdx) 
+    public String updatePost(@Validated @ModelAttribute("updateReq")SharePostDto.Request post,Errors error, @PathVariable Long postIdx) 
 	{
-		Long authorIdx = (long) 1; //session구현 후 변경
-		
+		Long authorIdx = (long) 2; //session구현 후 변경
+		if(error.hasErrors())
+			return "content/sharePost/sharePost_update";
+			
 		if(!post.getFile().getOriginalFilename().equals("")) {
 			ImageDto.Request imgDto = new ImageDto.Request(post.getFile());
 			Image img = imageService.uploadFile(imgDto.getImageFile());
@@ -79,7 +86,7 @@ public class ModifySharePostController {
 	
 		sharePostService.modifyPost(postIdx, post);
 		
-        return new RedirectView("/share-posts/" + postIdx);
+        return "redirect:/share-posts/" + postIdx;
     }
 	
 	@PutMapping("/{postIdx}/progress")

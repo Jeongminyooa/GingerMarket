@@ -55,3 +55,6 @@
 .msg-list{
     transition-duration: 1s;
   }
+ .author{
+	background-color : #91A77F;
+ }
