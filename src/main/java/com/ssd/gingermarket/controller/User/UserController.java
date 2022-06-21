@@ -3,13 +3,11 @@ package com.ssd.gingermarket.controller.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.PrintWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.ssd.gingermarket.domain.User;
+import com.ssd.gingermarket.domain.Image;
+import com.ssd.gingermarket.dto.ImageDto;
 import com.ssd.gingermarket.dto.UserDto;
+import com.ssd.gingermarket.service.ImageService;
 import com.ssd.gingermarket.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,11 +26,12 @@ import lombok.RequiredArgsConstructor;
 
 // @Slf4j //로그 
 @RestController 
-@RequestMapping("user") 
+@RequestMapping("/user") 
 @RequiredArgsConstructor 
 public class UserController {
 
 	private final UserService userService;
+	private final ImageService imageService;
 
 	@GetMapping("/signup")
 	public ModelAndView getSignUp() { 
@@ -61,21 +62,38 @@ public class UserController {
 		return mav;
 	}
 
+	//@Validated
 	@PostMapping("")
-	public RedirectView register(UserDto.Request req) {
+	public RedirectView register(UserDto.Request req, HttpServletResponse response) throws Exception {
+		response.setContentType("text/html; charset=utf-8");
+		PrintWriter out = response.getWriter();
 		
-		Long idx = userService.addUser(req);
-		User user = userService.getUser(idx);
-		
-		
-		if(user.matchPassword(req.getRepeatedPassword())) 
-			return new RedirectView("/user/login");
-		else {
-			return new RedirectView("/user/signup");
+		if(req.getImageFile().getOriginalFilename()!=null) {
+			ImageDto.Request imgReq = new ImageDto.Request(req.getImageFile());
+			Image img = imageService.uploadFile(imgReq.getImageFile());
+			req.setImage(img);
 		}
+		
+	//	Long idx = userService.addUser(req);
+	//	UserDto.Info info = userService	.getUser(idx);
+		
+		if(!req.getPassword().equals(req.getRepeatedPassword())) {
+			out.println("<script>alert('비밀번호가 일치하지 않습니다.');  location.replace('/user/signup'); </script>");
+			out.flush();
+			return new RedirectView("/user/signup");
+			
+			}
+		else {
+			out.println("<script>alert('회원등록이 완료되었습니다.');  location.replace('/user/login'); </script>");
+			out.flush();
+			userService.addUser(req);
+			return new RedirectView("/user/login");
+		}
+		
 	}
-	
-	@DeleteMapping("/quit")
+
+
+	@GetMapping("/user/quit/{id}")
 	public RedirectView quitUser(HttpServletRequest req) { 
 		HttpSession session = req.getSession(false);
 		Long userIdx = (Long) session.getAttribute("userIdx");

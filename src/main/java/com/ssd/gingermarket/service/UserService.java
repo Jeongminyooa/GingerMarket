@@ -1,10 +1,7 @@
 package com.ssd.gingermarket.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
-import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.UserDto;
 
 @Service
@@ -18,8 +15,11 @@ public interface UserService {
 	//회원 탈퇴
 	public void removeUser(Long userIdx);
 	
-	public User getUser(String userId, String password);
+	public UserDto.Info getUser(String userId, String password);
 	
-	public User getUser(Long userIdx);
+	public UserDto.Info getUser(Long userIdx);
+	
+	public int userIdCheck(String userId) throws Exception;
+	public int nameCheck(String name) throws Exception;
 	
 }

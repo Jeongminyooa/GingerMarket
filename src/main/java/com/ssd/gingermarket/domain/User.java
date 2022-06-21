@@ -27,7 +27,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Getter @Setter
+@Getter 
 @DynamicInsert
 @Table(name="userinfo")
 public class User {
@@ -36,7 +36,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long userIdx;
 	
-	@Column(unique = true, nullable = false, length=10)
+	@Column(unique = true, nullable = false)
 	private String userId;
 	
 	@Column(nullable = false, length=16)
@@ -58,19 +58,30 @@ public class User {
 	@Column(length = 10)
 	private String item3;
 	
+
+//	private Long imageIdx;
+	
 	@OneToOne
 	@JoinColumn(name="imgIdx")
 	private Image image;
 	
-	private Long img;
-	
 	@OneToMany(mappedBy = "experiodIdx", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Experiod> experiodList = new ArrayList<Experiod>();
 	
-	public boolean matchPassword(String newPassword) {
-		return newPassword.equals(password);
-	} 
-
+	/*
+	//작성한 나눔 게시글
+	private List<SharePost> shareList = new ArrayList<SharePost>();
+	//채팅 중인 나눔
+	private List<SharePost> participateShareList = new ArrayList<SharePost>();
+	//작성한 공구 게시글
+	private List<GroupBuying> groupBuyingList = new ArrayList<GroupBuying>();
+	//참여한 공구
+	private List<GroupBuying> participateGroupBuyingList = new ArrayList<GroupBuying>();
+	//작성한 댓글, 대댓글
+	private List<CommentInfo> commentList = new ArrayList<CommentInfo>();
+	//참여중인 채팅룸
+	private List<MessageRoom> messageRoomList = new ArrayList<MessageRoom>();
+*/
 	public void updateUser(String userId, String password, String name,String phone,
 			String address,String item1,String item2, String item3) {
 		this.userId=userId;

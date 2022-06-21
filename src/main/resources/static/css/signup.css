@@ -15,13 +15,15 @@ input{
 #tel, #address_kakao{
 	width:100px;
 }
-#confirmbtn{
+#idCheckBtn, #nameCheckBtn {
 	width:94px;
 	background-color : #91A77F;
 	border: none;
 	border-radius: 10px;
 	margin-left:30px;
 }
+
+
 .btn-primary{
 	position:relative;
 	height:30px;
@@ -47,7 +49,7 @@ input{
 	color : white;
 	border: none;
 }
-#submit:hover,#confirmbtn:hover {
+#submit:hover,#confirmbtn:hover,#idCheckBtn:hover, #nameCheckBtn:hover {
 	color : white;
 	background-color : #68785B;
 	transition-duration: 0.3s;
