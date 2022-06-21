@@ -1,24 +1,28 @@
 package com.ssd.gingermarket.controller.User;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.ssd.gingermarket.domain.User;
+import com.ssd.gingermarket.domain.Image;
+import com.ssd.gingermarket.dto.ImageDto;
 import com.ssd.gingermarket.dto.UserDto;
+import com.ssd.gingermarket.service.ImageService;
 import com.ssd.gingermarket.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,7 +35,8 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final UserService userService;
-
+	private final ImageService imageService;
+	
 	@GetMapping("/signup")
 	public ModelAndView getSignUp() { 
 		ModelAndView mav = new ModelAndView("content/user/user_signup");
@@ -60,32 +65,100 @@ public class UserController {
 		
 		return mav;
 	}
-
+	
 	@PostMapping("")
-	public RedirectView register(UserDto.Request req) {
+	public ModelAndView register(@Validated @ModelAttribute("userReq") UserDto.Request req, BindingResult error, HttpServletResponse response) throws Exception {
+
+		if(error.hasErrors())
+			return new ModelAndView("/user/signup");
 		
-		Long idx = userService.addUser(req);
-		User user = userService.getUser(idx);
-		
-		
-		if(user.matchPassword(req.getRepeatedPassword())) 
-			return new RedirectView("/user/login");
-		else {
-			return new RedirectView("/user/signup");
+		if(!req.getImageFile().getOriginalFilename().equals("")) {
+			ImageDto.Request imgReq = new ImageDto.Request(req.getImageFile());
+			Image img = imageService.uploadFile(imgReq.getImageFile());
+			req.setImage(img);
 		}
+		
+		response.setContentType("text/html; charset=utf-8");
+		PrintWriter out = response.getWriter();
+		
+		if(!req.getPassword().equals(req.getRepeatedPassword())) {
+			out.println("<script>alert('비밀번호가 일치하지 않습니다.'); location.replace('/user/signup');</script>");
+			out.flush();
+			return new ModelAndView("redirect: /user/signup");
+			}
+		else {
+			out.println("<script>alert('회원가입 되었습니다.'); location.replace('/user/login');</script>");
+			out.flush();
+			userService.addUser(req);
+			return new ModelAndView("redirect: /user/login");
+		}
+		
 	}
 	
+	/*
+	@PostMapping("")
+	public RedirectView register(@Validated @ModelAttribute("userReq") UserDto.Request req, HttpServletResponse response, Errors error) throws Exception {
+		response.setContentType("text/html; charset=utf-8");
+		PrintWriter out = response.getWriter();
+		
+		if(error.hasErrors())
+			return new RedirectView("/user/login");
+		
+		if(!req.getImageFile().getOriginalFilename().equals("")) {
+			ImageDto.Request imgReq = new ImageDto.Request(req.getImageFile());
+			Image img = imageService.uploadFile(imgReq.getImageFile());
+			req.setImage(img);
+		}
+		if(!req.getPassword().equals(req.getRepeatedPassword())) {
+			out.println("<script>alert('비밀번호가 일치하지 않습니다.'); location.replace('/user/signup');</script>");
+			out.flush();
+			return new RedirectView("/user/signup");
+			}
+		else {
+			out.println("<script>alert('회원가입 되었습니다.'); location.replace('/user/login');</script>");
+			out.flush();
+			userService.addUser(req);
+			return new RedirectView("/user/login");
+		}
+		
+	}*/
+	
+	/*
+	@PostMapping("")
+	public ModelAndView register(@Validated UserDto.Request req, HttpServletResponse response, Errors error) throws Exception {
+		response.setContentType("text/html; charset=utf-8");
+		PrintWriter out = response.getWriter();
+		
+		if(error.hasErrors())
+			return new ModelAndView("/user/signup");
+		
+		if(!req.getImageFile().getOriginalFilename().equals("")) {
+			ImageDto.Request imgReq = new ImageDto.Request(req.getImageFile());
+			Image img = imageService.uploadFile(imgReq.getImageFile());
+			req.setImage(img);
+		}
+		if(!req.getPassword().equals(req.getRepeatedPassword())) {
+			out.println("<script>alert('비밀번호가 일치하지 않습니다.'); location.replace('/user/signup');</script>");
+			out.flush();
+			return new ModelAndView("redirect:/user/signup");
+			}
+		else {
+			out.println("<script>alert('회원가입 되었습니다.'); location.replace('/user/login');</script>");
+			out.flush();
+			userService.addUser(req);
+			return new ModelAndView("redirect:/user/login");
+		}
+		
+	}
+	*/
 	@DeleteMapping("/quit")
 	public RedirectView quitUser(HttpServletRequest req) { 
 		HttpSession session = req.getSession(false);
-		Long userIdx = (Long) session.getAttribute("userIdx");
-		
-		userService.removeUser(userIdx);
-
+		Long userIdx = (Long) session.getAttribute("userIdx");		
         if(session != null){
             session.invalidate();
         }
-        
+        userService.removeUser(userIdx);
 		return new RedirectView("/user/login");
 	}
 	

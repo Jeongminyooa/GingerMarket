@@ -5,6 +5,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.UserDto;
+import com.ssd.gingermarket.repository.GroupBuyingRepository;
+import com.ssd.gingermarket.repository.ImageRepository;
+import com.ssd.gingermarket.repository.MessageInfoRepository;
+import com.ssd.gingermarket.repository.SharePostRepository;
 import com.ssd.gingermarket.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -15,7 +19,10 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService{
 
 	private final UserRepository userRepository;
-	
+	private final ImageRepository imageRepository;
+	private final GroupBuyingRepository gbRepository;
+	private final SharePostRepository shRepository;
+	private final MessageInfoRepository msgInfo;
 	@Override
 	@Transactional
 	public Long addUser(UserDto.Request dto) {
@@ -43,20 +50,58 @@ public class UserServiceImpl implements UserService{
 	@Override
 	@Transactional
 	public void removeUser(Long userIdx) {
+		User user = userRepository.findById(userIdx).get();
+		/*
+		gbRepository.deleteAll(user.getGroupBuyingList());
+		shRepository.deleteAll(user.getShareList());
+		*/
+	//	msgInfo.deleteByAll(user.getMessageInfoList());
+	//	user.getShareList();
+	//	imageRepositoy.deleteById(user.getImageIdx());
+	//	user.getMessageInfoList();
+	//	user.getMessageRoomList();
+		user.getExperiodList();
+		
 		userRepository.deleteById(userIdx);
 	}
+
 	
 	@Override
 	@Transactional
-	public User getUser(String userId, String password) {
-		return userRepository.findByUserIdAndPassword(userId, password);
+	public UserDto.Info getUser(String userId, String password) {
+		User user = userRepository.findByUserIdAndPassword(userId, password);
+		if(user==null) 
+			return new UserDto.Info(null,null,null,null,null,null, null,null,null,null);
+		
+		return new UserDto.Info(user.getUserIdx(),user.getUserId(),user.getPassword(),
+				user.getName(),user.getPhone(),user.getAddress(), 
+				user.getItem1(),user.getItem2(),user.getItem3(),user.getImage());
+		
 	}
-
 	@Override
 	@Transactional
-	public User getUser(Long userIdx) {
-		return userRepository.findById(userIdx).get();
+	public UserDto.Info getUser(Long userIdx) {
+		User user = userRepository.findById(userIdx).get();
+		return new UserDto.Info(user.getUserIdx(),user.getUserId(),user.getPassword(),
+				user.getName(),user.getPhone(),user.getAddress(), 
+				user.getItem1(),user.getItem2(),user.getItem3(),user.getImage());
 	}
+	
+	@Override
+	public int userIdCheck(String userId) throws Exception{
+		if(userRepository.findByUserId(userId)!=null)
+			return 1;
+		return 0;
+	}
+	
+	@Override
+	public int nameCheck(String name) throws Exception{
+		if(userRepository.findByName(name)!=null)
+			return 1;
+		return 0;
+	}
+	
+	
 	
 	@Override
 	@Transactional(readOnly = true)
