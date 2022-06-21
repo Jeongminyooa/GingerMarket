@@ -111,23 +111,6 @@
       					<button type="button" class="w-100 quit_btn" data-bs-toggle="modal" data-bs-target="#userQuitModal">회원탈퇴</button>
     				</div>
   				</div>
-  				<div class="row pt-3">
-   					<div class="col" id="middle_title">
-      					<b>교체 주기 알림</b>
-    				</div>
-  				</div>
-  				<div class="row">
-   					<div class="col col-lg-12 text-center alarm pt-3 pb-3" id="main_content">
-   						<!-- thymeleaf 반복문 -->
-      					<th:block th:each="experiod : ${experiodList}">
-      						<div th:utext="|<b>${experiod.category}</b> 교체날입니다. 잊지말고 교체해주세요 :)|" th:if="${experiod.dDay eq 0}">
-      						</div>
-      						<div th:utext="|<b>${experiod.category}</b>이 <b>${experiod.dDay}</b>일 뒤 교체날입니다.|" th:if="${experiod.dDay < 3 && experiod.dDay > 0}">
-      						</div>
-      						
-      					</th:block>
-    				</div>
-  				</div>
   				<div class="row pt-3 justify-content-md-center">
    					<div class="col col-lg-3 pt-4 text-center">
 	   					<a th:href="@{/mypage(category=group)}">

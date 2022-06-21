@@ -3,6 +3,7 @@ package com.ssd.gingermarket.controller.mypage;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,9 +26,12 @@ public class GetHistoryOfShareController {
 	
 	@GetMapping("/share")
 	public String getShareHistory (Model model,
-			HttpServletRequest req) {
+			HttpServletRequest request) {
 		
-		long userIdx = 2;
+		HttpSession session = request.getSession();
+	    long userIdx = (long) session.getAttribute("userIdx");
+	    
+	    System.out.println(userIdx);
 		
 		List<SharePostDto.MyPageInfo> list = sharePostService.getPostByUserId(userIdx);
 		
@@ -38,9 +42,10 @@ public class GetHistoryOfShareController {
 	
 	@GetMapping("/msg")
 	public String getSharePostByMessage (Model model,
-			HttpServletRequest req) {
+			HttpServletRequest request) {
 		
-		long userIdx = 1;
+		HttpSession session = request.getSession();
+	    long userIdx = (long) session.getAttribute("userIdx");
 		
 		List<SharePostDto.MyPageInfo> list = messageService.getAllMessageBySender(userIdx);
 		

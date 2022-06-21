@@ -33,12 +33,10 @@ public class AddCommentController {
 	public ResponseEntity<Boolean> addComment (
 			@RequestBody CommentDto.Request dto,
 			@PathVariable(value="gid") Long groupIdx,
-			HttpServletRequest req) {
-		/*
-			HttpSession session = req.getSession(false);
-			Long authorIdx = (Long) session.getAttribute("userIdx");
-		*/
-		Long authorIdx = (long) 2;
+			HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		Long authorIdx = (Long) session.getAttribute("userIdx");
 	
 		commentInfoService.addComment(dto, authorIdx, groupIdx);
 		
@@ -57,12 +55,10 @@ public class AddCommentController {
 		@RequestBody CommentDto.Request dto,
 		@PathVariable(value="gid") Long groupIdx,
 		@PathVariable(value="pid") Long parentIdx,
-		HttpServletRequest req) {
-		/*
-		HttpSession session = req.getSession(false);
+		HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
 		Long authorIdx = (Long) session.getAttribute("userIdx");
-		 */
-		Long authorIdx = (long) 2;
 		
 		commentInfoService.addChildComment(dto, authorIdx, groupIdx, parentIdx);
 		

@@ -13,12 +13,14 @@ import lombok.NoArgsConstructor;
 
 public class GroupBuyingDto {
 	
+	public static String getUploadDirPath(String imageUrl) {
+		return "/upload/" + imageUrl;
+	}
+	
 	@NoArgsConstructor
 	@AllArgsConstructor
 	@Data
 	public static class Request{
-		private String uploadDirLocal = "/upload/";
-				
 		private String title;
 		private String category;
 		private int recruitNum;
@@ -61,7 +63,7 @@ public class GroupBuyingDto {
 			this.price = groupBuying.getPrice();
 			this.progress = groupBuying.getProgress();
 			try {
-				this.imgUrl = this.uploadDirLocal + groupBuying.getImage().getUrl();
+				this.imgUrl = getUploadDirPath(groupBuying.getImage().getUrl());
 			}catch (Exception e ) {	           
 				this.imgUrl = "";
 			}
@@ -101,7 +103,7 @@ public class GroupBuyingDto {
 				this.title = groupBuying.getTitle();
 				String url = "";
 				try {
-					url = this.uploadDirLocal + groupBuying.getImage().getUrl();
+					url = getUploadDirPath(groupBuying.getImage().getUrl());
 				}catch (Exception e ) {
 					url = "";
 				}finally {
@@ -122,7 +124,6 @@ public class GroupBuyingDto {
 		}
 		
 		@NoArgsConstructor
-		@AllArgsConstructor
 		@Data
 		public static class MyPageInfo {
 			// 마이페이지 제공되는 정보
@@ -133,6 +134,18 @@ public class GroupBuyingDto {
 			private int price;
 			@DateTimeFormat(pattern = "yyyy-MM-dd")
 			private LocalDate endDate;
+			
+			public MyPageInfo(Long groupIdx, String imageUrl, String title, int progress, int price, LocalDate endDate) {
+				this.groupIdx = groupIdx;
+				this.imageUrl = imageUrl;
+				if(!imageUrl.equals("")) {
+					this.imageUrl = getUploadDirPath(imageUrl);
+				}
+				this.title = title;
+				this.progress = progress;
+				this.price = price;
+				this.endDate = endDate;
+			}
 		}
 		 
 }
