@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.ssd.gingermarket.service.ImageService;
+import com.ssd.gingermarket.dto.GroupBuyingDto;
 import com.ssd.gingermarket.service.GroupBuyingService;
 
 import lombok.RequiredArgsConstructor;
@@ -55,8 +56,17 @@ public class ViewGroupBuyingController {
 	public ModelAndView getPost(@PathVariable Long groupIdx) {
 		Long sessionIdx = (long)2;
 		ModelAndView mav = new ModelAndView("content/groupBuyingPost/groupPost_view");
-		mav.addObject("postInfo", groupBuyingService.getPost(groupIdx));
-		mav.addObject("sessionIdx", sessionIdx);
+		
+		GroupBuyingDto.DetailResponse res = groupBuyingService.getPost(groupIdx);
+		
+		if(res.getUserIdx() == sessionIdx) {
+			res.setAuthor(true);
+		} else {
+			res.setAuthor(false);
+		}
+		
+		mav.addObject("postInfo", res);
+		
 		return mav;
 	}
 	

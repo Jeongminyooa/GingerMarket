@@ -78,7 +78,10 @@ public class GroupBuyingDto {
 			private String uploadDirLocal = "/upload/";
 			
 			private Long groupIdx;
-			private User author;
+			
+			private Long userIdx;
+			private String nickname;
+			private String userImageUrl;
 			
 			private String category;
 			private String title;
@@ -94,9 +97,17 @@ public class GroupBuyingDto {
 			private int progress;
 			private int commentCnt;
 			
+			private boolean isAuthor;
+			
 			public DetailResponse(GroupBuying groupBuying) {
 				this.groupIdx = groupBuying.getGroupIdx();
-				this.author = groupBuying.getAuthor();
+				this.userIdx = groupBuying.getAuthor().getUserIdx();
+				this.nickname = groupBuying.getAuthor().getName();
+				try {
+					this.userImageUrl = this.uploadDirLocal + groupBuying.getAuthor().getImage().getUrl();
+				}catch (Exception e ) {	           
+					this.userImageUrl = "";
+				}
 				this.category = groupBuying.getCategory();
 				this.title = groupBuying.getTitle();
 				String url = "";

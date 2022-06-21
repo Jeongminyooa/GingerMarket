@@ -287,7 +287,7 @@
 			</div>
 			
 			<!-- 수정하기 / 삭제하기 modal -->
-		<div th:if="${sessionIdx} == ${postInfo.author.userIdx}">
+		<div th:if="${postInfo.isAuthor}">
 			<div class="row pt-5">
 				<div class="d-flex justify-content-end">
 					<!-- Button trigger modal -->
@@ -302,16 +302,17 @@
 		</div>
 			
   			<!-- post image view -->
-  			<div th:if = "${not #strings.isEmpty(postInfo.imgUrl)}"  class="row pt-3" id="div-img">
+  			<div class="row pt-3" id="div-img">
   				<div class="col col-lg-7">
    					<img th:src="@{${postInfo.imgUrl}}" alt="...">
     			</div>
     				
     			<!-- post author section -->
     			<div class="col col-lg-5">
-					<img src="/image/profile.png" class="rounded-circle" alt="" id="img-author" width="50" height="50">
-					&nbsp;<span th:text="${postInfo.author.name}" id="main_content" class=""><b>jmyj727</b></span>
-					<span class="ms-1 ps-2 badge rounded-pill bg-light text-dark" id="small_content" th:if="${sessionIdx} == ${postInfo.author.userIdx}">작성자</span>
+					<img th:if="${postInfo.userImageUrl == ''}" src="/image/profile.png" class="rounded-circle" alt="" id="img-author" width="50" height="50">
+					<img th:unless="${postInfo.userImageUrl == ''}" th:src="@{${postInfo.userImageUrl}}" class="rounded-circle" alt="" id="img-author" width="50" height="50">
+					&nbsp;<span th:text="${postInfo.nickname}" id="main_content" class=""><b>닉네임</b></span>
+					<span class="ms-1 ps-2 badge rounded-pill bg-light text-dark" id="small_content" th:if="${postInfo.isAuthor}">작성자</span>
 					
 				<!-- post content -->
 				<div class="post-container">
@@ -361,21 +362,22 @@
    					</div>
    						
 					<!-- Apply BTN -->
-					<div th:if="(${postInfo.progress} == 0 OR ${postInfo.progress} == 1) AND ${postInfo.author.userIdx} != ${sessionIdx}" class="d-grid gap-2 mt-5 pt-3">
+					<div th:if="${postInfo.progress} <= 1 AND ${!postInfo.isAuthor}" class="d-grid gap-2 mt-5 pt-3">
 						<button type="button" class="btn btn-outline-light w-100" id="btn-apply" data-bs-toggle="modal" data-bs-target="#applyModal">신청하기</button>
 					</div>
 				
-					<div th:if="${postInfo.author.userIdx} == ${sessionIdx}" class="d-grid gap-2 mt-5 pt-3">
+					<div th:if="${postInfo.isAuthor}" class="d-grid gap-2 mt-5 pt-3">
 						<a th:href="@{/group-buying/{groupIdx}/apply-form(groupIdx=${postInfo.groupIdx})}" class="btn btn-outline-light w-100" 
 							 role="button" id="btn-apply">조회하기</a>
 					</div>
 				
-					<div th:if="${postInfo.progress} == 2 AND ${postInfo.author.userIdx} != ${sessionIdx}" class="d-grid gap-2 mt-5 pt-3">
+					<div th:if="${postInfo.progress} == 2 AND ${!postInfo.isAuthor}" class="d-grid gap-2 mt-5 pt-3">
 						<a class="btn btn-outline-light"
 							role="button" id="btn-enableApply">모집 완료된 상품입니다.</a>
 					</div>
 				</div>
 			</div>
+
 			<!-- 댓글 -->
 			<div class="row pt-5">
 				<hr>
@@ -514,7 +516,7 @@
 				</th:block>
 			</th:block>
 			</div>
-			
+			  
 			<!-- 댓글 등록 버튼 -->
 			<div class="row mt-5 p-3 add">
    				<div class="col col-lg-11" id="small_content">
