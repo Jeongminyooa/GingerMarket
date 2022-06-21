@@ -65,8 +65,12 @@ public class GroupBuying extends BaseTime{
 		 @JoinColumn(name = "author_idx")
 		 private User author;
 		 
+
 		 @OneToMany(mappedBy = "groupBuying", cascade = CascadeType.ALL)
-		 private List<Apply> applys = new ArrayList<Apply>();
+		 private List<Apply> applyList = new ArrayList<Apply>();
+	 
+		 @OneToMany(mappedBy="group", fetch = FetchType.LAZY)
+		 private List<CommentInfo> commentList = new ArrayList<>();
 
 		 
 		 public void updatePost(String title, String category, int recruitNum, String website, int price, String descr, LocalDate endDate) {

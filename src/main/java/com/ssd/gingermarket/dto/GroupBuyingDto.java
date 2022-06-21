@@ -92,6 +92,7 @@ public class GroupBuyingDto {
 			private LocalDate endDate;
 			private String descr;
 			private int progress;
+			private int commentCnt;
 			
 			public DetailResponse(GroupBuying groupBuying) {
 				this.groupIdx = groupBuying.getGroupIdx();
@@ -114,11 +115,24 @@ public class GroupBuyingDto {
 				this.endDate = groupBuying.getEndDate();
 				this.descr = groupBuying.getDescr();
 				this.progress = groupBuying.getProgress();
+				this.commentCnt = groupBuying.getCommentList().size();
 
 			}
-			
 		
+		}
 		
+		@NoArgsConstructor
+		@AllArgsConstructor
+		@Data
+		public static class MyPageInfo {
+			// 마이페이지 제공되는 정보
+			private Long groupIdx;
+			private String imageUrl;
+			private String title;
+			private int progress;
+			private int price;
+			@DateTimeFormat(pattern = "yyyy-MM-dd")
+			private LocalDate endDate;
 		}
 		 
 }

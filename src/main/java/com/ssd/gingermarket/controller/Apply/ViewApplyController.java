@@ -24,9 +24,11 @@ public class ViewApplyController {
 	public ModelAndView getApplyList(@PathVariable Long groupIdx) {
 	
 		ModelAndView mav = new ModelAndView("content/groupBuyingPost/groupPost_apply");
+
 		mav.addObject("authorIdx", 2);
 		mav.addObject("groupIdx", groupIdx);
 		mav.addObject("applyList", applyInfoService.getAllApply(groupIdx));
+    
 		return mav;
 	}
 	

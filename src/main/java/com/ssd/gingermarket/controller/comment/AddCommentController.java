@@ -1,5 +1,8 @@
 package com.ssd.gingermarket.controller.comment;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,8 +32,13 @@ public class AddCommentController {
 	@PostMapping("/{gid}")
 	public ResponseEntity<Boolean> addComment (
 			@RequestBody CommentDto.Request dto,
-			@PathVariable(value="gid") Long groupIdx) {
-		Long authorIdx = (long) 1;
+			@PathVariable(value="gid") Long groupIdx,
+			HttpServletRequest req) {
+		/*
+			HttpSession session = req.getSession(false);
+			Long authorIdx = (Long) session.getAttribute("userIdx");
+		*/
+		Long authorIdx = (long) 2;
 	
 		commentInfoService.addComment(dto, authorIdx, groupIdx);
 		
@@ -48,9 +56,13 @@ public class AddCommentController {
 	public ResponseEntity<Boolean> addChildComment(
 		@RequestBody CommentDto.Request dto,
 		@PathVariable(value="gid") Long groupIdx,
-		@PathVariable(value="pid") Long parentIdx) {
-		
-		Long authorIdx = (long) 1;
+		@PathVariable(value="pid") Long parentIdx,
+		HttpServletRequest req) {
+		/*
+		HttpSession session = req.getSession(false);
+		Long authorIdx = (Long) session.getAttribute("userIdx");
+		 */
+		Long authorIdx = (long) 2;
 		
 		commentInfoService.addChildComment(dto, authorIdx, groupIdx, parentIdx);
 		

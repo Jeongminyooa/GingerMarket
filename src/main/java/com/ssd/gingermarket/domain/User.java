@@ -1,16 +1,19 @@
 package com.ssd.gingermarket.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.xml.stream.events.Comment;
 
 import org.hibernate.annotations.DynamicInsert;
 
@@ -61,22 +64,39 @@ public class User {
 	
 	private Long img;
 	
+	@OneToMany(mappedBy = "experiodIdx", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<Experiod> experiodList = new ArrayList<Experiod>();
+	
 	public boolean matchPassword(String newPassword) {
 		return newPassword.equals(password);
 	} 
 
-	public void updateUser(String userId, String password, String name,String phone,
-			String address,String item1,String item2, String item3) {
-		this.userId=userId;
-		this.password=password;
-		this.name=name;
-		this.phone=phone;
-		this.address=address;
-		this.item1=item1;
-		this.item2=item2;
-		this.item3=item3;
+	public void updateUser(String name,String phone,
+			String address, String[] items) {
+		this.name = name;
+		this.phone = phone;
+		this.address = address;
+		this.item1 = items[0];
+		if(items.length == 1) {
+			this.item2 = null;
+			this.item3 = null;
+		}
+		else if(items.length == 2) {
+			this.item2 = items[1];
+			this.item3 = null;
+		} else {
+			this.item2 = items[1];
+			this.item3 = items[2];
+		}
 	}
 	
+	public void updateProfileImage(Image image) {
+		this.image = image;
+	}
+	
+	public void updatePassword(String password) {
+		this.password = password;
+	}
 }
 
 	

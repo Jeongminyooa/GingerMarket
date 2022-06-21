@@ -30,7 +30,6 @@ public class AddApplyController {
 		
 		apply.setAuthorIdx(authorIdx);
 		applyInfoService.addApply(apply, groupIdx);
-		
 		return new RedirectView("/group-buying/" + groupIdx);
 	} 
 	

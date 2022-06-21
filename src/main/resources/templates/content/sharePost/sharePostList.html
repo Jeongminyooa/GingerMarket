@@ -4,7 +4,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/default_layout}">
 
-<th:block layout:fragment="head">
+<th:block layout:fragment="head (userIdx=${userIdx})">
 	<title>나눔 포스트 리스트</title>
 	<meta charset="utf-8">
 
@@ -38,14 +38,14 @@
 
 			<!-- 옵션 선택 드롭다운 -->
 			<div class="d-flex justify-content-end mt-5">
-				<form class="d-flex me-3">
-					<select id="search-option">
-						<option>키워드</option>
-						<option>주소</option>
+				<form class="d-flex me-3" th:action="@{/share-posts/search/{option}(option='title')}">
+					<select id="search-option" th:name="type">
+						<option th:value="key">키워드</option>
+						<option th:value="address">주소</option>
 					</select>
 
 					<!--검색 창 -->
-					<input class="form-control" type="search" placeholder="Search"
+					<input class="form-control" type="text" name="keyword"  placeholder="Search"
 						aria-label="Search" id="search-option">
 					<button class="btn btn-sm " id="btn-search-option" type="submit">
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
@@ -57,45 +57,82 @@
 
 				<!--카테고리 선택 -->
 				<div class="dropdown">
-					<a class="btn btn-sm dropdown-toggle" href="#" role="button"
-						id="search-category" data-bs-toggle="dropdown"
-						aria-expanded="false"> 카테고리를 선택하세요 </a>
-					<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-						<li><a class="dropdown-item" href="#">가전제품 </a></li>
-						<li><a class="dropdown-item" href="#">욕실용품 </a></li>
-						<li><a class="dropdown-item" href="#">위생용품 </a></li>
-						<li><a class="dropdown-item" href="#">주방용품 </a></li>
-						<li><a class="dropdown-item" href="#">바디/헤어 </a></li>
-						<li><a class="dropdown-item" href="#">청소/세탁용품 </a></li>
-						<li><a class="dropdown-item" href="#">문구 </a></li>
-						<li><a class="dropdown-item" href="#">생활잡화 </a></li>
-					</ul>
+				<form class="d-flex me-3" th:action="@{/share-posts/search/{option}(option='category')}" th:method="GET" >
+					<input type="hidden" th:name="type" th:value="category">
+					<select class="form-control" th:name="keyword" id="search-category">
+						<option selected disabled>카테고리 선택</option>
+						<option th:each="category : ${categoryList}"
+								th:value="${category}"
+								th:text="${category}"/>
+				 	</select>
+				 	<button class="btn btn-sm " id="btn-search-option" type="submit">
+				 	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tags-fill" viewBox="0 0 16 16">
+					  <path d="M2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586V2zm3.5 4a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+					  <path d="M1.293 7.793A1 1 0 0 1 1 7.086V2a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l.043-.043-7.457-7.457z"/>
+					</svg>
+					</button>
+				 	</form>
 				</div>
 			</div>
 
-			<div class="row pt-5">
-				<p id="main_content">
-					<b>추천 게시물</b>
-				</p>
-			</div>
+			
 
 			<!-- fav-post  -->
-			<th:block th:include="@{/content/sharePost/sharePost_favPostList}"></th:block>
-
+			
+			<div th:if="${#strings.equals(type, 'none')}">
+				<th:block  th:include="@{/content/sharePost/sharePost_favPostList}"></th:block>
+				<div class="row pt-5">
+					<p id="main_content">
+						<b>추천 게시물</b>
+					</p>
+				</div>
+			</div>
+			<th:block th:unless="${#strings.equals(type, 'none')}" ></th:block>
 			<br>
 			<hr>
 
-			<div class="row pt-5">
+			<div th:if="${not #strings.equals(type, 'none')}" class="row pt-5">
+				<p id="main_content" style="font-size:20px;" class="text-center" >
+					<b th:utext="|'${keyword}'을/를 검색한 결과입니다|">전체 게시물</b>
+				</p>
+			</div>
+			
+			<div th:unless="${not #strings.equals(type, 'none')}" class="row pt-5">
 				<p id="main_content">
 					<b>전체 게시물</b>
 				</p>
 			</div>
+			
+			
 			<!--  all-post  -->
 			<th:block th:include="@{/content/sharePost/sharePost_allPostList}"></th:block>
-
+	
+			<div th:if="${!allPostList.isEmpty()}">
+		        <ul class="pagination justify-content-center share">
+		            <li class="page-item" th:classappend="${!allPostList.hasPrevious} ? 'disabled'">           
+		                 <a class="page-link" 
+		                    th:href="@{|?keyword=${keyword}&page=${allPostList.number-1}&type=${type}|}">
+		                    <span>이전</span>
+		                </a>
+		            </li>
+		            <li th:each="page: ${#numbers.sequence(0, allPostList.totalPages-1)}" 
+		                th:if="${page >= allPostList.number-5 and page <= allPostList.number+5}"
+		                th:classappend="${page == allPostList.number} ? 'active'" 
+		                class="page-item">
+		                <a th:text="${page}" class="page-link" th:href="@{|?keyword=${keyword}&page=${page}&type=${type}|}"></a>
+		            </li>
+		            <li class="page-item" th:classappend="${!allPostList.hasNext} ? 'disabled'">           
+		                 <a class="page-link" th:href="@{|?keyword=${keyword}&page=${allPostList.number+1}&type=${type}|}">
+		                    <span>다음</span>
+		                </a>
+		            </li>
+		        </ul>
+		    </div>
+    
+		
 			<!-- 새 글 등록 BTN -->
 			<div class="d-grid gap-2 mt-5">
-				<a th:href="@{/share/addForm}"
+				<a th:href="@{/share-posts/new}"
 				class="btn btn-outline-success" role="button" id="btn-newPost">새 글 등록</a>
 			</div>
 		</div>

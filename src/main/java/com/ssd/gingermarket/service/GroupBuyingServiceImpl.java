@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -16,9 +17,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.domain.GroupBuying;
+
+import com.ssd.gingermarket.domain.User;
+import com.ssd.gingermarket.dto.ApplyDto;
+
 import com.ssd.gingermarket.dto.GroupBuyingDto;
+import com.ssd.gingermarket.dto.GroupBuyingDto.MyPageInfo;
+import com.ssd.gingermarket.repository.ApplyRepository;
+
 import com.ssd.gingermarket.repository.GroupBuyingRepository;
 import com.ssd.gingermarket.repository.UserRepository;
+
 import lombok.RequiredArgsConstructor;
 
 
@@ -28,7 +37,9 @@ import lombok.RequiredArgsConstructor;
 public class GroupBuyingServiceImpl implements GroupBuyingService {
 
 	private final GroupBuyingRepository groupBuyingRepository;
+	private final ApplyRepository applyRepository;
 	private final UserRepository userRepository;
+
 
 	// 포스트 등록
 	@Override
@@ -132,6 +143,30 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
        	else
    			return 0;
    	}
+
+	@Override
+	@Transactional
+	public List<MyPageInfo> getGroupBuyingByUserId(Long userIdx) {
+		// TODO Auto-generated method stub
+		//사용자가 작성한 포스트리스트 조회
+		User author = userRepository.findById(userIdx).orElseThrow();
+			
+		List<GroupBuying> postEntityList = groupBuyingRepository.findAllByAuthorIdx(author);
+			
+		List<MyPageInfo> postList = postEntityList.stream().map(post -> new MyPageInfo(
+				post.getGroupIdx(),
+				//post.getImage().getUrl(),
+				"image",
+				post.getTitle(),
+				post.getProgress(),
+				post.getPrice(),
+				post.getEndDate())
+				).collect(Collectors.toList());
+			
+		return postList;
+		
+	}
+
    	
    	//공구 포스트 검색 (제목, 카테고리)
     @Override

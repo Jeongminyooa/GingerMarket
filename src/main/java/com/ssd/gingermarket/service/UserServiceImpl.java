@@ -3,6 +3,7 @@ package com.ssd.gingermarket.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssd.gingermarket.domain.Image;
 import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.UserDto;
 import com.ssd.gingermarket.repository.UserRepository;
@@ -24,11 +25,28 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	@Transactional
-	public void modifyUser(Long userIdx,UserDto.Request dto) {
-		User user = userRepository.findById(userIdx).orElseThrow(); 
-		user.updateUser(dto.getUserId(), dto.getPassword(), dto.getName(),
-				dto.getPhone1()+dto.getPhone2()+dto.getPhone3(), 
-				dto.getAddr(), dto.getItems()[0], dto.getItems()[1], dto.getItems()[2]);
+	public void modifyUser(Long userIdx,UserDto.Response dto) {
+		User user = userRepository.findById(userIdx).orElseThrow();
+		
+		String phone = dto.getPhone1() + dto.getPhone2() + dto.getPhone3();
+		
+		// 비밀번호는 미리보기로 주어지지 않아서 변경하지 않으면 공백이 들어올 수 있음.
+		if(!dto.getPassword().equals("")) {
+			user.updatePassword(dto.getPassword());
+		}
+		
+		user.updateUser(dto.getName(),
+				phone, 
+				dto.getAddress(),
+				dto.getItems());
+	}
+	
+	@Override
+	@Transactional
+	public void modifyUserImage(Long userIdx, Image img) {
+		User user = userRepository.findById(userIdx).orElseThrow();
+		
+		user.updateProfileImage(img);
 	}
 	
 	@Override
@@ -47,6 +65,15 @@ public class UserServiceImpl implements UserService{
 	@Transactional
 	public User getUser(Long userIdx) {
 		return userRepository.findById(userIdx).get();
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public UserDto.Response getUserInfo(Long userIdx) {
+		User userEntity = userRepository.findById(userIdx).orElseThrow();
+		
+		String phone = userEntity.getPhone();
+		return new UserDto.Response(userEntity);
 	}
 	
 }

@@ -4,7 +4,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/default_layout}">
 
-<th:block layout:fragment="head">
+<th:block layout:fragment="head (userIdx=${userIdx})">
 	<title>쪽지함 리스트</title>
 	<meta charset="utf-8">
 
@@ -39,8 +39,20 @@
 			<hr>
 
 			<!-- 쪽지함 리스트  -->
-			<th:block th:each="num : ${#numbers.sequence(1,5)}">
-			
+			<div th:if="${#lists.size(roomList) == 0}" class="pt-1 w-75 text-center mx-auto">
+				<br>
+					<div class="mx-auto">
+						주고 받은 쪽지가 없습니다. <br>
+						다양한 나눔 상품에 쪽지를 보내보세요!
+					</div>
+				<br>
+				<div class="d-grid gap-2 mt-3">
+					<a class="btn btn-outline-success rounded-pill"
+						role="button" id="btn-sendMsg" th:href="@{/share-posts}">나눔 게시물로 가기</a>
+				</div>
+			</div>	
+			<th:block th:each="room : ${roomList}">
+		
 				<!--message list -->
 				<div class="row pt-1 w-75 mx-auto msg-list rounded-3 position-relative">
 					<!-- receiver profile -->
@@ -51,28 +63,38 @@
 					
 					<!-- receiver name & last content -->
 					<div class="col-lg-9 text-left ps-5 mt-2">
-						<div class="row">
-							<div class="col-2" id="main_content">
+						<div class="d-flex">
+							<div th:if="${userIdx} == ${room.post.author.userIdx}" th:text="${room.sender.name}" class="font-weight-bolder" id="main_content">
 								<b>김매미</b>
+								
 							</div>
-							<div class="col" id="small_content">2022/05/18 16:04</div>
+							
+						 
+							<div th:unless="${userIdx} == ${room.post.author.userIdx}" th:text="${room.post.author.name}" class="font-weight-bolder" id="main_content">
+								<b>김매미</b>
+								
+							</div>
+							<span class="ms-2 ps-2 badge rounded-pill text-light author" id="small_content">작성자</span>
+							<div th:text="${#temporals.format(room.sendTime, 'yyyy/MM/dd HH:mm')}" class="ms-3" id="small_content">2022/05/18 16:04</div>
 						</div>
 
-						<div class="mt-1" id="main_content">안녕하세요!</div>
+						<div th:text=${room.content} class="mt-3" id="main_content">안녕하세요!</div>
 					</div>
 					
-					<!-- post img & alarm -->
+					<!-- post img -->
+					
 					<div class="col-lg-1 pt-4 ps-5">
-						<!-- <div th:if="${list.is_read==0}"> -->
+						 <div th:if="${room.isRead} == false"> 
 						<!-- 읽지 않은 새 메세지 알림 아이콘 -->
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"fill="#91A77F" class="bi bi-asterisk" viewBox="0 0 16 16">
   							<path d="M8 0a1 1 0 0 1 1 1v5.268l4.562-2.634a1 1 0 1 1 1 1.732L10 8l4.562 2.634a1 1 0 1 1-1 1.732L9 9.732V15a1 1 0 1 1-2 0V9.732l-4.562 2.634a1 1 0 1 1-1-1.732L6 8 1.438 5.366a1 1 0 0 1 1-1.732L7 6.268V1a1 1 0 0 1 1-1z" />
 						</svg>
-						<!-- </div> -->
+					 </div> 
 					</div>
 					
-					<div class="col-lg-1">
-						<a href="#" class="stretched-link"> <img src="/image/postList.JPG" alt="..." id="img-post" class="rounded-3"></a>
+					<div class="col-lg-1 ps-5">
+						<a th:href="@{/messages/{postIdx}/room/{roomIdx}(postIdx=${room.post.postIdx}, roomIdx=${room.roomIdx})}" class="stretched-link"> 
+						<img th:if = "${not #strings.isEmpty(room.postImgUrl)}" th:src="@{${room.postImgUrl}}" src="/image/postList.JPG" alt="..." id="img-post" class="rounded-3"></a>
 					</div>
 					
 				</div>
