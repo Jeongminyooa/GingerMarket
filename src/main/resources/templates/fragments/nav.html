@@ -2,7 +2,7 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-<th:block layout:fragment="head (userIdx)">
+<th:block layout:fragment="head">
 	<meta charset="utf-8">
 
 	<!-- css -->
@@ -19,15 +19,15 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-white p-4 px-5">
 	<div class="container-fluid">
 		<!--로고 및 이름 -->
-		<a class="navbar-brand ms-5" id="logo" href="#"> 
-		<img src="/image/logo.png" th:href="@{/share-posts}" alt="" width="40" height="40" class="d-inline-block"> 
+		<a class="navbar-brand ms-5" id="logo" href="#" th:href="@{/share-posts}"> 
+		<img src="/image/logo.png" alt="" width="40" height="40" class="d-inline-block"> 
 			생강마켓</a>
 		
 		<div class="collapse navbar-collapse " id="navbarSupportedContent">
 			<ul class="navbar-nav ms-5 me-auto mb-2 mb-lg-0 ">
 				<li class="nav-item ms-5 me-5"><a class="nav-link" th:href="@{/share-posts}">나눔</a></li>
 				<li class="nav-item ms-5 me-5"><a class="nav-link" th:href="@{/group-buying}">공동구매</a></li>
-				<li class="nav-item ms-5"><a class="nav-link" th:href="@{/messages/{userIdx}/list(userIdx=${userIdx})}">쪽지함</a></li>
+				<li class="nav-item ms-5"><a class="nav-link" th:href="@{/messages}">쪽지함</a></li>
 			</ul>
 			<div class="d-flex flex-row-reverse bd-highlight me-5">
 	  			<div class="p-2 me-5 bd-highlight">
