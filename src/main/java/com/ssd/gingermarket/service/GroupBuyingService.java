@@ -1,6 +1,8 @@
 package com.ssd.gingermarket.service;
 
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,9 @@ public interface GroupBuyingService {
 	
 	// 카테고리 검색 포스트 리스트 가져오기
 	public Page<GroupBuying> getAllPostByKeyword(String keyword, int page, String option);
+	
+	// 선호 포스트 조회
+	public List<GroupBuyingDto.DetailResponse> getFavPost(Long userIdx);
 	
 	// 공구 포스트 상세 조회
 	public GroupBuyingDto.DetailResponse getPost(Long groupIdx);

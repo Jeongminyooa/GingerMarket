@@ -3,13 +3,15 @@ package com.ssd.gingermarket.domain;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.FetchType;
 import javax.persistence.*;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.format.annotation.DateTimeFormat;
-
+import javax.persistence.ManyToOne;
 @Entity 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -46,7 +48,7 @@ public class GroupBuying extends BaseTime{
 		 @DateTimeFormat(pattern = "yyyy-MM-dd")
 		 private LocalDate endDate;
 		 
-		 @Column(length = 255)
+		 @Column(length = 1000)
 		 private String descr;
 		 
 		 @Column(nullable = false)
@@ -55,18 +57,19 @@ public class GroupBuying extends BaseTime{
 		 @Column(nullable = false)
 		 private int price;
 		 
-		 @ColumnDefault("0")
-		 private Long imageIdx;
+		 @OneToOne
+		 @JoinColumn(name="image_idx")
+		 private Image image;
 		 
-		 @Column(nullable = false)
-		 private Long authorIdx;
+		 @ManyToOne(fetch = FetchType.LAZY)
+		 @JoinColumn(name = "author_idx")
+		 private User author;
 		 
-		 /*
-		 @OneToMany(mappedBy = "groupBuying", fetch = FetchType.EAGER)
-		 private List<Apply> applyList; */
+		 @OneToMany(mappedBy = "groupBuying", cascade = CascadeType.ALL)
+		 private List<Apply> applys = new ArrayList<Apply>();
 
 		 
-		 public void updatePost(String title, String category, int recruitNum, String website, int price, String descr, LocalDate endDate, Long imageIdx) {
+		 public void updatePost(String title, String category, int recruitNum, String website, int price, String descr, LocalDate endDate) {
 		        this.title = title;
 		        this.category = category;
 		        this.recruitNum = recruitNum;	     
@@ -74,7 +77,6 @@ public class GroupBuying extends BaseTime{
 		        this.price = price;
 		        this.descr = descr;
 		        this.endDate = endDate;
-		        this.imageIdx = imageIdx;
 		    }
 		 
 		 public void updateParticipate()
@@ -97,5 +99,10 @@ public class GroupBuying extends BaseTime{
 				break;
 			}
 		 }
+		 
+		 public void updatePostImg(Image image) {
+				this.image = image;
+			}
+		 
 
 }

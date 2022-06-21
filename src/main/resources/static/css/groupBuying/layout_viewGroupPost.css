@@ -26,6 +26,25 @@
 	border-color: #735C3F;
 }
 
+
+#icon:hover{
+    transform: scale(1.1, 1.1);
+    transition-duration: 0.5s;
+    background-color:initial;
+  }
+#icon{
+    transition-duration: 1s;
+  }
+
+#div-thumbnail{
+	width : 30%;
+}
+
+#div-thumbnail img{
+	max-width: 100%;
+    height: auto;
+}
+
 /* 댓글 수정 */
 #btn-update-comment {
 	border-radius: 10px;

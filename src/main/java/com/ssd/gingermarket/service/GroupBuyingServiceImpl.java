@@ -5,14 +5,20 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
+import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.domain.GroupBuying;
 import com.ssd.gingermarket.dto.GroupBuyingDto;
 import com.ssd.gingermarket.repository.GroupBuyingRepository;
-
+import com.ssd.gingermarket.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 
@@ -22,11 +28,14 @@ import lombok.RequiredArgsConstructor;
 public class GroupBuyingServiceImpl implements GroupBuyingService {
 
 	private final GroupBuyingRepository groupBuyingRepository;
+	private final UserRepository userRepository;
 
 	// 포스트 등록
 	@Override
 	@Transactional
 	public void addPost(GroupBuyingDto.Request groupBuying) {
+		User author = userRepository.findById(groupBuying.getAuthorIdx()).orElseThrow();
+		groupBuying.setAuthor(author);
 		GroupBuying groupBuyingEntity = groupBuyingRepository.save(groupBuying.toEntity());
 
 		int progress = updateProgress(groupBuyingEntity.getParticipateNum(), groupBuyingEntity.getRecruitNum());
@@ -41,6 +50,34 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
 		
 		return this.groupBuyingRepository.findAll(pageable);
 	}
+	
+	//선호 카테고리 포스트 조회 
+		@Override
+		@Transactional(readOnly = true)
+	    public List<GroupBuyingDto.DetailResponse> getFavPost(Long userIdx) {
+			User user = userRepository.findById(userIdx).orElseThrow();
+
+			List<String> categories = new ArrayList<>();
+			String item = user.getItem1();
+			if(item != null)
+				categories.add(user.getItem1());
+			item = user.getItem2();
+			if(item != null)
+				categories.add(user.getItem2());
+			item = user.getItem3();
+			if(item != null)
+				categories.add(user.getItem3());
+
+			List<GroupBuying> postList = new ArrayList<>();
+
+			for(int i = 0; i < categories.size(); i++) {
+				Optional<GroupBuying> post = Optional.ofNullable(groupBuyingRepository.findTop1ByCategoryOrderByCreatedDateDesc(categories.get(i)));
+				if(post.isPresent())
+					postList.add(post.get());
+			}
+
+	        return postList.stream().map(GroupBuyingDto.DetailResponse::new).collect(Collectors.toList());
+	    }
 
 	// 포스트 상세 조회
 	@Override
@@ -51,7 +88,7 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
 		return new GroupBuyingDto.DetailResponse(groupBuying);
 	}
 	
-	// 포스트 상세 정보
+	// 포스트 상세 정보(update용)
 	@Override
 	@Transactional(readOnly = true)
 	public GroupBuyingDto.Request getPostForModify(Long groupIdx) {
@@ -63,9 +100,12 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
 	@Override
     @Transactional
     public void modifyPost(Long groupIdx, GroupBuyingDto.Request dto) {
-		GroupBuying groupBuying = groupBuyingRepository.findById(groupIdx).orElseThrow(); 
-		groupBuying.updatePost(dto.getTitle(), dto.getCategory(), dto.getRecruitNum(), dto.getWebsite(), dto.getPrice(), dto.getDescr(), dto.getEndDate(),dto.getImageIdx());
-
+		GroupBuying groupBuying = groupBuyingRepository.findById(groupIdx).orElseThrow();
+		
+		if(!dto.getFile().getOriginalFilename().equals(""))
+			groupBuying.updatePostImg(dto.getImage());
+		
+		groupBuying.updatePost(dto.getTitle(), dto.getCategory(), dto.getRecruitNum(), dto.getWebsite(), dto.getPrice(), dto.getDescr(), dto.getEndDate());
 
 		int progress = updateProgress(groupBuying.getParticipateNum(), groupBuying.getRecruitNum());
 		groupBuying.updateProgress(progress);
