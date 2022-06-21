@@ -83,7 +83,7 @@ public class CommentInfoServiceImpl implements CommentInfoService {
 		// TODO Auto-generated method stub
 		
 		GroupBuying groupBuyingPost = groupBuyingRepository.findById(groupIdx).orElseThrow();
-		Long postAuthorIdx = groupBuyingPost.getAuthorIdx();
+		User author = groupBuyingPost.getAuthor();
 		
 		List<CommentInfo> commentInfoList = commentInfoRepository.findByGroupIdx(groupIdx);
 		
@@ -96,8 +96,8 @@ public class CommentInfoServiceImpl implements CommentInfoService {
 				co.getAuthor().getUserIdx(),
 				(co.getAuthor().getImage() == null ? null : co.getAuthor().getImage().getUrl()),
 				co.getAuthor().getName(),
-				ofList(co.getChildCommentList(), postAuthorIdx),
-				(postAuthorIdx == co.getAuthor().getUserIdx() ? true : false)))
+				ofList(co.getChildCommentList(), author.getUserIdx()),
+				(author.getUserIdx() == co.getAuthor().getUserIdx() ? true : false)))
 				.collect(Collectors.toList());
 
 		return dto;
