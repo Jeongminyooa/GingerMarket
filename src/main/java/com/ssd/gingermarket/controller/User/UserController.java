@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -65,27 +66,40 @@ public class UserController {
 		
 		return mav;
 	}
+
+
 	
 	@PostMapping("")
-	public ModelAndView register(@Validated @ModelAttribute("userReq") UserDto.Request req, BindingResult error, HttpServletResponse response) throws Exception {
-
+	public ModelAndView register(@Validated @ModelAttribute("userReq") UserDto.Request req, 
+			BindingResult error, HttpServletResponse response) throws Exception {
+		response.setContentType("text/html; charset=utf-8");
+		PrintWriter out = response.getWriter();
 		if(error.hasErrors())
-			return new ModelAndView("/user/signup");
+			return new ModelAndView("content/user/user_signup");
+		
+		String msg="";
+		
+		if(userService.userIdCheck(req.getUserId())==1) {
+			msg+="이미 존재하는 아이디입니다";
+		}
+		if(userService.nameCheck(req.getName())==1) {
+			msg+="  이미 존재하는 닉네임입니다";
+		}
 		
 		if(!req.getImageFile().getOriginalFilename().equals("")) {
 			ImageDto.Request imgReq = new ImageDto.Request(req.getImageFile());
 			Image img = imageService.uploadFile(imgReq.getImageFile());
 			req.setImage(img);
 		}
-		
-		response.setContentType("text/html; charset=utf-8");
-		PrintWriter out = response.getWriter();
-		
+
 		if(!req.getPassword().equals(req.getRepeatedPassword())) {
-			out.println("<script>alert('비밀번호가 일치하지 않습니다.'); location.replace('/user/signup');</script>");
+			msg+="  비밀번호가 일치하지 않습니다.";}
+		
+		if(msg!="") {
+			out.println("<script>alert('"+msg+"');location.replace('/user/signup');</script>");
 			out.flush();
 			return new ModelAndView("redirect: /user/signup");
-			}
+		}
 		else {
 			out.println("<script>alert('회원가입 되었습니다.'); location.replace('/user/login');</script>");
 			out.flush();
@@ -94,67 +108,13 @@ public class UserController {
 		}
 		
 	}
-	
-	/*
-	@PostMapping("")
-	public RedirectView register(@Validated @ModelAttribute("userReq") UserDto.Request req, HttpServletResponse response, Errors error) throws Exception {
-		response.setContentType("text/html; charset=utf-8");
-		PrintWriter out = response.getWriter();
-		
-		if(error.hasErrors())
-			return new RedirectView("/user/login");
-		
-		if(!req.getImageFile().getOriginalFilename().equals("")) {
-			ImageDto.Request imgReq = new ImageDto.Request(req.getImageFile());
-			Image img = imageService.uploadFile(imgReq.getImageFile());
-			req.setImage(img);
-		}
-		if(!req.getPassword().equals(req.getRepeatedPassword())) {
-			out.println("<script>alert('비밀번호가 일치하지 않습니다.'); location.replace('/user/signup');</script>");
-			out.flush();
-			return new RedirectView("/user/signup");
-			}
-		else {
-			out.println("<script>alert('회원가입 되었습니다.'); location.replace('/user/login');</script>");
-			out.flush();
-			userService.addUser(req);
-			return new RedirectView("/user/login");
-		}
-		
-	}*/
-	
-	/*
-	@PostMapping("")
-	public ModelAndView register(@Validated UserDto.Request req, HttpServletResponse response, Errors error) throws Exception {
-		response.setContentType("text/html; charset=utf-8");
-		PrintWriter out = response.getWriter();
-		
-		if(error.hasErrors())
-			return new ModelAndView("/user/signup");
-		
-		if(!req.getImageFile().getOriginalFilename().equals("")) {
-			ImageDto.Request imgReq = new ImageDto.Request(req.getImageFile());
-			Image img = imageService.uploadFile(imgReq.getImageFile());
-			req.setImage(img);
-		}
-		if(!req.getPassword().equals(req.getRepeatedPassword())) {
-			out.println("<script>alert('비밀번호가 일치하지 않습니다.'); location.replace('/user/signup');</script>");
-			out.flush();
-			return new ModelAndView("redirect:/user/signup");
-			}
-		else {
-			out.println("<script>alert('회원가입 되었습니다.'); location.replace('/user/login');</script>");
-			out.flush();
-			userService.addUser(req);
-			return new ModelAndView("redirect:/user/login");
-		}
-		
-	}
-	*/
+
 	@DeleteMapping("/quit")
-	public RedirectView quitUser(HttpServletRequest req) { 
+	public RedirectView quitUser(HttpServletRequest req) throws DataIntegrityViolationException { 
+		
 		HttpSession session = req.getSession(false);
-		Long userIdx = (Long) session.getAttribute("userIdx");		
+		Long userIdx = (Long) session.getAttribute("userIdx");
+		
         if(session != null){
             session.invalidate();
         }

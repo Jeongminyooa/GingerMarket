@@ -1,13 +1,18 @@
 package com.ssd.gingermarket.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssd.gingermarket.domain.MessageInfo;
+import com.ssd.gingermarket.domain.MessageRoom;
 import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.UserDto;
 import com.ssd.gingermarket.repository.GroupBuyingRepository;
 import com.ssd.gingermarket.repository.ImageRepository;
 import com.ssd.gingermarket.repository.MessageInfoRepository;
+import com.ssd.gingermarket.repository.MessageRoomRepository;
 import com.ssd.gingermarket.repository.SharePostRepository;
 import com.ssd.gingermarket.repository.UserRepository;
 
@@ -23,6 +28,8 @@ public class UserServiceImpl implements UserService{
 	private final GroupBuyingRepository gbRepository;
 	private final SharePostRepository shRepository;
 	private final MessageInfoRepository msgInfo;
+	private final MessageRoomRepository msgRoom;
+	
 	@Override
 	@Transactional
 	public Long addUser(UserDto.Request dto) {
@@ -50,17 +57,16 @@ public class UserServiceImpl implements UserService{
 	@Override
 	@Transactional
 	public void removeUser(Long userIdx) {
-		User user = userRepository.findById(userIdx).get();
-		/*
-		gbRepository.deleteAll(user.getGroupBuyingList());
-		shRepository.deleteAll(user.getShareList());
-		*/
-	//	msgInfo.deleteByAll(user.getMessageInfoList());
-	//	user.getShareList();
-	//	imageRepositoy.deleteById(user.getImageIdx());
-	//	user.getMessageInfoList();
-	//	user.getMessageRoomList();
-		user.getExperiodList();
+		User user = userRepository.findById(userIdx).orElseThrow();
+		
+		List<MessageRoom> msgRoomList = user.getMessageRoomList();
+		for (MessageRoom i : msgRoomList) {
+			List<MessageInfo> msgInfoList =  msgInfo.findAllByRoomIdx(i.getRoomIdx());
+			for(MessageInfo j : msgInfoList) {
+				msgInfo.deleteById(j.getMessageIdx());
+			}
+			msgRoom.deleteById(i.getRoomIdx());
+		}
 		
 		userRepository.deleteById(userIdx);
 	}

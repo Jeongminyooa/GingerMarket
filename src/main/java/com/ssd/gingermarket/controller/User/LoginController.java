@@ -54,12 +54,15 @@ public class LoginController {
 
 
 	@GetMapping("/logout")
-	public RedirectView Logout(HttpServletRequest request) {
+	public void Logout(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		response.setContentType("text/html; charset=utf-8");
+		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession(false);
         if(session != null){
             session.invalidate();
         }
-        return new RedirectView("/user/login");
+        out.println("<script>alert('로그아웃되었습니다');location.replace('/user/login');</script>");
+        out.flush();
 	}
 	
 

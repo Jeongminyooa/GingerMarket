@@ -12,8 +12,11 @@
 		        	회원 탈퇴를 진행하시겠습니까?
 		        </div>
 		        <div class="pt-3 text-center">
+		        	<form th:method="delete" th:action="@{/user/quit}">
+		        		<input type="hidden" name="_method" value="delete"/>
 		        		<button type="button" class="update_btn w-25">취소</button>
-						<button type="button" class="quit_btn w-25">확인</button>
+						<button type="submit" class="quit_btn w-25" >확인</button>
+				 	</form>
 				</div>
 		      </div>
 

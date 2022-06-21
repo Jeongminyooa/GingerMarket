@@ -71,21 +71,16 @@ public class User {
 	
 	@OneToMany(mappedBy = "postIdx", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<SharePost> shareList = new ArrayList<SharePost>();
-	
-	
-//	private List<SharePost> participateShareList = new ArrayList<SharePost>();
-	
+
 	@OneToMany(mappedBy = "groupIdx", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<GroupBuying> groupBuyingList = new ArrayList<GroupBuying>();
 	
-//	@OneToMany(mappedBy = "groupIdx", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
-//	private List<GroupBuying> participateGroupBuyingList = new ArrayList<GroupBuying>();
-	
-//	@OneToMany(mappedBy = "comment_Idx", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
-//	private List<CommentInfo> commentList = new ArrayList<CommentInfo>();
-	@OneToMany(mappedBy = "messageIdx", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
-	private List<MessageInfo> messageInfoList = new ArrayList<MessageInfo>();
-	@OneToMany(mappedBy = "roomIdx", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(mappedBy = "id", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<CommentInfo> commentList = new ArrayList<CommentInfo>();
+//	@OneToMany(mappedBy = "messageIdx", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
+//	@OneToMany(mappedBy="messageIdx")
+//	private List<MessageInfo> messageInfoList = new ArrayList<MessageInfo>();
+	@OneToMany(mappedBy = "roomIdx")
 	private List<MessageRoom> messageRoomList = new ArrayList<MessageRoom>();
 	
 	
