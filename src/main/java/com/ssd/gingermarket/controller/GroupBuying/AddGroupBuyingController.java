@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.ssd.gingermarket.domain.Image;
+import com.ssd.gingermarket.dto.ImageDto;
 import com.ssd.gingermarket.dto.GroupBuyingDto;
 import com.ssd.gingermarket.service.GroupBuyingService;
+import com.ssd.gingermarket.service.ImageService;
+import com.ssd.gingermarket.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +27,11 @@ import lombok.RequiredArgsConstructor;
 public class AddGroupBuyingController {
 
 	private final GroupBuyingService groupBuyingService;
+	private String uploadDirLocal;
+
+	private final ImageService imageService;
+	private final UserService userService;
+	
 
 	@ModelAttribute("categoryList")
 	public List<String> categoryList(){
@@ -41,7 +50,7 @@ public class AddGroupBuyingController {
 
 	//공구 포스트 등록 페이지 이동
 	@GetMapping("/new-add-form")
-	public ModelAndView goAddForm() {
+	public ModelAndView getAddForm() {
 		
 		ModelAndView mav = new ModelAndView("content/groupBuyingPost/groupPost_add");
 		mav.addObject("postReq", new GroupBuyingDto.Request());
@@ -51,8 +60,20 @@ public class AddGroupBuyingController {
 	// 공구 포스트 등록
 	@PostMapping("")
 	public RedirectView addPost(GroupBuyingDto.Request groupBuying) {
-		// session에서 userId를 받아오는 코드로 수정
+		
 		Long authorIdx = (long)2;
+		
+		if(groupBuying.getFile().getOriginalFilename().equals("")) {
+			groupBuying.setImage(null);
+			System.out.println("사진이 없음"); 
+		}
+		else {
+			ImageDto.Request imgDto = new ImageDto.Request(groupBuying.getFile());
+		
+			Image img = imageService.uploadFile(imgDto.getImageFile());
+			
+			groupBuying.setImage(img);
+		}
 		
 		groupBuying.setAuthorIdx(authorIdx);
 		groupBuyingService.addPost(groupBuying);

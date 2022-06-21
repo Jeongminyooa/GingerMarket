@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.ssd.gingermarket.domain.Image;
+import com.ssd.gingermarket.dto.ImageDto;
 import com.ssd.gingermarket.dto.GroupBuyingDto;
 import com.ssd.gingermarket.service.GroupBuyingService;
+import com.ssd.gingermarket.service.ImageService;
 
 import lombok.RequiredArgsConstructor;
 //@Slf4j //로그 
@@ -21,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class ModifyGroupBuyingController {
 	
 	private final GroupBuyingService groupBuyingService;
+	private final ImageService imageService;
 	
 	@ModelAttribute("categoryList")
 	public List<String> categoryList(){
@@ -53,8 +57,13 @@ public class ModifyGroupBuyingController {
     public RedirectView updatePost(GroupBuyingDto.Request groupBuying, @PathVariable Long groupIdx) 
 	{
 		Long authorIdx = (long) 1; //session구현 후 변경
-
-	
+		
+		if(!groupBuying.getFile().getOriginalFilename().equals("")) {
+			ImageDto.Request imgDto = new ImageDto.Request(groupBuying.getFile());
+			Image img = imageService.uploadFile(imgDto.getImageFile());
+			groupBuying.setImage(img);
+		}
+		
 		groupBuying.setAuthorIdx(authorIdx);
 		groupBuyingService.modifyPost(groupIdx, groupBuying);
 
