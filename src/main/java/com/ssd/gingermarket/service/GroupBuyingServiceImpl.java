@@ -151,7 +151,7 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
 		//사용자가 작성한 포스트리스트 조회
 		User author = userRepository.findById(userIdx).orElseThrow();
 			
-		List<GroupBuying> postEntityList = groupBuyingRepository.findAllByAuthorIdx(author);
+		List<GroupBuying> postEntityList = groupBuyingRepository.findAllByAuthor(author);
 			
 		List<MyPageInfo> postList = postEntityList.stream().map(post -> new MyPageInfo(
 				post.getGroupIdx(),
