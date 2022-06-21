@@ -28,12 +28,13 @@
 <script type="text/javascript" th:inline="javascript">
 
 var postIdx = [[${postIdx}]];
-var senderIdx = [[${senderIdx}]];
 var roomIdx = [[${roomIdx}]];
-var authorIdx = [[${postInfo.author.userIdx}]];
+
 $( document ).ready(function() {
-	
 	getMsgList(roomIdx);
+	setInterval(function(){
+		getMsgList(roomIdx)
+	}, 3000);
 	
 	
 	$('#btn_reply').click(function(){
@@ -43,9 +44,11 @@ $( document ).ready(function() {
 		else
 			alert("메세지를 입력하세요!");
 	});
-	
 
-		function sendMessage(insertData){		
+});
+
+
+function sendMessage(insertData){		
 			$.ajax({
 				url : '/messages/' + roomIdx, 
 				type : 'POST',
@@ -66,9 +69,6 @@ $( document ).ready(function() {
 				}
 			});
 		}
-	
-});
-
 //msg 리스트
 function getMsgList(roomIdx) {
 		 $.ajax({
@@ -84,6 +84,16 @@ function getMsgList(roomIdx) {
 		  });
 	}
 	
+function enterkey() {
+	if (window.event.keyCode == 13) {
+		window.event.preventDefault();
+		var insertData = $('#content').val();
+		if(insertData != null && insertData != "")
+			sendMessage(insertData);
+		else
+			alert("메세지를 입력하세요!");// 엔터키가 눌렸을 때
+    }
+}
 	
 </script>
 
@@ -129,7 +139,7 @@ function getMsgList(roomIdx) {
 			<div id="msg-container">
 			<th:block th:each="msg : ${msgList}">
 				<!-- receiver section -->
-				<div th:if = "${userIdx} != ${msg.sender.userIdx}" class="mt-1">
+				<div th:if = "${userIdx} != ${msg.sender.userIdx}"  class="mt-1">
 					<!-- receiver info -->	
 					<div class="d-flex">
 						<div>
@@ -142,8 +152,9 @@ function getMsgList(roomIdx) {
 					
 					<!-- receiver message -->
 					<div class="ms-5">
+						
 						<div th:text=${msg.content} id="main_content" class="msg-bubble">안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~ v안녕하세요~안녕하세요~안녕하세요~안녕하세요~</div>
-						<span th:text=${msg.isRead}></span>
+						
 						<div th:text="${#temporals.format(msg.sendDate, 'yyyy/MM/dd HH:mm')}" id="small_content" class="ms-1" >2022/05/19 23:36</div>				
 					</div>
 				</div>
@@ -153,8 +164,8 @@ function getMsgList(roomIdx) {
 				<div th:if = "${userIdx} == ${msg.sender.userIdx}" class="mt-1 me-3" align="right">
 					<!-- sender message -->
 					<div class="">
+						<span th:if="${msg.isRead} == false">1</span>
 						<div th:text=${msg.content} id="main_content" class="msg-bubble-right">안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~ v안녕하세요~안녕하세요~안녕하세요~안녕하세요~</div>
-						<span th:text=${msg.isRead}></span>
 						<div th:text="${#temporals.format(msg.sendDate, 'MM/dd HH:mm')}" id="small_content" class="ms-1">2022/05/19 23:36</div>				
 					</div>
 				</div>
@@ -164,7 +175,7 @@ function getMsgList(roomIdx) {
 			
 			<!-- reply section -->
 				<div th:if="${postInfo.progress} == false" class="mb-3 mt-3 d-flex send">
-						<input type="text"  onkeypress="send()" id="content" class="form-control" aria-label="With textarea" placeholder="메세지를 입력해주세요."></textarea>
+						<input type="text"  onkeyup="enterkey()" id="content" class="form-control" aria-label="With textarea" placeholder="메세지를 입력해주세요."></textarea>
 						<button type="submit" class="btn" id="btn_reply" >
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
 	  							<path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>

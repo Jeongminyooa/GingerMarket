@@ -28,7 +28,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ViewSharePostController {
 	private final SharePostService sharePostService;
-	private final ImageService imageService;
 
 	@ModelAttribute("categoryList")
 	public List<String> categoryList(){
@@ -50,11 +49,13 @@ public class ViewSharePostController {
      */
 	@GetMapping("/{postIdx}")
 	public ModelAndView getPost(@PathVariable Long postIdx){
-		Long sessionIdx = (long)1;
+		Long sessionIdx = (long)2;
 		ModelAndView mav = new ModelAndView("content/sharePost/sharePost_view");
 		mav.addObject("postInfo", sharePostService.getPost(postIdx));
 		mav.addObject("senderIdx", sessionIdx);
 		mav.addObject("sessionIdx", sessionIdx);
+		
+		mav.addObject("userIdx", sessionIdx); //세션 
 		return mav;
 	}
 	
@@ -70,7 +71,7 @@ public class ViewSharePostController {
 		mav.addObject("allPostList", sharePostService.getAllPost(page));
 		mav.addObject("favPostList", sharePostService.getFavPost(userIdx));
 		
-		mav.addObject("userIdx", 1); //user session 구현 후 수정 예정 
+		mav.addObject("userIdx", 2); //user session 구현 후 수정 예정 
 		mav.addObject("type", "none");
 		
 		return mav;
@@ -85,12 +86,11 @@ public class ViewSharePostController {
 			
 		ModelAndView mav = new ModelAndView("content/sharePost/sharePostList");
 		
-//		System.out.println("option: " + option);
-//		if(option.equals("category"))
-//			type = "category";
 		mav.addObject("allPostList", sharePostService.getAllPostByKeyword(keyword, page, option, type));
 		mav.addObject("type", type);
 		mav.addObject("keyword", keyword);
+		
+		mav.addObject("userIdx", 1);
 			
 		return mav;
 	}

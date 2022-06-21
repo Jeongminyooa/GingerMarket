@@ -51,11 +51,4 @@ public class MessageInfo extends BaseTime {
 		this.isRead = this.isRead == null ? "N" : this.isRead;
 	}
 	
-	public void updateReadOrNot(boolean isRead) {
-		if(isRead)
-			this.isRead = "Y";
-		else
-			this.isRead = "N";
-	}
-	
 }

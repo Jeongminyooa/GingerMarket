@@ -68,9 +68,10 @@ public class AddSharePostController {
 		ModelAndView mav = new ModelAndView("content/sharePost/sharePost_add");
 		
 		String addr = userService.getUser(userIdx).getAddress();
-		System.out.println("addr : " + addr);
 
 		post.setAddress(addr);
+		
+		mav.addObject("userIdx", 2); //session
 		
 		return mav;
 	}
