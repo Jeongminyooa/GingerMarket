@@ -68,23 +68,28 @@
 				</div>
 			</div>
 
-			<div class="row pt-5">
-				<p id="main_content">
-					<b>추천 게시물</b>
-				</p>
-			</div>
-
 			<!-- fav-post  -->
-			<!-- <th:block th:include="@{/content/groupBuyingPost/groupPost_favPostList}"></th:block>--->
-
+			<div th:if="${!favPostList.isEmpty()}">
+			<p id="main_content">
+			<b>추천 게시물</b>
+			<th:block  th:include="@{/content/groupBuyingPost/groupPost_favPostList}"></th:block>
+			</div>
+	
 			<br>
 			<hr>
 
-			<div class="row pt-5">
+			<div th:if="${#strings.equals(option, 'title')} or ${#strings.equals(option, 'category')}" class="row pt-5">
+				<p id="main_content" style="font-size:20px;" class="text-center" >
+					<b th:utext="|'${keyword}'을/를 검색한 결과입니다|">전체 게시물</b>
+				</p>
+			</div>
+			
+			<div th:if="${#strings.equals(option, '')}" class="row pt-5">
 				<p id="main_content">
 					<b>전체 게시물</b>
 				</p>
 			</div>
+			
 			<!--  all-post  -->
 			<th:block th:include="@{/content/groupBuyingPost/groupPost_allPostList}"></th:block>
 			

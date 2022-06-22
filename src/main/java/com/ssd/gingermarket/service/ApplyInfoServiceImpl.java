@@ -12,6 +12,8 @@ import com.ssd.gingermarket.domain.Apply;
 import com.ssd.gingermarket.domain.GroupBuying;
 import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.ApplyDto;
+import com.ssd.gingermarket.dto.UserDto;
+
 import com.ssd.gingermarket.dto.GroupBuyingDto;
 import com.ssd.gingermarket.repository.ApplyRepository;
 import com.ssd.gingermarket.repository.GroupBuyingRepository;
@@ -34,10 +36,8 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 	@Transactional(readOnly = true)
 	public List<ApplyDto.Info> getAllApply(Long groupIdx) {
     	
-    	// user entity
-    	// User author = userRepository.findById(authorIdx).orElseThrow();
-    	
-		List<Apply> applyList = applyRepository.findByGroupIdx(groupIdx);
+    	GroupBuying groupBuying = groupBuyingRepository.findById(groupIdx).orElseThrow();
+		List<Apply> applyList = applyRepository.findByGroupBuyingOrderByApplyIdxDesc(groupBuying);
 	 
 		return applyList.stream().map(ApplyDto.Info::new).collect(Collectors.toList());	
 	}
@@ -45,11 +45,9 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
     // 공구 신청 등록
     @Override
 	@Transactional
-	public void addApply(ApplyDto.Info apply, Long groupIdx) {
+	public void addApply(ApplyDto.Info apply, Long userIdx, Long groupIdx) {
     	
-		User author = userRepository.findById(apply.getAuthorIdx()).orElseThrow();
-		apply.setAuthor(author);
-	
+		User author = userRepository.findById(userIdx).orElseThrow();
     	GroupBuying groupBuying = groupBuyingRepository.findById(groupIdx).orElseThrow();
     
 		groupBuying.updateParticipate();	
@@ -57,7 +55,7 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 		groupBuying.updateProgress(progress); 
 		
 		
-		applyRepository.save(apply.toEntity());
+		applyRepository.save(apply.toEntity(groupBuying, author));
 		
 	} 
     
@@ -73,7 +71,7 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
    		} 
        	else
    			return 0;
-   	}
+   	}  	
 
 	@Override
 	@Transactional(readOnly = true)

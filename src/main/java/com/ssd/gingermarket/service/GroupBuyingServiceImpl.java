@@ -16,12 +16,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import com.ssd.gingermarket.domain.User;
+import com.ssd.gingermarket.domain.Apply;
 import com.ssd.gingermarket.domain.GroupBuying;
-
+import com.ssd.gingermarket.domain.SharePost;
 import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.ApplyDto;
 
 import com.ssd.gingermarket.dto.GroupBuyingDto;
+import com.ssd.gingermarket.dto.SharePostDto;
+import com.ssd.gingermarket.dto.UserDto;
 import com.ssd.gingermarket.dto.GroupBuyingDto.MyPageInfo;
 import com.ssd.gingermarket.repository.ApplyRepository;
 
@@ -37,8 +40,8 @@ import lombok.RequiredArgsConstructor;
 public class GroupBuyingServiceImpl implements GroupBuyingService {
 
 	private final GroupBuyingRepository groupBuyingRepository;
-	private final ApplyRepository applyRepository;
 	private final UserRepository userRepository;
+	private final ApplyRepository applyRepository;
 
 
 	// 포스트 등록
@@ -53,13 +56,15 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
 		groupBuyingEntity.updateProgress(progress);		
 	}
 
+
 	// 포스트 전체 조회
 	@Override
 	@Transactional(readOnly = true)
-	public Page<GroupBuying> getAllPost(int page) {
+	public Page<GroupBuyingDto.DetailResponse> getAllPost(int page) {
 		Pageable pageable = PageRequest.of(page, 8, Sort.by(Direction.DESC, "createdDate") );
+		Page<GroupBuying> postList = groupBuyingRepository.findAll(pageable);
 		
-		return this.groupBuyingRepository.findAll(pageable);
+		  return postList.map(GroupBuyingDto.DetailResponse::new);
 	}
 	
 	//선호 카테고리 포스트 조회 
@@ -93,10 +98,18 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
 	// 포스트 상세 조회
 	@Override
 	@Transactional(readOnly = true)
-	public GroupBuyingDto.DetailResponse getPost(Long groupIdx) {
-		GroupBuying groupBuying = groupBuyingRepository.findById(groupIdx).orElseThrow();  
+	public GroupBuyingDto.DetailResponse getPost(Long groupIdx, Long userIdx) {
+		GroupBuying group = groupBuyingRepository.findById(groupIdx).orElseThrow();  
+		User author = userRepository.findById(userIdx).orElseThrow();
+		
+		GroupBuyingDto.DetailResponse groupBuying = new GroupBuyingDto.DetailResponse(group);
 
-		return new GroupBuyingDto.DetailResponse(groupBuying);
+		if(applyRepository.findByGroupBuyingAndAuthor(group, author) == null)
+			groupBuying.setApply(false);
+		else
+			groupBuying.setApply(true);
+			
+		return groupBuying;
 	}
 	
 	// 포스트 상세 정보(update용)
@@ -116,7 +129,7 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
 		if(!dto.getFile().getOriginalFilename().equals(""))
 			groupBuying.updatePostImg(dto.getImage());
 		
-		groupBuying.updatePost(dto.getTitle(), dto.getCategory(), dto.getRecruitNum(), dto.getWebsite(), dto.getPrice(), dto.getDescr(), dto.getEndDate());
+		groupBuying.updatePost(dto.getTitle(), dto.getCategory(), Integer.parseInt(dto.getRecruitNum()), dto.getWebsite(), Integer.parseInt(dto.getPrice()), dto.getDescr(), dto.getEndDate());
 
 		int progress = updateProgress(groupBuying.getParticipateNum(), groupBuying.getRecruitNum());
 		groupBuying.updateProgress(progress);
@@ -170,17 +183,19 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
    	//공구 포스트 검색 (제목, 카테고리)
     @Override
  	@Transactional
-	public Page<GroupBuying> getAllPostByKeyword(String keyword, int page, String option) {
+	public Page<GroupBuyingDto.DetailResponse> getAllPostByKeyword(String keyword, int page, String option) {
     	Pageable pageable = PageRequest.of(page, 8, Sort.by(Direction.DESC, "created_date") );
     	
     	if(option.equals("title")) {
-    		return this.groupBuyingRepository.findByKeyword(keyword, pageable);
+    		Page<GroupBuying> postList = groupBuyingRepository.findByKeyword(keyword, pageable);
+    		return postList.map(GroupBuyingDto.DetailResponse::new);
     	} else {
-    		return this.groupBuyingRepository.findByCategory(keyword,pageable);
+    		Page<GroupBuying> postList = groupBuyingRepository.findByCategory(keyword,pageable);
+    		return postList.map(GroupBuyingDto.DetailResponse::new);
     	}
 	
     }
-   
+ 
 }
 	
 

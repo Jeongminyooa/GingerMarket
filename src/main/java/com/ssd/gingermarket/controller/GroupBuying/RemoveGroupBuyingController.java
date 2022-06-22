@@ -9,7 +9,6 @@ import com.ssd.gingermarket.service.GroupBuyingService;
 
 import lombok.RequiredArgsConstructor;
 
-//@Slf4j //로그 
 @RestController 
 @RequestMapping("/group-buying")
 @RequiredArgsConstructor

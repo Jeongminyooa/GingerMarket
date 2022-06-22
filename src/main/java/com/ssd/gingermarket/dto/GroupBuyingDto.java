@@ -11,7 +11,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Length;
+
 public class GroupBuyingDto {
+	public static String getUploadDirPath(String imageUrl) {
+		return "/upload/" + imageUrl;
+	}
 	
 	public static String getUploadDirPath(String imageUrl) {
 		return "/upload/" + imageUrl;
@@ -21,14 +31,32 @@ public class GroupBuyingDto {
 	@AllArgsConstructor
 	@Data
 	public static class Request{
+		private String uploadDirLocal = "/upload/";
+		
+		@NotBlank(message="{notBlank.title}")
 		private String title;
+		
+		@NotBlank(message="{notBlank.category}")
 		private String category;
-		private int recruitNum;
+		
+		@NotBlank(message="{notBlank.recruitNum}")
+		@Pattern(regexp = "[0-9]{0,64}", message="{pattern.number}")
+		private String recruitNum;
+		
 		private String website;
+		
+		@NotNull(message="{notNull.endDate}")
+		@FutureOrPresent(message="{futureOrPresent.endDate}")
 		@DateTimeFormat(pattern = "yyyy-MM-dd")
 		private LocalDate endDate;
+		
+		@Length(max=1000, message="{size.descr}")
 		private String descr;
-		private int price;
+		
+		@NotBlank(message="{notBlank.price}")
+		@Pattern(regexp = "[0-9]{0,64}", message="{pattern.number}")
+		private String price;
+		
 		private int progress;
 		
 		private Image image;
@@ -42,11 +70,11 @@ public class GroupBuyingDto {
 			return GroupBuying.builder()
 					.title(title)
 					.category(category)
-					.recruitNum(recruitNum)
+					.recruitNum(Integer.parseInt(recruitNum))
 					.website(website)
 					.endDate(endDate)
 					.descr(descr)
-					.price(price)
+					.price(Integer.parseInt(price))
 					.progress(progress)
 					.image(image)
 					.author(author)
@@ -56,11 +84,11 @@ public class GroupBuyingDto {
 		public Request(GroupBuying groupBuying) {
 			this.title = groupBuying.getTitle();
 			this.category = groupBuying.getCategory();
-			this.recruitNum = groupBuying.getRecruitNum();
+			this.recruitNum = String.valueOf(groupBuying.getRecruitNum());
 			this.website = groupBuying.getWebsite();
 			this.endDate = groupBuying.getEndDate();
 			this.descr = groupBuying.getDescr();
-			this.price = groupBuying.getPrice();
+			this.price = String.valueOf(groupBuying.getPrice());
 			this.progress = groupBuying.getProgress();
 			try {
 				this.imgUrl = getUploadDirPath(groupBuying.getImage().getUrl());
@@ -80,7 +108,10 @@ public class GroupBuyingDto {
 			private String uploadDirLocal = "/upload/";
 			
 			private Long groupIdx;
-			private User author;
+			
+			private Long authorIdx;
+			private String authorName;
+			private String authorImgUrl;
 			
 			private String category;
 			private String title;
@@ -95,20 +126,26 @@ public class GroupBuyingDto {
 			private String descr;
 			private int progress;
 			private int commentCnt;
+			private boolean isApply = false;
 			
 			public DetailResponse(GroupBuying groupBuying) {
 				this.groupIdx = groupBuying.getGroupIdx();
-				this.author = groupBuying.getAuthor();
+				this.authorIdx = groupBuying.getAuthor().getUserIdx();
+				this.authorName = groupBuying.getAuthor().getName();
+				try {
+					this.authorImgUrl = getUploadDirPath(groupBuying.getAuthor().getImage().getUrl());
+				}catch (Exception e ) {	           
+					this.authorImgUrl = "";
+				}
 				this.category = groupBuying.getCategory();
 				this.title = groupBuying.getTitle();
-				String url = "";
+			
 				try {
-					url = getUploadDirPath(groupBuying.getImage().getUrl());
-				}catch (Exception e ) {
-					url = "";
-				}finally {
-					this.imgUrl = url;
+					this.imgUrl = getUploadDirPath(groupBuying.getImage().getUrl());
+				}catch (Exception e ) {	           
+					this.imgUrl = "";
 				}
+				
 				this.recruitNum =  groupBuying.getRecruitNum();
 				this.participateNum = groupBuying.getParticipateNum();
 				this.price = groupBuying.getPrice();

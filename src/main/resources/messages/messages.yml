@@ -4,9 +4,17 @@ notBlank:
   password: 비밀번호를 입력해주세요
 notNull:
   category : 카테고리를 선택해주세요.
+  price : 가격은 필수로 입력해야 합니다.
+  recruitNum : 모집인원은 필수로 입력해야 합니다.
+notNull:
+  endDate: 마감 날짜는 필수로 입력해야 합니다.
 size:
   descr : 상세 설명은 1000자를 넘을 수 없습니다.
   address : 주소는 255자를 넘을 수 없습니다.
+pattern:
+  number: 숫자값만 입력할 수 있습니다.
+futureOrPresent:
+  endDate: 오늘 날짜 이후만 설정 가능합니다.
   userId_min : 아이디는 5자 이상이어야 합니다.
   userId_max : 아이디를 10자 이하로 입력해주세요.
   password_min : 비밀번호는 5자 이상이어야 합니다.
