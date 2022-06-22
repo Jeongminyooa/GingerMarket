@@ -22,16 +22,14 @@ public class ApplyDto {
 		private String phone;
 		private String message;
 		
-		private User author;
 		private Long authorIdx;
 		private String authorName;
 		private String authorImgUrl;
 		
-		private GroupBuying groupBuying;
 		private Long groupIdx;
 		private Long postAuthorIdx;
 		
-		public Apply toEntity(){
+		public Apply toEntity(GroupBuying groupBuying, User author){
 			return Apply.builder()
 					.phone(phone)
 					.message(message)

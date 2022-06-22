@@ -29,10 +29,13 @@ public class AddApplyController {
 
 	// 공구 신청 등록 (사용자)
 	@PostMapping("/{groupIdx}/apply-form")
-	public RedirectView addApply(HttpServletRequest req, @PathVariable Long groupIdx, @ModelAttribute("applyInfo") ApplyDto.Info apply) {
+	public RedirectView addApply(HttpServletRequest req,
+			@PathVariable("groupIdx") Long groupIdx,
+			@ModelAttribute("applyInfo") ApplyDto.Info apply) {
+		
 		HttpSession session = req.getSession(false);
 		Long userIdx = (long)session.getAttribute("userIdx");
-		
+				
 		applyInfoService.addApply(apply, userIdx, groupIdx);
 		return new RedirectView("/group-buying/" + groupIdx);
 	} 

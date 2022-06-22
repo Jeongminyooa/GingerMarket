@@ -44,9 +44,6 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 	public void addApply(ApplyDto.Info apply, Long userIdx, Long groupIdx) {
     	
 		User author = userRepository.findById(userIdx).orElseThrow();
-		apply.setAuthor(author);
-		apply.setGroupIdx(groupIdx);
-	
     	GroupBuying groupBuying = groupBuyingRepository.findById(groupIdx).orElseThrow();
     
 		groupBuying.updateParticipate();	
@@ -54,7 +51,7 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 		groupBuying.updateProgress(progress); 
 		
 		
-		applyRepository.save(apply.toEntity());
+		applyRepository.save(apply.toEntity(groupBuying, author));
 		
 	} 
     
