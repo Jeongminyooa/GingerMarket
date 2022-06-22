@@ -45,7 +45,7 @@ public class CommentInfo extends BaseTime {
 	private String isDeleted;
 	
 	// 부모 댓글 인덱스
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_idx")
 	private CommentInfo parentIdx;
 	
