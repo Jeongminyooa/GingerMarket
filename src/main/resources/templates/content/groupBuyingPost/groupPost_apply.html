@@ -34,16 +34,17 @@
 				
 				<th:block th:each="applyInfo : ${applyList}">
   				<div class="row pt-3 mt-1">
-				<div class="col">
-					<img src="/image/profile2.jpg" class="rounded-circle" alt="" id="img-author">
-						<span th:text=${applyInfo.author.name} id="main_content" ><b>dev_jeongmin</b></span>
-				</div>
-				<div class="row mx-4">
-					<span th:text=${applyInfo.phone} class="pb-1" id="small_content" style="color: silver;">01096868773</span>
-					<span th:text=${applyInfo.message} class="pb-3" id="small_content">저도 이거 필요해요! 같이 사요!</span>
-				</div>
-				<div class="row border-top mx-2"></div>
-				</div>
+					<div class="col">
+					<img th:if="${not #strings.isEmpty(applyInfo.authorImgUrl)}" th:src="@{${applyInfo.authorImgUrl}}" src="/image/profile.png" id="img-author"
+						class="rounded-pill mx-auto">
+							<span th:text=${applyInfo.authorName} id="main_content" ><b>dev_jeongmin</b></span>
+					</div>
+					<div class="row mx-4">
+						<span th:text=${applyInfo.phone} class="pb-1" id="small_content" style="color: silver;">01096868773</span>
+						<span th:text=${applyInfo.message} class="pb-3" id="small_content">저도 이거 필요해요! 같이 사요!</span>
+					</div>
+					<div class="row border-top mx-2"></div>
+					</div>
   				</th:block>
   			
 			

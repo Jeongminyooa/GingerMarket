@@ -85,7 +85,6 @@ public class AddSharePostController {
 		
 		if(post.getFile().getOriginalFilename().equals("")) {
 			post.setImage(null);
-			System.out.println("사진이 없음"); 
 		}
 		else {
 			ImageDto.Request imgDto = new ImageDto.Request(post.getFile());

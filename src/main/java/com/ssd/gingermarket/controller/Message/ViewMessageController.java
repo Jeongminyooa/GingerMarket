@@ -65,9 +65,6 @@ public class ViewMessageController {
 		List<MessageDto.Info> roomList = messageService.getAllRoom(userIdx);
 		mav.addObject("roomList", roomList)	;
 		mav.addObject("userIdx", userIdx);
-		
-		System.out.println("userIdx : " + userIdx);
-		System.out.println("room.author : " + roomList.get(0).getAuthorIdx());
 	
 		return mav;
 	}
@@ -85,10 +82,7 @@ public class ViewMessageController {
 		
 		model.addAttribute("msgList", msgList);
 		model.addAttribute("userIdx", userIdx);
-		
-		System.out.println("쪽지 상세 조회 userIdx : " + userIdx);
-		System.out.println("쪽지 보낸이:" + msgList.get(0).getSenderIdx());
-
+	
 		return "content/message/messageInfo :: #msg-container";
 			
 	}

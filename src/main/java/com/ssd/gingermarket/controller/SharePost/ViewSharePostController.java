@@ -47,9 +47,7 @@ public class ViewSharePostController {
 		return category;
 	}
 	
-	/**
-     * 게시글 상세 조회
-     */
+	//게시글 상세 조회
 	@GetMapping("/{postIdx}")
 	public ModelAndView getPost(HttpServletRequest req, @PathVariable Long postIdx){
 		HttpSession session = req.getSession(false);
@@ -62,9 +60,7 @@ public class ViewSharePostController {
 		return mav;
 	}
 	
-	/**
-     * 게시글 리스트 조회
-     */
+	// 게시글 리스트 조회
 	@GetMapping("")
 	public ModelAndView getPostList(HttpServletRequest req, @RequestParam(value="page", defaultValue="0") int page) {
 		HttpSession session = req.getSession(false);

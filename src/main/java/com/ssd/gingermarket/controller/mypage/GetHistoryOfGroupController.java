@@ -39,7 +39,7 @@ public class GetHistoryOfGroupController {
 	}
 	
 	@GetMapping("/apply")
-	public String getSharePostByMessage (Model model,
+	public String getApplyPostHistory (Model model,
 			HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();

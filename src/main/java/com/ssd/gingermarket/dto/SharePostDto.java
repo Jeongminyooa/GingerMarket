@@ -37,6 +37,7 @@ public class SharePostDto {
 		private String category;
 		@Length(max=1000, message="{size.descr}")
 		private String descr;
+		@NotBlank(message="{notBlank.address")
 		@Length(max=255, message="{size.address}")
 		private String address;
 		

@@ -72,11 +72,11 @@ public class User {
 
 	@OneToMany(mappedBy = "author", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<GroupBuying> groupBuyingList = new ArrayList<GroupBuying>();
-	
+
 	@OneToMany(mappedBy="author", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Apply> applyList = new ArrayList<Apply>();
-	
-	@OneToMany(mappedBy = "author", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
+
+	@OneToMany(mappedBy = "roomIdx")
 	private List<MessageRoom> messageRoomList = new ArrayList<MessageRoom>();
 	
 	@OneToMany(mappedBy = "sender", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)

@@ -32,8 +32,8 @@ public class CommentInfo extends BaseTime {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ExperiodSequence")
 	@SequenceGenerator(sequenceName = "ExperiodSequence", name = "ExperiodSequenceGenerator", allocationSize = 1)
-	@Column(name = "comment_idx",unique = true)
-	private Long id;
+	@Column(name = "comment_idx", unique = true)
+	private Long commentIdx;
 	
 	private String content;
 	
@@ -50,16 +50,16 @@ public class CommentInfo extends BaseTime {
 	private CommentInfo parentIdx;
 	
 	// 자식 댓글 리스트
-	@OneToMany(mappedBy = "parentIdx", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, orphanRemoval = true)
+	@OneToMany(mappedBy = "parentIdx", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<CommentInfo> childCommentList = new ArrayList<>();
 	
 	// 게시글 인덱스
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name="group_idx")
 	private GroupBuying group;
 	
 	//사용자 인덱스 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name="author_idx")
 	private User author;
 	

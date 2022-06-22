@@ -46,6 +46,8 @@ public class LoginController {
 			HttpSession session = req.getSession();
 			session.setAttribute("userId", user.getUserId());
 			session.setAttribute("userIdx", user.getUserIdx());
+		}
+
 
 			session.setAttribute("image", user.getImageIdx());
 			out.println("<script>alert('로그인되었습니다 ');location.replace('/share-posts');</script>");

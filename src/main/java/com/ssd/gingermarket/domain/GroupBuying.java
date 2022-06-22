@@ -6,12 +6,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.FetchType;
 import javax.persistence.*;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.format.annotation.DateTimeFormat;
-import javax.persistence.ManyToOne;
 @Entity 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,12 +27,10 @@ public class GroupBuying extends BaseTime{
 
 		 @Column(length = 20, nullable = false)
 		 private String category;
-		 
-		 // 모집인원
+			
 		 @Column(nullable = false)
 		 private int recruitNum;
-		 
-		 // 여태까지 총 신청 인원
+
 		 @Column(nullable = false)
 		 @ColumnDefault("0")
 		 private int participateNum;
@@ -69,9 +65,9 @@ public class GroupBuying extends BaseTime{
 		 @OneToMany(mappedBy = "groupBuying", cascade = CascadeType.ALL)
 		 private List<Apply> applyList = new ArrayList<Apply>();
 	 
-		 @OneToMany(mappedBy="group", fetch = FetchType.LAZY)
+		 @OneToMany(mappedBy="group", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 		 private List<CommentInfo> commentList = new ArrayList<>();
-
+			
 		 
 		 public void updatePost(String title, String category, int recruitNum, String website, int price, String descr, LocalDate endDate) {
 		        this.title = title;
@@ -90,7 +86,7 @@ public class GroupBuying extends BaseTime{
 		 
 		 public void updateProgress(int status) 
 		 {
-			// status에 따라 progress값을 변화시킴.
+			// status(진행상황)에 따라 progress값을 변화
 			switch(status) {
 			case 0:
 				this.progress = 0;

@@ -108,6 +108,8 @@
 					<div class="col-1">
 						<img th:if="${not #strings.isEmpty(postInfo.authorImgUrl)}" th:src="@{${postInfo.authorImgUrl}}" src="/image/profile.png" id="img-author"
 						class="rounded-pill mx-auto">
+						<img th:unless="${not #strings.isEmpty(postInfo.authorImgUrl)}" src="/image/profile.png" id="img-author"
+						class="rounded-pill mx-auto">
 					</div>	
 					
 					<div class="col-10 mt-2 ps-5">
