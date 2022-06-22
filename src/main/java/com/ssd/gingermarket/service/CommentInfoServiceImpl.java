@@ -88,7 +88,7 @@ public class CommentInfoServiceImpl implements CommentInfoService {
 		List<CommentInfo> commentInfoList = commentInfoRepository.findByParentIdxIsNullAndGroupOrderByCreatedDateAsc(groupBuyingPost);
 		
 		List<CommentDto.Info> dto = commentInfoList.stream().map(co -> new CommentDto.Info(
-				co.getId(),
+				co.getCommentIdx(),
 				co.getContent(),
 				co.getCreatedDate(),
 				co.getUpdateDate(),
@@ -110,8 +110,8 @@ public class CommentInfoServiceImpl implements CommentInfoService {
 		}
 		
 		return list.stream().map(ch -> new CommentDto.ChildInfo(
-				ch.getId(),
-				ch.getParentIdx().getId(),
+				ch.getCommentIdx(),
+				ch.getParentIdx().getCommentIdx(),
 				ch.getContent(),
 				ch.getCreatedDate(),
 				ch.getUpdateDate(),
