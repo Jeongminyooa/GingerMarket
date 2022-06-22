@@ -5,12 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import com.ssd.gingermarket.domain.MessageInfo;
-import com.ssd.gingermarket.domain.MessageRoom;
-
 import com.ssd.gingermarket.domain.Image;
-
+import com.ssd.gingermarket.domain.MessageRoom;
+import com.ssd.gingermarket.domain.SharePost;
 import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.UserDto;
 import com.ssd.gingermarket.repository.GroupBuyingRepository;
@@ -28,11 +25,6 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService{
 
 	private final UserRepository userRepository;
-	private final ImageRepository imageRepository;
-	private final GroupBuyingRepository gbRepository;
-	private final SharePostRepository shRepository;
-	private final MessageInfoRepository msgInfo;
-	private final MessageRoomRepository msgRoom;
 	
 	@Override
 	@Transactional
@@ -70,16 +62,6 @@ public class UserServiceImpl implements UserService{
 	@Transactional
 	public void removeUser(Long userIdx) {
 		User user = userRepository.findById(userIdx).orElseThrow();
-		
-		List<MessageRoom> msgRoomList = user.getMessageRoomList();
-		for (MessageRoom i : msgRoomList) {
-			List<MessageInfo> msgInfoList =  msgInfo.findAllByRoomIdx(i.getRoomIdx());
-			for(MessageInfo j : msgInfoList) {
-				msgInfo.deleteById(j.getMessageIdx());
-			}
-			msgRoom.deleteById(i.getRoomIdx());
-		}
-		
 		userRepository.deleteById(userIdx);
 	}
 
@@ -118,14 +100,11 @@ public class UserServiceImpl implements UserService{
 			return 1;
 		return 0;
 	}
-	
-	
-	
+
 	@Override
 	@Transactional(readOnly = true)
 	public UserDto.Response getUserInfo(Long userIdx) {
 		User userEntity = userRepository.findById(userIdx).orElseThrow();
-		
 		String phone = userEntity.getPhone();
 		return new UserDto.Response(userEntity);
 	}

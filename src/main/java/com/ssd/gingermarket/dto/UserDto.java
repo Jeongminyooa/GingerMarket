@@ -72,7 +72,7 @@ public class UserDto {
 		private String addr;
 		private Image image;
 		private String imgUrl;
-		private MultipartFile imageFile;
+		private MultipartFile file;
 		
 		public User toEntity() {
 			return User.builder()
@@ -86,7 +86,6 @@ public class UserDto {
 					.item2(items[1])
 					.item3(items[2])
 					.image(image)
-					.imageIdx(image.getId())
 					.build();
 		}
 		public Request(User user) {
@@ -100,9 +99,9 @@ public class UserDto {
 			this.items[2]=user.getItem3();
 			this.addr=user.getAddress();
 			try {
-				this.imgUrl="/upload/"+user.getImage().getUrl();
+				this.imgUrl=getUploadDirPath(user.getImage().getUrl());
 			} catch (Exception e ) {	           
-				this.imgUrl = null;
+				this.imgUrl = "";
 			}
 			
 		}
