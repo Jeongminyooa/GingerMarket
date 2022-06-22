@@ -41,6 +41,7 @@ public interface SharePostService {
 	//나눔 상태 업데이트 
 	public void modifyProgress(Long postIdx, boolean prog);
 
+	//나눔 포스트리스트 검색 조회 
 	public Page<SharePostDto.CardResponse> getAllPostByKeyword(String keyword, int page, String option, String type);
 
 	
