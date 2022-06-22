@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	@Transactional
-	public void modifyUser(Long userIdx,UserDto.Response dto) {
+	public void modifyUser(Long userIdx, UserDto.Response dto) {
 		User user = userRepository.findById(userIdx).orElseThrow();
 		
 		String phone = dto.getPhone1() + dto.getPhone2() + dto.getPhone3();

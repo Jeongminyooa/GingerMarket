@@ -61,7 +61,6 @@ public class ExperiodController {
 		// 카테고리에 따른 d-day
 		Map<String, Integer> map = categoryExperiodMap();
 		int period = map.get(category);
-		System.out.println(period);
 		
 		experiodService.addExperiod(authorIdx, category, period);
 		
