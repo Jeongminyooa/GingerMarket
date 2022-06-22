@@ -1,5 +1,7 @@
 package com.ssd.gingermarket.controller.Apply;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,12 +23,13 @@ public class ViewApplyController {
 
 	//공구 신청 조회 (작성자)
 	@GetMapping("/{groupIdx}/apply")
-	public ModelAndView getApplyList(@PathVariable Long groupIdx) {
-	
+	public ModelAndView getApplyList(HttpServletRequest req, @PathVariable Long groupIdx) {
+		HttpSession session = req.getSession(false);
+		Long userIdx = (long)session.getAttribute("userIdx");
+		
 		ModelAndView mav = new ModelAndView("content/groupBuyingPost/groupPost_apply");
 
-		mav.addObject("authorIdx", 2);
-		mav.addObject("groupIdx", groupIdx);
+		mav.addObject("userIdx", userIdx);
 		mav.addObject("applyList", applyInfoService.getAllApply(groupIdx));
     
 		return mav;

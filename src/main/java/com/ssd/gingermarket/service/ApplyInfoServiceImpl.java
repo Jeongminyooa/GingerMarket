@@ -32,10 +32,8 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 	@Transactional(readOnly = true)
 	public List<ApplyDto.Info> getAllApply(Long groupIdx) {
     	
-    	// user entity
-    	// User author = userRepository.findById(authorIdx).orElseThrow();
-    	
-		List<Apply> applyList = applyRepository.findByGroupIdx(groupIdx);
+    	GroupBuying groupBuying = groupBuyingRepository.findById(groupIdx).orElseThrow();
+		List<Apply> applyList = applyRepository.findByGroupBuyingOrderByApplyIdxDesc(groupBuying);
 	 
 		return applyList.stream().map(ApplyDto.Info::new).collect(Collectors.toList());	
 	}
@@ -43,10 +41,11 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
     // 공구 신청 등록
     @Override
 	@Transactional
-	public void addApply(ApplyDto.Info apply, Long groupIdx) {
+	public void addApply(ApplyDto.Info apply, Long userIdx, Long groupIdx) {
     	
-		User author = userRepository.findById(apply.getAuthorIdx()).orElseThrow();
+		User author = userRepository.findById(userIdx).orElseThrow();
 		apply.setAuthor(author);
+		apply.setGroupIdx(groupIdx);
 	
     	GroupBuying groupBuying = groupBuyingRepository.findById(groupIdx).orElseThrow();
     

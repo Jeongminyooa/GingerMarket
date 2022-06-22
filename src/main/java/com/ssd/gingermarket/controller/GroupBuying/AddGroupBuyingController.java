@@ -3,13 +3,18 @@ package com.ssd.gingermarket.controller.GroupBuying;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import com.ssd.gingermarket.domain.Image;
 import com.ssd.gingermarket.dto.ImageDto;
@@ -21,16 +26,14 @@ import com.ssd.gingermarket.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 //@Slf4j
-@RestController 
+@Controller 
 @RequestMapping("/group-buying")
 @RequiredArgsConstructor
 public class AddGroupBuyingController {
 
 	private final GroupBuyingService groupBuyingService;
-	private String uploadDirLocal;
 
 	private final ImageService imageService;
-	private final UserService userService;
 	
 
 	@ModelAttribute("categoryList")
@@ -50,18 +53,24 @@ public class AddGroupBuyingController {
 
 	//공구 포스트 등록 페이지 이동
 	@GetMapping("/new-add-form")
-	public ModelAndView getAddForm() {
-		
+	public ModelAndView getAddForm(HttpServletRequest req, @ModelAttribute("postReq")GroupBuyingDto.Request groupBuying) {
+		HttpSession session = req.getSession(false);
+		Long userIdx = (long)session.getAttribute("userIdx");
 		ModelAndView mav = new ModelAndView("content/groupBuyingPost/groupPost_add");
-		mav.addObject("postReq", new GroupBuyingDto.Request());
+		mav.addObject("userIdx", userIdx);
+		
 		return mav;
 	}
 	
 	// 공구 포스트 등록
 	@PostMapping("")
-	public RedirectView addPost(GroupBuyingDto.Request groupBuying) {
+	public String addPost(HttpServletRequest req, @Validated @ModelAttribute("postReq") GroupBuyingDto.Request groupBuying, Errors error) {
 		
-		Long authorIdx = (long)2;
+		HttpSession session = req.getSession(false);
+		Long userIdx = (long)session.getAttribute("userIdx");
+		
+		if(error.hasErrors())
+			return "content/groupBuyingPost/groupPost_add";
 		
 		if(groupBuying.getFile().getOriginalFilename().equals("")) {
 			groupBuying.setImage(null);
@@ -75,10 +84,11 @@ public class AddGroupBuyingController {
 			groupBuying.setImage(img);
 		}
 		
-		groupBuying.setAuthorIdx(authorIdx);
+		groupBuying.setAuthorIdx(userIdx);
 		groupBuyingService.addPost(groupBuying);
 		
-		return new RedirectView("/group-buying");
+		return "redirect:/group-buying";
+				
 	}
 	
 }

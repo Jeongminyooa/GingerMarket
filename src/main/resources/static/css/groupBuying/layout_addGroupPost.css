@@ -1,15 +1,4 @@
 @charset "UTF-8";
-#div-addImg, #div-thumbnail{
-	width: 150px; 
-	height: 150px; 
-	border: solid 1px silver; 
-	border-radius: 10px;
-	margin : 0 15px 0 0;
-}
-
-#icon{
-	margin: 25px;
-}
 
 #btn-confirm {
 	border-radius: 10px;
@@ -21,3 +10,58 @@
 	color: white;
 	background-color: #735C3F;
 } 
+
+button{
+	border-radius: 8px;
+	border-color: grey;
+}
+
+#div-img {
+	width: 50%;
+	margin: auto;
+}
+
+#img-author, #img-post {
+	width: 72px;
+	height: 72px;
+}
+
+a{
+	text-decoration : none !important;
+}
+
+#div-img {
+	width: 50%;
+	margin: auto;
+}
+
+#img-author, #img-post {
+	width: 72px;
+	height: 72px;
+}
+
+#small_content {
+	color: grey;
+}
+
+
+#icon:hover{
+    transform: scale(1.1, 1.1);
+    transition-duration: 0.5s;
+    background-color:initial;
+  }
+#icon{
+    transition-duration: 1s;
+  }
+
+#div-thumbnail{
+	width : 30%;
+}
+	
+#div-thumbnail img{
+	max-width: 100%;
+    height: auto;
+}
+.error{
+	color : red;
+}

@@ -10,22 +10,35 @@ import com.ssd.gingermarket.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 
 public class GroupBuyingDto {
+	public static String getUploadDirPath(String imageUrl) {
+		return "/upload/" + imageUrl;
+	}
 	
 	@NoArgsConstructor
 	@AllArgsConstructor
 	@Data
 	public static class Request{
 		private String uploadDirLocal = "/upload/";
-				
+		
+		@NotBlank(message="{notBlank.title}")
 		private String title;
+		@NotNull(message="{notNull.category}")
 		private String category;
+		@NotBlank(message="{notBlank.recruitNum}")
 		private int recruitNum;
 		private String website;
 		@DateTimeFormat(pattern = "yyyy-MM-dd")
 		private LocalDate endDate;
+		@Length(max=1000, message="{size.descr}")
 		private String descr;
+		@NotBlank(message="{notBlank.price}")
 		private int price;
 		private int progress;
 		
@@ -61,7 +74,7 @@ public class GroupBuyingDto {
 			this.price = groupBuying.getPrice();
 			this.progress = groupBuying.getProgress();
 			try {
-				this.imgUrl = this.uploadDirLocal + groupBuying.getImage().getUrl();
+				this.imgUrl = getUploadDirPath(groupBuying.getImage().getUrl());
 			}catch (Exception e ) {	           
 				this.imgUrl = "";
 			}
@@ -79,9 +92,9 @@ public class GroupBuyingDto {
 			
 			private Long groupIdx;
 			
-			private Long userIdx;
-			private String nickname;
-			private String userImageUrl;
+			private Long authorIdx;
+			private String authorName;
+			private String authorImgUrl;
 			
 			private String category;
 			private String title;
@@ -97,27 +110,26 @@ public class GroupBuyingDto {
 			private int progress;
 			private int commentCnt;
 			
-			private boolean isAuthor;
+			//private boolean isAuthor;
 			
 			public DetailResponse(GroupBuying groupBuying) {
 				this.groupIdx = groupBuying.getGroupIdx();
-				this.userIdx = groupBuying.getAuthor().getUserIdx();
-				this.nickname = groupBuying.getAuthor().getName();
+				this.authorIdx = groupBuying.getAuthor().getUserIdx();
+				this.authorName = groupBuying.getAuthor().getName();
 				try {
-					this.userImageUrl = this.uploadDirLocal + groupBuying.getAuthor().getImage().getUrl();
+					this.authorImgUrl = getUploadDirPath(groupBuying.getAuthor().getImage().getUrl());
 				}catch (Exception e ) {	           
-					this.userImageUrl = "";
+					this.authorImgUrl = "";
 				}
 				this.category = groupBuying.getCategory();
 				this.title = groupBuying.getTitle();
-				String url = "";
+			
 				try {
-					url = this.uploadDirLocal + groupBuying.getImage().getUrl();
-				}catch (Exception e ) {
-					url = "";
-				}finally {
-					this.imgUrl = url;
+					this.imgUrl = getUploadDirPath(groupBuying.getImage().getUrl());
+				}catch (Exception e ) {	           
+					this.imgUrl = "";
 				}
+				
 				this.recruitNum =  groupBuying.getRecruitNum();
 				this.participateNum = groupBuying.getParticipateNum();
 				this.price = groupBuying.getPrice();

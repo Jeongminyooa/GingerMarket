@@ -18,14 +18,13 @@
 }
 
 .card-img-top {
-	height: 13vw;
+	height: 15vw;
 	object-fit: cover;
 }
 
 #btn-newPost {
 	border-radius: 10px;
 	border-color: #735C3F;
-	color: black;
 }
 
 #btn-newPost:hover {
@@ -37,24 +36,45 @@
 	border-radius: 5px;
 	height: 30px;
 	border-color: grey;
-	font-size : 13px;
+	font-size:12px;
 }
 
 a {
 	display: block;
+	text-decoration: none !important;
+	color: inherit !important;
+}
+.card-title{
+	text-decoration: none;
+}
+#fav-card:hover, #all-card:hover{
+    transform: scale(1.1, 1.1);
+    transition-duration: 0.5s;
+  }
+#fav-card, #all-card{
+    transition-duration: 1s;
+  }
+
+.share.pagination li.active,
+.share.pagination > .active > a, 
+.share.pagination > .active > span, 
+.share.pagination > .active > a:hover, 
+.share.pagination > .active > span:hover, 
+.share.pagination > .active > a:focus, 
+.share.pagination > .active > span:focus {
+  background: #68785B;
+  border-color: #68785B;
+  color: white;
 }
 
-.card-title {
-	width: 200px;
-	height: 50px; overflow : hidden;
-	text-overflow: ellipsis;
-	display: -webkit-box;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-	font-weight:bold;
-}
-
-.title {
-	font-weight:bold;
+.group.pagination li.active,
+.group.pagination > .active > a, 
+.group.pagination > .active > span, 
+.group.pagination > .active > a:hover, 
+.group.pagination > .active > span:hover, 
+.group.pagination > .active > a:focus, 
+.group.pagination > .active > span:focus {
+  background: #735C3F;
+  border-color: #735C3F;
+  color: white;
 }

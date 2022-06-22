@@ -1,12 +1,18 @@
 package com.ssd.gingermarket.controller.GroupBuying;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -18,7 +24,7 @@ import com.ssd.gingermarket.service.ImageService;
 
 import lombok.RequiredArgsConstructor;
 //@Slf4j //로그 
-@RestController 
+@Controller 
 @RequestMapping("/group-buying")
 @RequiredArgsConstructor
 public class ModifyGroupBuyingController {
@@ -43,20 +49,29 @@ public class ModifyGroupBuyingController {
 
 
 	@GetMapping("/{groupIdx}/edit-form")
-	public ModelAndView getUpdateForm(@PathVariable Long groupIdx) { 		
-		GroupBuyingDto.Request req = groupBuyingService.getPostForModify(groupIdx);
+	public ModelAndView getUpdateForm(HttpServletRequest req, @PathVariable Long groupIdx) { 		
+		
+		HttpSession session = req.getSession();
+		Long userIdx = (long)session.getAttribute("userIdx");
+		
+		GroupBuyingDto.Request updateReq  = groupBuyingService.getPostForModify(groupIdx);
 
 		ModelAndView mav = new ModelAndView("content/groupBuyingPost/groupPost_update");
-		mav.addObject("updateReq", req);
+		mav.addObject("updateReq", updateReq);
 		mav.addObject("groupIdx", groupIdx);
-
+		mav.addObject("userIdx", userIdx);
+		
 		return mav;
 	}
 
 	@PutMapping("/{groupIdx}")
-    public RedirectView updatePost(GroupBuyingDto.Request groupBuying, @PathVariable Long groupIdx) 
+    public String updatePost(HttpServletRequest req, @Validated @ModelAttribute("updateReq") GroupBuyingDto.Request groupBuying, Errors error, @PathVariable Long groupIdx) 
 	{
-		Long authorIdx = (long) 1; //session구현 후 변경
+		HttpSession session = req.getSession();
+		Long userIdx = (long)session.getAttribute("userIdx");
+		
+		if(error.hasErrors())
+			return "content/groupBuyingPost/groupPost_update";
 		
 		if(!groupBuying.getFile().getOriginalFilename().equals("")) {
 			ImageDto.Request imgDto = new ImageDto.Request(groupBuying.getFile());
@@ -64,11 +79,12 @@ public class ModifyGroupBuyingController {
 			groupBuying.setImage(img);
 		}
 		
-		groupBuying.setAuthorIdx(authorIdx);
+		groupBuying.setAuthorIdx(userIdx);
 		groupBuyingService.modifyPost(groupIdx, groupBuying);
 
-        return new RedirectView("/group-buying/" + groupIdx);
-    }
+        return  "redirect:/group-buying/" + groupIdx;
+        		
+        }
 
 
 }

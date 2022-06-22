@@ -34,7 +34,7 @@ public class Apply {
 	 @JoinColumn(name="image_idx")
 	 private Image image;
 	 
-	 @ManyToOne
+	 @ManyToOne(fetch = FetchType.LAZY)
 	 @JoinColumn(name = "author_idx") 
 	 private User author;
 	 

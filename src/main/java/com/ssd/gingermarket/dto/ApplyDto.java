@@ -1,7 +1,5 @@
 package com.ssd.gingermarket.dto;
 
-import java.util.List;
-
 import com.ssd.gingermarket.domain.Apply;
 import com.ssd.gingermarket.domain.GroupBuying;
 import com.ssd.gingermarket.domain.User;
@@ -11,6 +9,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 public class ApplyDto {
+	public static String getUploadDirPath(String imageUrl) {
+		return "/upload/" + imageUrl;
+	}
+	
 	
 	@NoArgsConstructor
 	@AllArgsConstructor
@@ -19,15 +21,22 @@ public class ApplyDto {
 		private Long applyIdx;
 		private String phone;
 		private String message;
+		
 		private User author;
-		private String imgUrl;
 		private Long authorIdx;
+		private String authorName;
+		private String authorImgUrl;
+		
+		private GroupBuying groupBuying;
+		private Long groupIdx;
+		private Long postAuthorIdx;
 		
 		public Apply toEntity(){
 			return Apply.builder()
 					.phone(phone)
 					.message(message)
 					.author(author)
+					.groupBuying(groupBuying)
 					.build();
 		}
 		
@@ -35,10 +44,16 @@ public class ApplyDto {
 			this.applyIdx = apply.getApplyIdx();
 			this.phone = apply.getPhone();
 			this.message = apply.getMessage();
-			this.author = apply.getAuthor();
 			this.authorIdx = apply.getAuthor().getUserIdx();
+			this.authorName = apply.getAuthor().getName();
+			try {
+				this.authorImgUrl = getUploadDirPath(apply.getAuthor().getImage().getUrl());
+			}catch (Exception e ) {	           
+				this.authorImgUrl = "";
+			}
+			this.postAuthorIdx = apply.getGroupBuying().getAuthor().getUserIdx();
+			this.groupIdx = apply.getGroupBuying().getGroupIdx();
 		}
-
 	
 	}
 	
