@@ -68,7 +68,7 @@
 						<!-- 작성자 아닐때 -->
 						<th:block th:if="${userIdx} != ${room.authorIdx}">
 							<img th:if="${not #strings.isEmpty(room.authorImgUrl)}" th:src="@{${room.authorImgUrl}}" src="/image/profile.png" class="card-img-top rounded-pill" id="img-author">
-							<img th:unless="${not #strings.isEmpty(room.authorImgUrl)}" th:src="@{${room.authorImgUrl}}" src="/image/profile.png" class="card-img-top rounded-pill" id="img-author">
+							<img th:unless="${not #strings.isEmpty(room.authorImgUrl)}" src="/image/profile.png" class="card-img-top rounded-pill" id="img-author">
 						</th:block>
 					</div>
 					
