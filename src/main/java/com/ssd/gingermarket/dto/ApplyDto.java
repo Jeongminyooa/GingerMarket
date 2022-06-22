@@ -53,7 +53,7 @@ public class ApplyDto {
 		
 		public Info(Apply apply) {
 			this.applyIdx = apply.getApplyIdx();
-			this.phone = apply.getAuthor().getPhone();
+			this.phone = apply.getPhone();
 			this.message = apply.getMessage();
 			this.authorIdx = apply.getAuthor().getUserIdx();
 			this.authorName = apply.getAuthor().getName();
