@@ -29,6 +29,28 @@
 	
 	<!-- file upload js -->
 	<script type="text/javascript" th:src="@{/js/fileUpload.js}"></script>
+	
+	<script>
+	function checkNumber(event) {
+		  if(event.key >= 0 && event.key <= 9) {
+		    return true;
+		  }
+		  
+		  return false;
+		}
+	
+	function checkForm() {
+		let inputRecruitVal = $('#inputRecruit').val();
+		
+		if(inputRecruitVal == 0) {
+			alert('모집 인원은 1명 이상이어야 합니다.');
+			$('#inputRecruit').focus();
+			return;
+		}
+		$('#form').submit();
+		
+	}
+	</script>
 </th:block>
 <body>
 	<th:block layout:fragment="nav" th:include="@{/fragments/nav}"></th:block>
@@ -44,7 +66,7 @@
 			<hr>
 	
 				<!-- form -->
-			<form th:action="@{/group-buying/{groupIdx}(groupIdx=${groupIdx})}" th:object="${updateReq}" th:method="PUT" enctype="multipart/form-data">
+			<form id="form" th:action="@{/group-buying/{groupIdx}(groupIdx=${groupIdx})}" th:object="${updateReq}" th:method="PUT" enctype="multipart/form-data">
 				<!-- 사진 업로드 -->
 				<div class="row">
 					<div class="col-1" id="div-addImg">
@@ -82,8 +104,8 @@
 							th:selected="${val} == ${updateReq.category}">
 							</option>
 					</select>
+					<div class="error" th:errors="*{category}">Incorrect</div>
 				</div>
-				<div class="error" th:errors="*{category}">Incorrect</div>
 				
 				<div class="row mb-3">
 					<div class="col col-lg-5">
@@ -100,14 +122,16 @@
 					<div class="col col-lg-4">
 						<div class="input-group">
 							<input type="text" class="form-control"
-								id="inputRecruit" th:field="*{recruitNum}" th:value="${updateReq.recruitNum}">
+								id="inputRecruit" th:field="*{recruitNum}" th:value="${updateReq.recruitNum}" onkeypress='return checkNumber(event)'>
 							<span class="input-group-text">명</span> 
 						</div>
+						<div class="error" th:errors="*{recruitNum}">Incorrect</div>
 					</div>
 					<div class="col col-lg-1"></div>
 					<div class="col col-lg-4">
 						<input type="date" class="form-control"
 						id="inputEndDate" th:field="*{endDate}" th:value="${updateReq.endDate}">
+						<div class="error" th:errors="*{endDate}">Incorrect</div>
 					</div>	
 				</div>
 				
@@ -116,9 +140,10 @@
 					<div class="col col-lg-4">
 						<div class="input-group">
 							<input type="text" class="form-control"
-								id="inputPrice" th:field="*{price}" th:value="${updateReq.price}">
+								id="inputPrice" th:field="*{price}" th:value="${updateReq.price}" onkeypress='return checkNumber(event)'>
 							<span class="input-group-text">원</span> 
 						</div>
+						<div class="error" th:errors="*{price}"></div>
 					</div>
 				</div>
 				
@@ -147,7 +172,7 @@
 				<!-- Confirm BTN -->
 				<div class="d-grid gap-2 mt-5">
 					<button type="submit" class="btn btn-outline-light w-auto" 
-						id="btn-confirm">완료</button>
+						id="btn-confirm" onclick="checkForm()">완료</button>
 				</div>
 				
 			</form>

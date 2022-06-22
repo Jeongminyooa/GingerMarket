@@ -10,9 +10,11 @@ import com.ssd.gingermarket.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.validation.constraints.Max;
+
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -29,17 +31,28 @@ public class GroupBuyingDto {
 		
 		@NotBlank(message="{notBlank.title}")
 		private String title;
-		@NotNull(message="{notNull.category}")
+		
+		@NotBlank(message="{notBlank.category}")
 		private String category;
-		@NotNull(message="{notNull.recruitNum}")
+		
+		@NotBlank(message="{notBlank.recruitNum}")
+		@Pattern(regexp = "[0-9]{0,64}", message="{pattern.number}")
 		private String recruitNum;
+		
 		private String website;
+		
+		@NotNull(message="{notNull.endDate}")
+		@FutureOrPresent(message="{futureOrPresent.endDate}")
 		@DateTimeFormat(pattern = "yyyy-MM-dd")
 		private LocalDate endDate;
+		
 		@Length(max=1000, message="{size.descr}")
 		private String descr;
-		@NotNull(message="{notNull.price}")
+		
+		@NotBlank(message="{notBlank.price}")
+		@Pattern(regexp = "[0-9]{0,64}", message="{pattern.number}")
 		private String price;
+		
 		private int progress;
 		
 		private Image image;
