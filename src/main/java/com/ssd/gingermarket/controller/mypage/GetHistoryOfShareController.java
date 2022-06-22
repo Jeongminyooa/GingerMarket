@@ -30,9 +30,7 @@ public class GetHistoryOfShareController {
 		
 		HttpSession session = request.getSession();
 	    long userIdx = (long) session.getAttribute("userIdx");
-	    
-	    System.out.println(userIdx);
-		
+	    		
 		List<SharePostDto.MyPageInfo> list = sharePostService.getPostByUserId(userIdx);
 		
 		model.addAttribute("shareList", list);

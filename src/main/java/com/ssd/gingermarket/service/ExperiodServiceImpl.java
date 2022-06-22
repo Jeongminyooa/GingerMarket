@@ -21,14 +21,13 @@ import com.ssd.gingermarket.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor //final이 붙은 필드 생성 
+@RequiredArgsConstructor
 @Service
 public class ExperiodServiceImpl implements ExperiodService {
 
 	private final ExperiodRepository experiodRepository;
 	private final UserRepository userRepository;
 	
-	// SchedulerConfig에 설정된 TaskScheduler 빈을 주입 받음
 	private final TaskScheduler scheduler;
 		
 	@Override
@@ -87,7 +86,6 @@ public class ExperiodServiceImpl implements ExperiodService {
 		User author = userRepository.findById(userId).orElseThrow();
 		List<Experiod> experiodList = experiodRepository.findAllByAuthor(author);
 		
-		// entity -> dto 변환
 		List<ExperiodDto.Info> dto = experiodList.stream().map(ex -> new ExperiodDto.Info(
 				ex.getExperiodIdx(),
 				ex.getCategory(),
@@ -98,14 +96,6 @@ public class ExperiodServiceImpl implements ExperiodService {
 		return dto;
 	}
 
-	@Override
-	@Transactional(readOnly = true)
-	public Experiod getExperiod(Long experiodIdx) {
-		Experiod experiod = experiodRepository.findById(experiodIdx).orElseThrow();
-		
-		return experiod;
-	}
-		
 	@Override
 	@Transactional(rollbackFor=Exception.class)
 	public void removeExperiod(Long experiodIdx) {
@@ -126,13 +116,14 @@ public class ExperiodServiceImpl implements ExperiodService {
 		
 		LocalDate targetDate = LocalDate.of(year, month, day);
 		
-		// 오늘 날짜로부터의 차이
-		int dDay = Period.between(LocalDate.now(), targetDate).getDays();
-		
 		List<Experiod> experiodList = experiodRepository.findAllByUserIdAndEndDate(authorIdx, targetDate);
 		
-		// entity -> dto 변환
-		List<ExperiodDto.Info> dto = experiodList.stream().map(ex -> new ExperiodDto.Info(ex.getExperiodIdx(), ex.getCategory(), ex.getEndDate(), getPeriod(ex.getStatus(), ex.getEndDate()))).collect(Collectors.toList());
+		List<ExperiodDto.Info> dto = experiodList.stream().map(ex -> new ExperiodDto.Info(
+				ex.getExperiodIdx(),
+				ex.getCategory(),
+				ex.getEndDate(),
+				getPeriod(ex.getStatus(), ex.getEndDate()))
+				).collect(Collectors.toList());
 				
 		return dto;
 	}
@@ -140,7 +131,6 @@ public class ExperiodServiceImpl implements ExperiodService {
 	// 오늘 날짜와 타겟 날짜와의 차이
 	public long getPeriod(ExperiodType status, LocalDate targetDate) {
 		if(status == ExperiodType.OPEN || status == ExperiodType.CLOSE_DEADLINE) {
-			System.out.println(LocalDate.now());
 			return ChronoUnit.DAYS.between(LocalDate.now(), targetDate);
 		}
 		else if(status == ExperiodType.DEADLINE) {
@@ -150,5 +140,4 @@ public class ExperiodServiceImpl implements ExperiodService {
 			return -1;
 		}
 	}
-
 }
