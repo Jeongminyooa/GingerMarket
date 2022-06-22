@@ -75,8 +75,9 @@ public class User {
 	@OneToMany(mappedBy = "groupIdx", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<GroupBuying> groupBuyingList = new ArrayList<GroupBuying>();
 	
-	@OneToMany(mappedBy = "id", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(mappedBy = "commentIdx", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<CommentInfo> commentList = new ArrayList<CommentInfo>();
+	
 //	@OneToMany(mappedBy = "messageIdx", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
 //	@OneToMany(mappedBy="messageIdx")
 //	private List<MessageInfo> messageInfoList = new ArrayList<MessageInfo>();

@@ -15,18 +15,20 @@ public class Experiod extends BaseTime{
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ExperiodSequence")
 	 @SequenceGenerator(sequenceName = "ExperiodSequence", name = "ExperiodSequenceGenerator", allocationSize = 1)
-	 @Column(name = "experiod_idx",unique = true)
+	 @Column(name = "experiod_idx", unique = true)
 	 private Long experiodIdx;
 	 
-	 @ManyToOne(fetch = FetchType.LAZY)
+	 @ManyToOne(fetch = FetchType.LAZY, optional = false)
 	 @JoinColumn(name = "author_idx")
 	 private User author;
 	
-	 @Column(length = 22)
+	 @Column(length = 22, nullable = false)
 	 private String category;
 	 
+	 @Column(nullable = false)
 	 private LocalDate endDate;
 	 
+	 @Column(nullable = false)
 	 @Enumerated(value = EnumType.STRING)
 	 private ExperiodType status;
 	 
