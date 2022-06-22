@@ -47,7 +47,7 @@ public class LoginController {
 			HttpSession session = req.getSession();
 			session.setAttribute("userId", user.getUserId());
 			session.setAttribute("userIdx", user.getUserIdx());
-			return new RedirectView("/share/posts");
+			return new RedirectView("/group-buying");
 		}
 
 	}

@@ -31,14 +31,12 @@ public class GroupBuyingDto {
 		private String title;
 		@NotNull(message="{notNull.category}")
 		private String category;
-		@NotBlank(message="{notBlank.recruitNum}")
 		private int recruitNum;
 		private String website;
 		@DateTimeFormat(pattern = "yyyy-MM-dd")
 		private LocalDate endDate;
 		@Length(max=1000, message="{size.descr}")
 		private String descr;
-		@NotBlank(message="{notBlank.price}")
 		private int price;
 		private int progress;
 		

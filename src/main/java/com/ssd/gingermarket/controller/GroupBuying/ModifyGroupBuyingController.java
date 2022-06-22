@@ -18,6 +18,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.ssd.gingermarket.domain.Image;
 import com.ssd.gingermarket.dto.ImageDto;
+import com.ssd.gingermarket.dto.SharePostDto;
 import com.ssd.gingermarket.dto.GroupBuyingDto;
 import com.ssd.gingermarket.service.GroupBuyingService;
 import com.ssd.gingermarket.service.ImageService;
