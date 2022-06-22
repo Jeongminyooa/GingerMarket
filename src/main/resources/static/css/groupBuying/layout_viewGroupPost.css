@@ -113,3 +113,7 @@ input {
 .font-grey {
 	color : #9C9C9C;
 }
+#btn-isDone, #btn-enableApply{
+	color : white;
+	background-color : #E0E0E0;
+}

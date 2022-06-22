@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.ApplyDto;
+import com.ssd.gingermarket.service.ApplyInfoService;
 import com.ssd.gingermarket.service.GroupBuyingService;
 
 
@@ -26,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ViewGroupBuyingController {
 	private final GroupBuyingService groupBuyingService;
+	private final ApplyInfoService applyInfoService;
 	
 	@ModelAttribute("categoryList")
 	public List<String> categoryList(){
@@ -41,6 +45,18 @@ public class ViewGroupBuyingController {
 
 		return category;
 	}
+	
+	@ModelAttribute("phone1")
+	public List<String> phone1List() {
+		List<String> phone1 = new ArrayList<>();
+		phone1.add("010");
+		phone1.add("016");
+		phone1.add("017");
+		phone1.add("018");
+		phone1.add("019");
+		return phone1;
+	}
+	
 
 	//전체 공구 포스트 조회
 	@GetMapping("")
@@ -63,12 +79,14 @@ public class ViewGroupBuyingController {
 		Long userIdx = (long)session.getAttribute("userIdx");
 		
 		ModelAndView mav = new ModelAndView("content/groupBuyingPost/groupPost_view");
-		mav.addObject("postInfo", groupBuyingService.getPost(groupIdx));
+		mav.addObject("postInfo", groupBuyingService.getPost(groupIdx, userIdx));
 		
 		ApplyDto.Info dto = new  ApplyDto.Info();
 		mav.addObject("applyInfo", dto);
 		mav.addObject("userIdx", userIdx);
-		
+		mav.addObject("phone2", dto.getPhone2());
+		mav.addObject("phone3", dto.getPhone3());
+				
 		return mav;
 	}
 	

@@ -35,7 +35,8 @@
 				<th:block th:each="applyInfo : ${applyList}">
   				<div class="row pt-3 mt-1">
 					<div class="col">
-						<img src="/image/profile2.jpg" class="rounded-circle" alt="" id="img-author">
+					<img th:if="${not #strings.isEmpty(applyInfo.authorImgUrl)}" th:src="@{${applyInfo.authorImgUrl}}" src="/image/profile.png" id="img-author"
+						class="rounded-pill mx-auto">
 							<span th:text=${applyInfo.authorName} id="main_content" ><b>dev_jeongmin</b></span>
 					</div>
 					<div class="row mx-4">

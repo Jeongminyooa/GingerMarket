@@ -10,7 +10,7 @@ import com.ssd.gingermarket.domain.Apply;
 import com.ssd.gingermarket.domain.GroupBuying;
 import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.ApplyDto;
-
+import com.ssd.gingermarket.dto.UserDto;
 import com.ssd.gingermarket.repository.ApplyRepository;
 import com.ssd.gingermarket.repository.GroupBuyingRepository;
 import com.ssd.gingermarket.repository.UserRepository;
@@ -67,8 +67,7 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
    		} 
        	else
    			return 0;
-   	}
-   	
+   	}  	
 
 }
 	

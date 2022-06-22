@@ -31,7 +31,7 @@ public interface GroupBuyingService {
 	public List<GroupBuyingDto.MyPageInfo> getGroupBuyingByUserId(Long userIdx);
 	
 	// 공구 포스트 상세 조회
-	public GroupBuyingDto.DetailResponse getPost(Long groupIdx);
+	public GroupBuyingDto.DetailResponse getPost(Long groupIdx, Long userIdx);
 	
 	// 공구 포스트 수정본 상세 조회
 	public GroupBuyingDto.Request getPostForModify(Long groupIdx);

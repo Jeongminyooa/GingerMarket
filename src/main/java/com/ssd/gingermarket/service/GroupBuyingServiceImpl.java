@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import com.ssd.gingermarket.domain.User;
+import com.ssd.gingermarket.domain.Apply;
 import com.ssd.gingermarket.domain.GroupBuying;
 import com.ssd.gingermarket.domain.SharePost;
 import com.ssd.gingermarket.domain.User;
@@ -23,6 +24,7 @@ import com.ssd.gingermarket.dto.ApplyDto;
 
 import com.ssd.gingermarket.dto.GroupBuyingDto;
 import com.ssd.gingermarket.dto.SharePostDto;
+import com.ssd.gingermarket.dto.UserDto;
 import com.ssd.gingermarket.dto.GroupBuyingDto.MyPageInfo;
 import com.ssd.gingermarket.repository.ApplyRepository;
 
@@ -39,6 +41,7 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
 
 	private final GroupBuyingRepository groupBuyingRepository;
 	private final UserRepository userRepository;
+	private final ApplyRepository applyRepository;
 
 
 	// 포스트 등록
@@ -95,10 +98,18 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
 	// 포스트 상세 조회
 	@Override
 	@Transactional(readOnly = true)
-	public GroupBuyingDto.DetailResponse getPost(Long groupIdx) {
-		GroupBuying groupBuying = groupBuyingRepository.findById(groupIdx).orElseThrow();  
+	public GroupBuyingDto.DetailResponse getPost(Long groupIdx, Long userIdx) {
+		GroupBuying group = groupBuyingRepository.findById(groupIdx).orElseThrow();  
+		User author = userRepository.findById(userIdx).orElseThrow();
+		
+		GroupBuyingDto.DetailResponse groupBuying = new GroupBuyingDto.DetailResponse(group);
 
-		return new GroupBuyingDto.DetailResponse(groupBuying);
+		if(applyRepository.findByGroupBuyingAndAuthor(group, author) == null)
+			groupBuying.setApply(false);
+		else
+			groupBuying.setApply(true);
+			
+		return groupBuying;
 	}
 	
 	// 포스트 상세 정보(update용)
@@ -185,7 +196,7 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
     	}
 	
     }
-   
+ 
 }
 	
 

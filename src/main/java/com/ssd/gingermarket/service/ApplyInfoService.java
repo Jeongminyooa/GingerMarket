@@ -14,5 +14,6 @@ public interface ApplyInfoService {
 		
 	// 공구 신청 등록
 	public void addApply(ApplyDto.Info apply, Long userIdx, Long groupIdx);
+
 	
 }

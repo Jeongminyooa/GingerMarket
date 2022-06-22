@@ -29,18 +29,31 @@ public class ApplyDto {
 		private Long groupIdx;
 		private Long postAuthorIdx;
 		
+		private String phone1;
+		private String phone2;
+		private String phone3;
+		
+		
 		public Apply toEntity(GroupBuying groupBuying, User author){
 			return Apply.builder()
-					.phone(phone)
 					.message(message)
 					.author(author)
 					.groupBuying(groupBuying)
+					.phone(phone1+phone2+phone3)
 					.build();
 		}
 		
+
+		public void setPhoneNumber(String phone) {
+			this.phone1 = phone.substring(0, 3);
+			this.phone2 = phone.substring(3, 7);
+			this.phone3 = phone.substring(7, 11);
+		}
+
+		
 		public Info(Apply apply) {
 			this.applyIdx = apply.getApplyIdx();
-			this.phone = apply.getPhone();
+			this.phone = apply.getAuthor().getPhone();
 			this.message = apply.getMessage();
 			this.authorIdx = apply.getAuthor().getUserIdx();
 			this.authorName = apply.getAuthor().getName();
@@ -51,6 +64,7 @@ public class ApplyDto {
 			}
 			this.postAuthorIdx = apply.getGroupBuying().getAuthor().getUserIdx();
 			this.groupIdx = apply.getGroupBuying().getGroupIdx();
+			
 		}
 	
 	}

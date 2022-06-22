@@ -107,8 +107,7 @@ public class GroupBuyingDto {
 			private String descr;
 			private int progress;
 			private int commentCnt;
-			
-			//private boolean isAuthor;
+			private boolean isApply = false;
 			
 			public DetailResponse(GroupBuying groupBuying) {
 				this.groupIdx = groupBuying.getGroupIdx();

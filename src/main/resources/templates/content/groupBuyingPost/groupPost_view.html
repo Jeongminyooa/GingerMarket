@@ -25,6 +25,13 @@
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
 		crossorigin="anonymous"></script>
 		
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+		
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+		
 		<th:block th:include="@{/content/groupBuyingPost/modal_delete}"></th:block>
 		<th:block th:include="@{/content/groupBuyingPost/modal_update}"></th:block>
 		<th:block th:include="@{/content/groupBuyingPost/modal_apply}"></th:block>
@@ -362,7 +369,7 @@
    					</div>
    						
 					<!-- Apply BTN -->
-					<div th:if="${postInfo.progress} <= 1 AND (${postInfo.authorIdx} != ${userIdx})" class="d-grid gap-2 mt-5 pt-3">
+					<div th:if="${postInfo.progress} <= 1 AND (${postInfo.authorIdx} != ${userIdx}) AND (${postInfo.isApply} == false))" class="d-grid gap-2 mt-5 pt-3">
 						<button type="button" class="btn btn-outline-light w-100" id="btn-apply" data-bs-toggle="modal" data-bs-target="#applyModal">신청하기</button>
 					</div>
 				
@@ -371,10 +378,17 @@
 							 role="button" id="btn-apply">조회하기</a>
 					</div>
 				
-					<div th:if="${postInfo.progress} == 2 AND (${postInfo.authorIdx} != ${userIdx})" class="d-grid gap-2 mt-5 pt-3">
+					<div th:if="(${postInfo.progress} == 2) AND (${postInfo.authorIdx} != ${userIdx})" class="d-grid gap-2 mt-5 pt-3">
 						<a class="btn btn-outline-light"
 							role="button" id="btn-enableApply">모집 완료된 상품입니다.</a>
 					</div>
+					
+					<div th:if="(${postInfo.isApply} == true) AND (${postInfo.authorIdx} != ${userIdx})" class="d-grid gap-2 mt-5 pt-3">
+						<a class="btn btn-outline-light"
+							role="button" id="btn-enableApply">이미 신청하셨습니다.</a>
+					</div>
+					
+					
 				</div>
 			</div>
 
