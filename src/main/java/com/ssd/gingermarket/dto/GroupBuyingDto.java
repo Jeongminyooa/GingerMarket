@@ -23,6 +23,10 @@ public class GroupBuyingDto {
 		return "/upload/" + imageUrl;
 	}
 	
+	public static String getUploadDirPath(String imageUrl) {
+		return "/upload/" + imageUrl;
+	}
+	
 	@NoArgsConstructor
 	@AllArgsConstructor
 	@Data
@@ -157,7 +161,6 @@ public class GroupBuyingDto {
 		}
 		
 		@NoArgsConstructor
-		@AllArgsConstructor
 		@Data
 		public static class MyPageInfo {
 			// 마이페이지 제공되는 정보
@@ -168,6 +171,18 @@ public class GroupBuyingDto {
 			private int price;
 			@DateTimeFormat(pattern = "yyyy-MM-dd")
 			private LocalDate endDate;
+			
+			public MyPageInfo(Long groupIdx, String imageUrl, String title, int progress, int price, LocalDate endDate) {
+				this.groupIdx = groupIdx;
+				this.imageUrl = imageUrl;
+				if(!imageUrl.equals("")) {
+					this.imageUrl = getUploadDirPath(imageUrl);
+				}
+				this.title = title;
+				this.progress = progress;
+				this.price = price;
+				this.endDate = endDate;
+			}
 		}
 		 
 }

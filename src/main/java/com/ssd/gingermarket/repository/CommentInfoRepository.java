@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.ssd.gingermarket.domain.CommentInfo;
+import com.ssd.gingermarket.domain.GroupBuying;
 
 public interface CommentInfoRepository extends JpaRepository<CommentInfo, Long>{
 
@@ -15,5 +16,7 @@ public interface CommentInfoRepository extends JpaRepository<CommentInfo, Long>{
 			+ "WHERE c.parent_idx IS NULL AND c.group_idx = :group_idx "
 			+ "ORDER BY c.created_date ASC", nativeQuery = true)
 	List<CommentInfo> findByGroupIdx(@Param("group_idx")Long groupIdx);
+	
+	List<CommentInfo> findByParentIdxIsNullAndGroupOrderByCreatedDateAsc(GroupBuying group);
 
 }

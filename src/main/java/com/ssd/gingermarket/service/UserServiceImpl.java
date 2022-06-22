@@ -1,11 +1,23 @@
 package com.ssd.gingermarket.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import com.ssd.gingermarket.domain.MessageInfo;
+import com.ssd.gingermarket.domain.MessageRoom;
+
 import com.ssd.gingermarket.domain.Image;
+
 import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.UserDto;
+import com.ssd.gingermarket.repository.GroupBuyingRepository;
+import com.ssd.gingermarket.repository.ImageRepository;
+import com.ssd.gingermarket.repository.MessageInfoRepository;
+import com.ssd.gingermarket.repository.MessageRoomRepository;
+import com.ssd.gingermarket.repository.SharePostRepository;
 import com.ssd.gingermarket.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -16,6 +28,11 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService{
 
 	private final UserRepository userRepository;
+	private final ImageRepository imageRepository;
+	private final GroupBuyingRepository gbRepository;
+	private final SharePostRepository shRepository;
+	private final MessageInfoRepository msgInfo;
+	private final MessageRoomRepository msgRoom;
 	
 	@Override
 	@Transactional
@@ -52,20 +69,57 @@ public class UserServiceImpl implements UserService{
 	@Override
 	@Transactional
 	public void removeUser(Long userIdx) {
+		User user = userRepository.findById(userIdx).orElseThrow();
+		
+		List<MessageRoom> msgRoomList = user.getMessageRoomList();
+		for (MessageRoom i : msgRoomList) {
+			List<MessageInfo> msgInfoList =  msgInfo.findAllByRoomIdx(i.getRoomIdx());
+			for(MessageInfo j : msgInfoList) {
+				msgInfo.deleteById(j.getMessageIdx());
+			}
+			msgRoom.deleteById(i.getRoomIdx());
+		}
+		
 		userRepository.deleteById(userIdx);
 	}
+
 	
 	@Override
 	@Transactional
-	public User getUser(String userId, String password) {
-		return userRepository.findByUserIdAndPassword(userId, password);
+	public UserDto.Info getUser(String userId, String password) {
+		User user = userRepository.findByUserIdAndPassword(userId, password);
+		if(user==null) 
+			return new UserDto.Info(null,null,null,null,null,null, null,null,null,null);
+		
+		return new UserDto.Info(user.getUserIdx(),user.getUserId(),user.getPassword(),
+				user.getName(),user.getPhone(),user.getAddress(), 
+				user.getItem1(),user.getItem2(),user.getItem3(),user.getImage());
+		
 	}
-
 	@Override
 	@Transactional
-	public User getUser(Long userIdx) {
-		return userRepository.findById(userIdx).get();
+	public UserDto.Info getUser(Long userIdx) {
+		User user = userRepository.findById(userIdx).get();
+		return new UserDto.Info(user.getUserIdx(),user.getUserId(),user.getPassword(),
+				user.getName(),user.getPhone(),user.getAddress(), 
+				user.getItem1(),user.getItem2(),user.getItem3(),user.getImage());
 	}
+	
+	@Override
+	public int userIdCheck(String userId) throws Exception{
+		if(userRepository.findByUserId(userId)!=null)
+			return 1;
+		return 0;
+	}
+	
+	@Override
+	public int nameCheck(String name) throws Exception{
+		if(userRepository.findByName(name)!=null)
+			return 1;
+		return 0;
+	}
+	
+	
 	
 	@Override
 	@Transactional(readOnly = true)

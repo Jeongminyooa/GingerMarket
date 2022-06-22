@@ -16,6 +16,7 @@ public interface ApplyRepository extends JpaRepository<Apply, Long>{
 	List<Apply> findByGroupBuyingOrderByApplyIdxDesc(GroupBuying groupBuying);
 	Apply findByGroupBuyingAndAuthor(GroupBuying groupBuying, User author);
 
+	List<Apply> findByAuthor(User author);
 }
 
 

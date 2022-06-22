@@ -28,11 +28,20 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+	<script
+    src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<script th:inline="javascript">
+
+</script>
 </th:block>
 <body>
+<div class="blah"></div>
 	<div layout:fragment="content" class="content">
 		<div class="container w-75">
-			<form th:method="post" th:action="@{/user}" th:object="${userReq}">
+			<form  enctype="multipart/form-data" th:method="post" th:action="@{/user}" th:object="${userReq}">
 				<div class="row pt-5">
 					<div class="col bg-white text-center" id="page_title">
 						<b>회원가입</b>
@@ -42,39 +51,26 @@
 				<div class="row" >
    					<div class="col bg-white" id="info">
       					<div>아이디 <span class='text-danger'>*</span><br>
-      						<input type="text" th:field="*{userId}">
-        					<button type="button" class="btn btn-primary"  id="confirmbtn" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><p>중복확인</p></button>
-        					<!-- Modal -->
-							<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  								<div class="modal-dialog">
-    								<div class="modal-content">
-     	 								<div class="modal-header">
-        									<h5 class="modal-title" id="staticBackdropLabel"></h5>
-        									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      									</div>
-      									<div class="modal-body">사용가능한 아이디입니다.</div>
-    								</div>
-  								</div>
-							</div>
+      						<input type="text" id="userId" th:field="*{userId}"/>
+        					<button type="button" onclick="test()" class="btn btn-primary" id="idCheckBtn" data-bs-toggle="modal" data-bs-target="#staticBackdrop" ><p>중복확인</p></button>
+        					<span class='text-danger' th:errors="*{userId}"></span>
+        					
+        		
 						</div>
-    					<div>비밀번호 <span class='text-danger' >*</span><br><input type="password" th:field="*{password}"></div>
-    					<div>비밀번호 확인 <span class='text-danger'>*</span><br><input type="password" th:field="*{repeatedPassword}"></div>
+    					<div>비밀번호 <span class='text-danger' >*</span><br><input type="password" th:field="*{password}">
+    						<span class='text-danger' th:errors="*{password}"></span>
+    					</div>
+    					
+    					<div>비밀번호 확인 <span class='text-danger'>*</span><br><input type="password" th:field="*{repeatedPassword}">
+    						<span class='text-danger' th:errors="*{repeatedPassword}"></span>
+    					</div>
+    					
     					<div>
     						닉네임 <span class='text-danger'>*</span><br>
-    							<input type="text" th:field="*{name}">
-       						<button class="btn btn-primary" type="button" id="confirmbtn" data-bs-toggle="modal" data-bs-target="#ll"><p>중복확인</p></button>
-       						<!-- Modal -->
-							<div class="modal fade" id="ll" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  								<div class="modal-dialog">
-    								<div class="modal-content">
-     	 								<div class="modal-header">
-        									<h5 class="modal-title" id="staticBackdropLabel"></h5>
-        									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      									</div>
-      									<div class="modal-body">사용가능한 닉네임입니다.</div>
-    								</div>
-  								</div>
-							</div>
+    							<input type="text" id="name"  th:field="*{name}">
+       						<button class="btn btn-primary" type="button" id="nameCheckBtn" data-bs-toggle="modal" data-bs-target="#ll"><p>중복확인</p></button>
+       						<span class='text-danger' th:errors="*{name}"></span>
+  
     					</div>
     					<div>주소<br>			
     					 	<input type ="hidden" th:field="*{addr}" id="addr"/> 
@@ -105,7 +101,9 @@
     							</option>
     						</select> -
 							<input type="text" th:field="*{phone2}" size="4" maxlength="4" id="tel"  pattern="[0-9]{3,4}"> -
-							<input type="text" th:field="*{phone3}" size="4" maxlength="4" id="tel" pattern="[0-9]{4}"><br>
+							<input type="text" th:field="*{phone3}" size="4" maxlength="4" id="tel" pattern="[0-9]{4}">
+							<span class='text-danger' th:errors="*{phone2}"></span>
+							<br>
     					</div>
     				</div> 
   				</div><hr>
@@ -127,14 +125,13 @@
    				<div class="row" id="info">
    					<div class="col bg-white" >
       					 <label for="file-input">프로필 사진<br>
-      							<input class="form-control" type="file" name="file" multiple="multiple" id="file" style="display: none;" accept="image/*"
-									onchange="PreviewImage();">
-								<button class="btn" id="icon" onclick="onclick=document.all.file.click()">
-    							<svg width="92" height="92" viewBox="0 0 92 92" fill="none" xmlns="http://www.w3.org/2000/svg">
-    								<rect x="0.5" y="0.5" width="91" height="91" rx="14.5" fill="white" stroke="#999999"/>
-    								<path d="M50.836 47.1906H48.2103V44.8093C48.2103 44.1777 47.9337 43.572 47.4413 43.1254C46.9489 42.6788 46.281 42.4279 45.5847 42.4279C44.8883 42.4279 44.2205 42.6788 43.728 43.1254C43.2356 43.572 42.959 44.1777 42.959 44.8093V47.1906H40.3334C39.637 47.1906 38.9691 47.4415 38.4767 47.8881C37.9843 48.3347 37.7077 48.9404 37.7077 49.572C37.7077 50.2035 37.9843 50.8093 38.4767 51.2558C38.9691 51.7024 39.637 51.9533 40.3334 51.9533H42.959V54.3347C42.959 54.9663 43.2356 55.572 43.728 56.0186C44.2205 56.4652 44.8883 56.7161 45.5847 56.7161C46.281 56.7161 46.9489 56.4652 47.4413 56.0186C47.9337 55.572 48.2103 54.9663 48.2103 54.3347V51.9533H50.836C51.5323 51.9533 52.2002 51.7024 52.6926 51.2558C53.185 50.8093 53.4616 50.2035 53.4616 49.572C53.4616 48.9404 53.185 48.3347 52.6926 47.8881C52.2002 47.4415 51.5323 47.1906 50.836 47.1906ZM63.9642 30.5211H47.4751L46.6349 28.1397C46.0902 26.7424 45.0799 25.5333 43.7438 24.68C42.4078 23.8267 40.8122 23.3713 39.1781 23.377H27.2051C25.116 23.377 23.1125 24.1297 21.6352 25.4695C20.158 26.8092 19.3281 28.6264 19.3281 30.5211V61.4788C19.3281 63.3735 20.158 65.1906 21.6352 66.5304C23.1125 67.8702 25.116 68.6229 27.2051 68.6229H63.9642C66.0533 68.6229 68.0569 67.8702 69.5341 66.5304C71.0113 65.1906 71.8412 63.3735 71.8412 61.4788V37.6652C71.8412 35.7704 71.0113 33.9533 69.5341 32.6135C68.0569 31.2738 66.0533 30.5211 63.9642 30.5211ZM66.5899 61.4788C66.5899 62.1104 66.3133 62.7161 65.8209 63.1627C65.3285 63.6092 64.6606 63.8601 63.9642 63.8601H27.2051C26.5087 63.8601 25.8409 63.6092 25.3485 63.1627C24.8561 62.7161 24.5794 62.1104 24.5794 61.4788V30.5211C24.5794 29.8895 24.8561 29.2838 25.3485 28.8372C25.8409 28.3906 26.5087 28.1397 27.2051 28.1397H39.1781C39.7285 28.1384 40.2655 28.2941 40.7131 28.5847C41.1607 28.8752 41.4963 29.2861 41.6724 29.7591L43.0903 33.6645C43.2664 34.1375 43.602 34.5483 44.0496 34.8389C44.4972 35.1295 45.0342 35.2851 45.5847 35.2838H63.9642C64.6606 35.2838 65.3285 35.5347 65.8209 35.9813C66.3133 36.4279 66.5899 37.0336 66.5899 37.6652V61.4788Z" fill="#999999"/>
-    							</svg>
-    						</button>
+      					 		<button class="btn" type="button" id="icon" onclick="onclick=document.all.file.click()">
+    								<svg width="92" height="92" viewBox="0 0 92 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+    									<rect x="0.5" y="0.5" width="91" height="91" rx="14.5" fill="white" stroke="#999999"/>
+    									<path d="M50.836 47.1906H48.2103V44.8093C48.2103 44.1777 47.9337 43.572 47.4413 43.1254C46.9489 42.6788 46.281 42.4279 45.5847 42.4279C44.8883 42.4279 44.2205 42.6788 43.728 43.1254C43.2356 43.572 42.959 44.1777 42.959 44.8093V47.1906H40.3334C39.637 47.1906 38.9691 47.4415 38.4767 47.8881C37.9843 48.3347 37.7077 48.9404 37.7077 49.572C37.7077 50.2035 37.9843 50.8093 38.4767 51.2558C38.9691 51.7024 39.637 51.9533 40.3334 51.9533H42.959V54.3347C42.959 54.9663 43.2356 55.572 43.728 56.0186C44.2205 56.4652 44.8883 56.7161 45.5847 56.7161C46.281 56.7161 46.9489 56.4652 47.4413 56.0186C47.9337 55.572 48.2103 54.9663 48.2103 54.3347V51.9533H50.836C51.5323 51.9533 52.2002 51.7024 52.6926 51.2558C53.185 50.8093 53.4616 50.2035 53.4616 49.572C53.4616 48.9404 53.185 48.3347 52.6926 47.8881C52.2002 47.4415 51.5323 47.1906 50.836 47.1906ZM63.9642 30.5211H47.4751L46.6349 28.1397C46.0902 26.7424 45.0799 25.5333 43.7438 24.68C42.4078 23.8267 40.8122 23.3713 39.1781 23.377H27.2051C25.116 23.377 23.1125 24.1297 21.6352 25.4695C20.158 26.8092 19.3281 28.6264 19.3281 30.5211V61.4788C19.3281 63.3735 20.158 65.1906 21.6352 66.5304C23.1125 67.8702 25.116 68.6229 27.2051 68.6229H63.9642C66.0533 68.6229 68.0569 67.8702 69.5341 66.5304C71.0113 65.1906 71.8412 63.3735 71.8412 61.4788V37.6652C71.8412 35.7704 71.0113 33.9533 69.5341 32.6135C68.0569 31.2738 66.0533 30.5211 63.9642 30.5211ZM66.5899 61.4788C66.5899 62.1104 66.3133 62.7161 65.8209 63.1627C65.3285 63.6092 64.6606 63.8601 63.9642 63.8601H27.2051C26.5087 63.8601 25.8409 63.6092 25.3485 63.1627C24.8561 62.7161 24.5794 62.1104 24.5794 61.4788V30.5211C24.5794 29.8895 24.8561 29.2838 25.3485 28.8372C25.8409 28.3906 26.5087 28.1397 27.2051 28.1397H39.1781C39.7285 28.1384 40.2655 28.2941 40.7131 28.5847C41.1607 28.8752 41.4963 29.2861 41.6724 29.7591L43.0903 33.6645C43.2664 34.1375 43.602 34.5483 44.0496 34.8389C44.4972 35.1295 45.0342 35.2851 45.5847 35.2838H63.9642C64.6606 35.2838 65.3285 35.5347 65.8209 35.9813C66.3133 36.4279 66.5899 37.0336 66.5899 37.6652V61.4788Z" fill="#999999"/>
+    								</svg>
+    							</button>
+    							<input type="file" name="file" id="file" th:field="*{imageFile}" style="display: none;" accept="image/*">
     					</label>
   					</div>
   				</div><hr>
@@ -150,7 +147,7 @@
 				</div>
 			
 			</form>
-		</div>
+
 	</div>
 
 	<th:block layout:fragment="footer" th:include="@{/fragments/footer}"></th:block>

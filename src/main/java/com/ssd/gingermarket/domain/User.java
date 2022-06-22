@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -58,14 +59,32 @@ public class User {
 	@Column(length = 10)
 	private String item3;
 	
+	private Long imageIdx;
 	@OneToOne
 	@JoinColumn(name="imgIdx")
 	private Image image;
 	
-	private Long img;
+//	private Long img;
 	
 	@OneToMany(mappedBy = "experiodIdx", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Experiod> experiodList = new ArrayList<Experiod>();
+	
+	@OneToMany(mappedBy = "postIdx", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<SharePost> shareList = new ArrayList<SharePost>();
+
+	@OneToMany(mappedBy = "groupIdx", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<GroupBuying> groupBuyingList = new ArrayList<GroupBuying>();
+	
+	@OneToMany(mappedBy = "commentIdx", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<CommentInfo> commentList = new ArrayList<CommentInfo>();
+	
+//	@OneToMany(mappedBy = "messageIdx", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
+//	@OneToMany(mappedBy="messageIdx")
+//	private List<MessageInfo> messageInfoList = new ArrayList<MessageInfo>();
+	@OneToMany(mappedBy = "roomIdx")
+	private List<MessageRoom> messageRoomList = new ArrayList<MessageRoom>();
+	
+	
 	
 	public boolean matchPassword(String newPassword) {
 		return newPassword.equals(password);
@@ -97,6 +116,9 @@ public class User {
 	public void updatePassword(String password) {
 		this.password = password;
 	}
+	
+	
+
 }
 
 	

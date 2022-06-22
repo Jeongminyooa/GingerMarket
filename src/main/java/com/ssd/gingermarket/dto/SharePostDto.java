@@ -27,7 +27,6 @@ public class SharePostDto {
 	}
 	
 	@NoArgsConstructor
-	@AllArgsConstructor
 	@Data
 	public static class Request{
 		private String uploadDirLocal = "/upload/";
@@ -38,6 +37,7 @@ public class SharePostDto {
 		private String category;
 		@Length(max=1000, message="{size.descr}")
 		private String descr;
+		@NotBlank(message="{notBlank.address")
 		@Length(max=255, message="{size.address}")
 		private String address;
 		
@@ -74,14 +74,9 @@ public class SharePostDto {
 	}
 	
 	@NoArgsConstructor
-	@AllArgsConstructor
 	@Data
 	public static class CardResponse{
-		private Long postIdx;
-		
-		//추후 User 객체 참조
-		private User author;
-		
+		private Long postIdx; 
 		private String category;
 		private String title;
 		private String imgUrl;
@@ -92,7 +87,6 @@ public class SharePostDto {
 		
 		public CardResponse(SharePost sharePost) {
 			this.postIdx = sharePost.getPostIdx();
-			this.author = sharePost.getAuthor();
 			this.category = sharePost.getCategory();
 			this.title = sharePost.getTitle();
 			
@@ -113,12 +107,13 @@ public class SharePostDto {
 	}
 	
 	@NoArgsConstructor
-	@AllArgsConstructor
 	@Data
 	public static class DetailResponse{
 		private Long postIdx;
 		
-		private User author;
+		private Long authorIdx;
+		private String authorName;
+		private String authorImgUrl;
 		private String address;
 		
 		private String category;
@@ -131,17 +126,20 @@ public class SharePostDto {
 		
 		public DetailResponse(SharePost sharePost) {
 			this.postIdx = sharePost.getPostIdx();
-			this.author = sharePost.getAuthor();
+			this.authorIdx = sharePost.getAuthor().getUserIdx();
+			this.authorName = sharePost.getAuthor().getName();
+			try {
+				this.authorImgUrl = getUploadDirPath(sharePost.getAuthor().getImage().getUrl());
+			}catch (Exception e ) {	           
+				this.authorImgUrl = "";
+			}
 			this.address = sharePost.getAddress();
 			this.category = sharePost.getCategory();
 			this.title = sharePost.getTitle();
-			String url = "";
 			try {
-				url = getUploadDirPath(sharePost.getImage().getUrl());
-			}catch (Exception e ) {
-				url = "";
-			}finally {
-				this.imgUrl = url;
+				this.imgUrl = getUploadDirPath(sharePost.getImage().getUrl());
+			}catch (Exception e ) {	           
+				this.imgUrl = "";
 			}
 			this.descr = sharePost.getDescr();
 			boolean prog;

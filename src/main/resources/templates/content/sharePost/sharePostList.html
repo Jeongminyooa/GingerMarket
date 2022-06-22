@@ -4,7 +4,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/default_layout}">
 
-<th:block layout:fragment="head (userIdx=${userIdx})">
+<th:block layout:fragment="head">
 	<title>나눔 포스트 리스트</title>
 	<meta charset="utf-8">
 
@@ -78,14 +78,14 @@
 			
 
 			<!-- fav-post  -->
-			
-			<div th:if="${#strings.equals(type, 'none')}">
-				<th:block  th:include="@{/content/sharePost/sharePost_favPostList}"></th:block>
-				<div class="row pt-5">
+			<div class="row pt-5">
 					<p id="main_content">
 						<b>추천 게시물</b>
 					</p>
 				</div>
+			<div th:if="${#strings.equals(type, 'none')}">
+				<th:block  th:include="@{/content/sharePost/sharePost_favPostList}"></th:block>
+				
 			</div>
 			<th:block th:unless="${#strings.equals(type, 'none')}" ></th:block>
 			<br>

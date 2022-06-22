@@ -3,6 +3,9 @@ package com.ssd.gingermarket.controller.Message;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,26 +35,28 @@ public class AddMessageController {
 	private final MessageService messageService;
 	
 	@PostMapping("/{postIdx}/room")
-	public RedirectView enterRoom(@PathVariable Long postIdx)
+	public RedirectView enterRoom(HttpServletRequest req, @PathVariable Long postIdx)
 	{
-		Long sessionIdx = (long)2;
+		HttpSession session = req.getSession(false);
+		Long userIdx = (long)session.getAttribute("userIdx");
 		
 		Long roomIdx;
 		//처음 방 만들 때 
-		if(messageService.getRoom(postIdx, sessionIdx) == null) {
-			roomIdx = messageService.addRoom(postIdx, sessionIdx);
+		if(messageService.getRoom(postIdx, userIdx) == null) {
+			roomIdx = messageService.addRoom(postIdx, userIdx);
 		} else { //원래 있던 방일때 
-			roomIdx = messageService.getRoom(postIdx, sessionIdx);
+			roomIdx = messageService.getRoom(postIdx, userIdx);
 		}
 		
 		return new RedirectView("/messages/" + postIdx + "/room/" + roomIdx);
 	}
 	
 	@PostMapping("/{roomIdx}")
-	public int sendMessage(@PathVariable Long roomIdx, @RequestBody MessageDto.Request req) {	
-		Long sessionIdx = (long) 2; //session구현 후 변경
+	public int sendMessage(HttpServletRequest req, @PathVariable Long roomIdx, @RequestBody MessageDto.Request msgReq) {	
+		HttpSession session = req.getSession(false);
+		Long userIdx = (long)session.getAttribute("userIdx");
 		
-		messageService.sendMessage(req, sessionIdx, roomIdx);
+		messageService.sendMessage(msgReq, userIdx, roomIdx);
 		
         return 1;
     }

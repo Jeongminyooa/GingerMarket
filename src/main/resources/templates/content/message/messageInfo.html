@@ -4,7 +4,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/default_layout}">
 
-<th:block layout:fragment="head (userIdx=${userIdx})">
+<th:block layout:fragment="head">
 	<title>쪽지</title>
 	<meta charset="utf-8">
 
@@ -36,18 +36,23 @@ $( document ).ready(function() {
 		getMsgList(roomIdx)
 	}, 3000);
 	
-	
+	//전송 버튼으로 보내기 
 	$('#btn_reply').click(function(){
 		var insertData = $('#content').val();
-		if(insertData != null && insertData != "")
-			sendMessage(insertData);
-		else
-			alert("메세지를 입력하세요!");
+		if(insertData.length >  255){
+			alert("메세지는 255자를 넘길 수 없습니다!");
+		}
+		else{
+			if(insertData != null && insertData != "")
+				sendMessage(insertData);
+			else
+				alert("메세지를 입력하세요!");
+		}
 	});
 
 });
 
-
+//메세지 보내기 
 function sendMessage(insertData){		
 			$.ajax({
 				url : '/messages/' + roomIdx, 
@@ -60,8 +65,7 @@ function sendMessage(insertData){
 				success : function(data){
 					if(data != 0){
 						$('#content').val('');
-						alert("성공!");
-
+						/* alert("성공!"); */
 						location.reload();
 					}
 					else
@@ -84,14 +88,22 @@ function getMsgList(roomIdx) {
 		  });
 	}
 	
+// 엔터키로 전송
 function enterkey() {
 	if (window.event.keyCode == 13) {
 		window.event.preventDefault();
 		var insertData = $('#content').val();
-		if(insertData != null && insertData != "")
-			sendMessage(insertData);
-		else
-			alert("메세지를 입력하세요!");// 엔터키가 눌렸을 때
+		if(insertData.length >  255){
+			alert("메세지는 255자를 넘길 수 없습니다!");
+		}
+		else{
+			if(insertData != null && insertData != ""){
+					sendMessage(insertData);
+			}
+			else
+				alert("메세지를 입력하세요!");
+		}
+		
     }
 }
 	
@@ -102,7 +114,7 @@ function enterkey() {
 
 	<div layout:fragment="content" class="content">
 		<div class="container w-75">
-			<a th:href="@{/messages/{userIdx}/list(userIdx=${userIdx})}" href="#">
+			<a th:href="@{/messages}" href="#">
 				<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="grey" class="bi bi-arrow-left" viewBox="0 0 16 16">
   					<path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
 				</svg>
@@ -139,13 +151,28 @@ function enterkey() {
 			<div id="msg-container">
 			<th:block th:each="msg : ${msgList}">
 				<!-- receiver section -->
-				<div th:if = "${userIdx} != ${msg.sender.userIdx}"  class="mt-1">
+				<!-- 내가 보낸게 아닐 때 -->
+				 <th:block th:if = "${userIdx} != ${msg.senderIdx}">
+				<div class="mt-1">
 					<!-- receiver info -->	
-					<div class="d-flex">
+					<!-- 작성자일때 -->
+					<div th:if="${userIdx} == ${msg.authorIdx}" class="d-flex">
 						<div>
-							<img src="/image/yellow.JPG" alt="..." id="img-author-msg" class="rounded-pill">
+							<img th:if="${not #strings.isEmpty(msg.senderImgUrl)}" th:src="@{${msg.senderImgUrl}}" src="/image/profile.png" class="rounded-pill" id="img-author-msg">
+							<img th:unless="${not #strings.isEmpty(msg.senderImgUrl)}" src="/image/profile.png" class="rounded-pill" id="img-author-msg">
 						</div>
-						<div th:text="${msg.sender.name}" class="ms-3" id="main_content">
+						<div th:text="${msg.senderName}" class="ms-3" id="main_content">
+							김매미
+						</div>
+					</div>
+					
+					<!-- 작성자가 아닐때 -->
+					<div th:if="${userIdx} != ${msg.authorIdx}" class="d-flex">
+						<div>
+							<img th:if="${not #strings.isEmpty(msg.authorImgUrl)}" th:src="@{${msg.authorImgUrl}}" src="/image/profile.png" class="rounded-pill" id="img-author-msg">
+							<img th:unless="${not #strings.isEmpty(msg.authorImgUrl)}" src="/image/profile.png" class="rounded-pill" id="img-author-msg">
+						</div>
+						<div th:text="${msg.authorName}" class="ms-3" id="main_content">
 							김매미
 						</div>
 					</div>
@@ -158,10 +185,11 @@ function enterkey() {
 						<div th:text="${#temporals.format(msg.sendDate, 'yyyy/MM/dd HH:mm')}" id="small_content" class="ms-1" >2022/05/19 23:36</div>				
 					</div>
 				</div>
+				 </th:block>
 				
 				<!-- sender section -->
 				
-				<div th:if = "${userIdx} == ${msg.sender.userIdx}" class="mt-1 me-3" align="right">
+				<div th:if = "${userIdx} == ${msg.senderIdx}" class="mt-1 me-3" align="right">
 					<!-- sender message -->
 					<div class="">
 						<span th:if="${msg.isRead} == false">1</span>
@@ -175,8 +203,8 @@ function enterkey() {
 			
 			<!-- reply section -->
 				<div th:if="${postInfo.progress} == false" class="mb-3 mt-3 d-flex send">
-						<input type="text"  onkeyup="enterkey()" id="content" class="form-control" aria-label="With textarea" placeholder="메세지를 입력해주세요."></textarea>
-						<button type="submit" class="btn" id="btn_reply" >
+						<textarea autofocus type="text"  onkeypress="enterkey()" id="content" class="form-control" aria-label="With textarea" placeholder="메세지를 입력해주세요."></textarea>
+						<button type="button" class="btn" id="btn_reply" >
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
 	  							<path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
 							</svg>

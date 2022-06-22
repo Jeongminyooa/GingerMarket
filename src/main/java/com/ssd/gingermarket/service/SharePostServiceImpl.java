@@ -144,7 +144,7 @@ public class SharePostServiceImpl implements SharePostService {
     	entity.updateProgress(prog);
     }
     
-   //공구 포스트 검색 (제목, 카테고리)
+   //나눔 포스트 검색 (주소, 제목, 카테고리)
     @Override
  	@Transactional
 	public Page<SharePostDto.CardResponse> getAllPostByKeyword(String keyword, int page, String option, String type) {

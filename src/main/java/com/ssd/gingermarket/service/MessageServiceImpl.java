@@ -65,10 +65,8 @@ public class MessageServiceImpl<T> implements MessageService {
 	@Override
 	@Transactional	
 	public Long getRoom(Long postIdx, Long senderIdx) {
-		SharePost post = sharePostRepository.findById(postIdx).orElseThrow();
-		User sender = userRepository.findById(senderIdx).orElseThrow();
 		
-		return messageRoomRepository.findRoomIdxByPostAndSender(post, sender);		
+		return messageRoomRepository.findRoomIdxByPostAndSender(postIdx, senderIdx);		
 	}	
 	
 	//쪽지 보내기 
@@ -101,6 +99,8 @@ public class MessageServiceImpl<T> implements MessageService {
 		User sender = userRepository.findById(userIdx).orElseThrow();
 		
 		List<MessageRoom> list = messageRoomRepository.findByAuthorOrSenderOrderByCreatedDateDesc(author, sender);
+		System.out.println("messageRoom List : " + list.size());
+		
 		List<MessageDto.Info> roomList = new ArrayList<MessageDto.Info>();
 		
 		for(MessageRoom room : list) {
@@ -119,11 +119,18 @@ public class MessageServiceImpl<T> implements MessageService {
 			
 			MessageDto.Info info = new MessageDto.Info(
 				room.getRoomIdx(),
-				room.getPost(),
+				
+				room.getPost().getPostIdx(),
+				room.getPost().getAuthor().getUserIdx(),
+				room.getPost().getAuthor().getName(),
+				(room.getPost().getAuthor().getImage() == null ? "" : "/upload/" + room.getPost().getAuthor().getImage().getUrl()),
+				room.getPost().getTitle(),
 					
 				(room.getPost().getImage() == null ? "" : "/upload/" + room.getPost().getImage().getUrl()),
 					
-				room.getSender(),
+				room.getSender().getUserIdx(),
+				room.getSender().getName(),
+				(room.getSender().getImage() == null ? "" : "/upload/" + room.getSender().getImage().getUrl()),
 					
 				m.getContent(),
 				

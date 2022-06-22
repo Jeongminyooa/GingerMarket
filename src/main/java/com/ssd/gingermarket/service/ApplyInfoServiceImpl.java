@@ -1,8 +1,10 @@
 package com.ssd.gingermarket.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +13,8 @@ import com.ssd.gingermarket.domain.GroupBuying;
 import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.ApplyDto;
 import com.ssd.gingermarket.dto.UserDto;
+
+import com.ssd.gingermarket.dto.GroupBuyingDto;
 import com.ssd.gingermarket.repository.ApplyRepository;
 import com.ssd.gingermarket.repository.GroupBuyingRepository;
 import com.ssd.gingermarket.repository.UserRepository;
@@ -69,6 +73,25 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
    			return 0;
    	}  	
 
+	@Override
+	@Transactional(readOnly = true)
+	public List<GroupBuyingDto.MyPageInfo> getAllApplyByAuthor(Long userIdx) {
+		// TODO Auto-generated method stub
+		
+		User author = userRepository.findById(userIdx).orElseThrow();
+		List<Apply> applyList = applyRepository.findByAuthor(author);
+		
+		List<GroupBuyingDto.MyPageInfo> list = applyList.stream().map(a -> new GroupBuyingDto.MyPageInfo(
+				a.getGroupBuying().getGroupIdx(),
+				(a.getGroupBuying().getImage() == null ? "" : a.getGroupBuying().getImage().getUrl()),
+				a.getGroupBuying().getTitle(),
+				a.getGroupBuying().getProgress(),
+				a.getGroupBuying().getPrice(),
+				a.getGroupBuying().getEndDate()
+				)).collect(Collectors.toList());	
+		
+		return list;
+	}
 }
 	
 

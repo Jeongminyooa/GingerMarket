@@ -157,19 +157,18 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
    			return 0;
    	}
 
+  //사용자가 작성한 포스트리스트 조회
 	@Override
 	@Transactional
-	public List<MyPageInfo> getGroupBuyingByUserId(Long userIdx) {
+	public List<MyPageInfo> getGroupBuyingByUserIdx(Long userIdx) {
 		// TODO Auto-generated method stub
-		//사용자가 작성한 포스트리스트 조회
 		User author = userRepository.findById(userIdx).orElseThrow();
 			
 		List<GroupBuying> postEntityList = groupBuyingRepository.findAllByAuthor(author);
 			
 		List<MyPageInfo> postList = postEntityList.stream().map(post -> new MyPageInfo(
 				post.getGroupIdx(),
-				//post.getImage().getUrl(),
-				"image",
+				(post.getImage() == null ? "" : post.getImage().getUrl()),
 				post.getTitle(),
 				post.getProgress(),
 				post.getPrice(),

@@ -1,24 +1,29 @@
 package com.ssd.gingermarket.controller.User;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.ui.Model;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.ssd.gingermarket.domain.User;
+import com.ssd.gingermarket.domain.Image;
+import com.ssd.gingermarket.dto.ImageDto;
 import com.ssd.gingermarket.dto.UserDto;
+import com.ssd.gingermarket.service.ImageService;
 import com.ssd.gingermarket.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,7 +36,8 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final UserService userService;
-
+	private final ImageService imageService;
+	
 	@GetMapping("/signup")
 	public ModelAndView getSignUp() { 
 		ModelAndView mav = new ModelAndView("content/user/user_signup");
@@ -61,31 +67,58 @@ public class UserController {
 		return mav;
 	}
 
-	@PostMapping("")
-	public RedirectView register(UserDto.Request req) {
-		
-		Long idx = userService.addUser(req);
-		User user = userService.getUser(idx);
-		
-		
-		if(user.matchPassword(req.getRepeatedPassword())) 
-			return new RedirectView("/user/login");
-		else {
-			return new RedirectView("/user/signup");
-		}
-	}
+
 	
+	@PostMapping("")
+	public ModelAndView register(@Validated @ModelAttribute("userReq") UserDto.Request req, 
+			BindingResult error, HttpServletResponse response) throws Exception {
+		response.setContentType("text/html; charset=utf-8");
+		PrintWriter out = response.getWriter();
+		if(error.hasErrors())
+			return new ModelAndView("content/user/user_signup");
+		
+		String msg="";
+		
+		if(userService.userIdCheck(req.getUserId())==1) {
+			msg+="이미 존재하는 아이디입니다";
+		}
+		if(userService.nameCheck(req.getName())==1) {
+			msg+="  이미 존재하는 닉네임입니다";
+		}
+		
+		if(!req.getImageFile().getOriginalFilename().equals("")) {
+			ImageDto.Request imgReq = new ImageDto.Request(req.getImageFile());
+			Image img = imageService.uploadFile(imgReq.getImageFile());
+			req.setImage(img);
+		}
+
+		if(!req.getPassword().equals(req.getRepeatedPassword())) {
+			msg+="  비밀번호가 일치하지 않습니다.";}
+		
+		if(msg!="") {
+			out.println("<script>alert('"+msg+"');location.replace('/user/signup');</script>");
+			out.flush();
+			return new ModelAndView("redirect: /user/signup");
+		}
+		else {
+			out.println("<script>alert('회원가입 되었습니다.'); location.replace('/user/login');</script>");
+			out.flush();
+			userService.addUser(req);
+			return new ModelAndView("redirect: /user/login");
+		}
+		
+	}
+
 	@DeleteMapping("/quit")
-	public RedirectView quitUser(HttpServletRequest req) { 
+	public RedirectView quitUser(HttpServletRequest req) throws DataIntegrityViolationException { 
+		
 		HttpSession session = req.getSession(false);
 		Long userIdx = (Long) session.getAttribute("userIdx");
 		
-		userService.removeUser(userIdx);
-
         if(session != null){
             session.invalidate();
         }
-        
+        userService.removeUser(userIdx);
 		return new RedirectView("/user/login");
 	}
 	
