@@ -58,32 +58,32 @@ public class User {
 	private String item2;
 	@Column(length = 10)
 	private String item3;
-	
-	private Long imageIdx;
+
 	@OneToOne
 	@JoinColumn(name="imgIdx")
 	private Image image;
+
 	
-//	private Long img;
-	
-	@OneToMany(mappedBy = "experiodIdx", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(mappedBy = "author", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Experiod> experiodList = new ArrayList<Experiod>();
 	
-	@OneToMany(mappedBy = "postIdx", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(mappedBy = "author", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<SharePost> shareList = new ArrayList<SharePost>();
 
-	@OneToMany(mappedBy = "groupIdx", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(mappedBy = "author", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<GroupBuying> groupBuyingList = new ArrayList<GroupBuying>();
 	
-	@OneToMany(mappedBy = "id", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
-	private List<CommentInfo> commentList = new ArrayList<CommentInfo>();
-//	@OneToMany(mappedBy = "messageIdx", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
-//	@OneToMany(mappedBy="messageIdx")
-//	private List<MessageInfo> messageInfoList = new ArrayList<MessageInfo>();
-	@OneToMany(mappedBy = "roomIdx")
+	@OneToMany(mappedBy="author", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<Apply> applyList = new ArrayList<Apply>();
+	
+	@OneToMany(mappedBy = "author", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<MessageRoom> messageRoomList = new ArrayList<MessageRoom>();
 	
+	@OneToMany(mappedBy = "sender", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<MessageRoom> participatemessageRoomList = new ArrayList<MessageRoom>();
 	
+	@OneToMany(mappedBy = "author", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<CommentInfo> commentList = new ArrayList<CommentInfo>();
 	
 	public boolean matchPassword(String newPassword) {
 		return newPassword.equals(password);

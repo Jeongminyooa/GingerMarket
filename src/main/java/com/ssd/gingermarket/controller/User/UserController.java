@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,18 +63,16 @@ public class UserController {
 		category.add("문구");
 		category.add("생활잡화");
 		mav.addObject("items", category);
-		
-		
 		return mav;
 	}
-
-
 	
 	@PostMapping("")
 	public ModelAndView register(@Validated @ModelAttribute("userReq") UserDto.Request req, 
 			BindingResult error, HttpServletResponse response) throws Exception {
+		
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
+		
 		if(error.hasErrors())
 			return new ModelAndView("content/user/user_signup");
 		
@@ -86,8 +85,8 @@ public class UserController {
 			msg+="  이미 존재하는 닉네임입니다";
 		}
 		
-		if(!req.getImageFile().getOriginalFilename().equals("")) {
-			ImageDto.Request imgReq = new ImageDto.Request(req.getImageFile());
+		if(!req.getFile().getOriginalFilename().equals("")) {
+			ImageDto.Request imgReq = new ImageDto.Request(req.getFile());
 			Image img = imageService.uploadFile(imgReq.getImageFile());
 			req.setImage(img);
 		}
@@ -108,18 +107,21 @@ public class UserController {
 		}
 		
 	}
-
+	
 	@DeleteMapping("/quit")
-	public RedirectView quitUser(HttpServletRequest req) throws DataIntegrityViolationException { 
-		
+	public void quitUser(HttpServletRequest req, HttpServletResponse response) throws Exception { 
+		response.setContentType("text/html; charset=utf-8");
+    	PrintWriter out = response.getWriter();
 		HttpSession session = req.getSession(false);
 		Long userIdx = (Long) session.getAttribute("userIdx");
 		
+        userService.removeUser(userIdx);
+        //세션 삭제
         if(session != null){
             session.invalidate();
         }
-        userService.removeUser(userIdx);
-		return new RedirectView("/user/login");
+        out.println("<script>alert('회원정보가 삭제되었습니다.'); location.replace('/user/login');</script>");
+        out.flush();
 	}
-	
+
 }
