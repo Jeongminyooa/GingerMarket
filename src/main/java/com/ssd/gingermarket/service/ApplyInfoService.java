@@ -14,10 +14,7 @@ public interface ApplyInfoService {
 	public List<ApplyDto.Info> getAllApply(Long groupIdx);
 		
 	// 공구 신청 등록
-
 	public void addApply(ApplyDto.Info apply, Long userIdx, Long groupIdx);
-
-	public void addApply(ApplyDto.Info apply, Long groupIdx);
 	
 	public List<GroupBuyingDto.MyPageInfo> getAllApplyByAuthor(Long userIdx);
 
