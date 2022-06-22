@@ -97,7 +97,7 @@
 					<div class="col col-lg-4">
 						<div class="input-group">
 							<input type="text" class="form-control"
-								id="inputRecruit" th:field="*{recruitNum}" placeholder="">
+								id="inputRecruit" th:field="*{recruitNum}" placeholder="">>
 							<span class="input-group-text">명</span> 
 						</div>
 					</div>
@@ -106,18 +106,22 @@
 						<input type="date" class="form-control"
 						id="inputEndDate" th:field="*{endDate}">
 					</div>	
+					<div class="error" th:errors="*{recruitNum}">Incorrect</div>
+				
 				</div>
 				
 				<div class="row mb-3">
 					<label for="inputDate" class="form-label">금액</label>
 					<div class="col col-lg-4">
 						<div class="input-group">
-							<input type="text" class="form-control"
+							<input type="number" class="form-control"
 								id="inputPrice" th:field="*{price}" placeholder="금액을 입력하세요">
 							<span class="input-group-text">원</span> 
 						</div>
 					</div>
+					
 				</div>
+				<div class="error" th:errors="*{price}">Incorrect</div>
 				
 				<div class="row border-top"></div>
 				<div class="mb-3 mt-3">

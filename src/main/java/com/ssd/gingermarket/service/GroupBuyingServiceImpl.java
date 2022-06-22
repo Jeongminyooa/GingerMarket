@@ -129,7 +129,7 @@ public class GroupBuyingServiceImpl implements GroupBuyingService {
 		if(!dto.getFile().getOriginalFilename().equals(""))
 			groupBuying.updatePostImg(dto.getImage());
 		
-		groupBuying.updatePost(dto.getTitle(), dto.getCategory(), dto.getRecruitNum(), dto.getWebsite(), dto.getPrice(), dto.getDescr(), dto.getEndDate());
+		groupBuying.updatePost(dto.getTitle(), dto.getCategory(), Integer.parseInt(dto.getRecruitNum()), dto.getWebsite(), Integer.parseInt(dto.getPrice()), dto.getDescr(), dto.getEndDate());
 
 		int progress = updateProgress(groupBuying.getParticipateNum(), groupBuying.getRecruitNum());
 		groupBuying.updateProgress(progress);

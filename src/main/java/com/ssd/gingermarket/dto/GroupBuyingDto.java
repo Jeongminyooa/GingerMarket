@@ -31,13 +31,15 @@ public class GroupBuyingDto {
 		private String title;
 		@NotNull(message="{notNull.category}")
 		private String category;
-		private int recruitNum;
+		@NotNull(message="{notNull.recruitNum}")
+		private String recruitNum;
 		private String website;
 		@DateTimeFormat(pattern = "yyyy-MM-dd")
 		private LocalDate endDate;
 		@Length(max=1000, message="{size.descr}")
 		private String descr;
-		private int price;
+		@NotNull(message="{notNull.price}")
+		private String price;
 		private int progress;
 		
 		private Image image;
@@ -51,11 +53,11 @@ public class GroupBuyingDto {
 			return GroupBuying.builder()
 					.title(title)
 					.category(category)
-					.recruitNum(recruitNum)
+					.recruitNum(Integer.parseInt(recruitNum))
 					.website(website)
 					.endDate(endDate)
 					.descr(descr)
-					.price(price)
+					.price(Integer.parseInt(price))
 					.progress(progress)
 					.image(image)
 					.author(author)
@@ -65,11 +67,11 @@ public class GroupBuyingDto {
 		public Request(GroupBuying groupBuying) {
 			this.title = groupBuying.getTitle();
 			this.category = groupBuying.getCategory();
-			this.recruitNum = groupBuying.getRecruitNum();
+			this.recruitNum = String.valueOf(groupBuying.getRecruitNum());
 			this.website = groupBuying.getWebsite();
 			this.endDate = groupBuying.getEndDate();
 			this.descr = groupBuying.getDescr();
-			this.price = groupBuying.getPrice();
+			this.price = String.valueOf(groupBuying.getPrice());
 			this.progress = groupBuying.getProgress();
 			try {
 				this.imgUrl = getUploadDirPath(groupBuying.getImage().getUrl());
