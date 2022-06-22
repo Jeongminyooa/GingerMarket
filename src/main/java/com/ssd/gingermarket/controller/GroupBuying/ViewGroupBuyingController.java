@@ -17,9 +17,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.ApplyDto;
+import com.ssd.gingermarket.dto.UserDto;
 import com.ssd.gingermarket.service.ApplyInfoService;
 import com.ssd.gingermarket.service.GroupBuyingService;
-
+import com.ssd.gingermarket.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ViewGroupBuyingController {
 	private final GroupBuyingService groupBuyingService;
-	private final ApplyInfoService applyInfoService;
+	private final UserService userService;
 	
 	@ModelAttribute("categoryList")
 	public List<String> categoryList(){
@@ -81,11 +82,14 @@ public class ViewGroupBuyingController {
 		ModelAndView mav = new ModelAndView("content/groupBuyingPost/groupPost_view");
 		mav.addObject("postInfo", groupBuyingService.getPost(groupIdx, userIdx));
 		
+		UserDto.Response user = userService.getUserInfo(userIdx);
+		
 		ApplyDto.Info dto = new  ApplyDto.Info();
+		dto.setPhone2(user.getPhone2());
+		dto.setPhone3(user.getPhone3());
+		
 		mav.addObject("applyInfo", dto);
 		mav.addObject("userIdx", userIdx);
-		mav.addObject("phone2", dto.getPhone2());
-		mav.addObject("phone3", dto.getPhone3());
 				
 		return mav;
 	}

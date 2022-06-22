@@ -21,9 +21,9 @@
 	    						</option>
     						</select>
 	    					<span class="input-group-text">-</span>
-							<input type="text" class="form-control w-25" th:value="${applyInfo.phone2}" th:field="*{phone2}" size="4" maxlength="4" pattern="[0-9]{3,4}">
+							<input type="text" class="form-control w-25" th:value="*{phone2}" th:field="*{phone2}" size="4" maxlength="4" pattern="[0-9]{3,4}">
 							<span class="input-group-text">-</span>
-							<input type="text" class="form-control w-25" th:value="${applyInfo.phone3}"  th:field="*{phone3}" size="4" maxlength="4" pattern="[0-9]{4}"><br>
+							<input type="text" class="form-control w-25" th:value="*{phone3}"  th:field="*{phone3}" size="4" maxlength="4" pattern="[0-9]{4}"><br>
 						</div>
 						
 					</div>
