@@ -369,7 +369,7 @@
    					</div>
    						
 					<!-- Apply BTN -->
-					<div th:if="${postInfo.progress} <= 1 AND (${postInfo.authorIdx} != ${userIdx}) AND (${postInfo.isApply} == false))" class="d-grid gap-2 mt-5 pt-3">
+					<div th:if="${postInfo.progress} <= 1 AND (${postInfo.authorIdx} != ${userIdx}) AND ${!postInfo.isApply}" class="d-grid gap-2 mt-5 pt-3">
 						<button type="button" class="btn btn-outline-light w-100" id="btn-apply" data-bs-toggle="modal" data-bs-target="#applyModal">신청하기</button>
 					</div>
 				
@@ -384,8 +384,8 @@
 					</div>
 					
 					<div th:if="(${postInfo.isApply} == true) AND (${postInfo.authorIdx} != ${userIdx})" class="d-grid gap-2 mt-5 pt-3">
-						<a class="btn btn-outline-light"
-							role="button" id="btn-enableApply">이미 신청하셨습니다.</a>
+						<a class="btn btn-outline-light text-black"
+							role="button" id="btn-enableApply">신청 완료되었습니다.</a>
 					</div>
 					
 					
