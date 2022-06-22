@@ -22,11 +22,7 @@ public class GroupBuyingDto {
 	public static String getUploadDirPath(String imageUrl) {
 		return "/upload/" + imageUrl;
 	}
-	
-	public static String getUploadDirPath(String imageUrl) {
-		return "/upload/" + imageUrl;
-	}
-	
+
 	@NoArgsConstructor
 	@AllArgsConstructor
 	@Data
