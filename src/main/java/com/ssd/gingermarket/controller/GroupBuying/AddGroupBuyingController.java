@@ -10,18 +10,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import com.ssd.gingermarket.domain.Image;
 import com.ssd.gingermarket.dto.ImageDto;
 import com.ssd.gingermarket.dto.GroupBuyingDto;
 import com.ssd.gingermarket.service.GroupBuyingService;
 import com.ssd.gingermarket.service.ImageService;
-import com.ssd.gingermarket.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -69,8 +66,9 @@ public class AddGroupBuyingController {
 		HttpSession session = req.getSession(false);
 		Long userIdx = (long)session.getAttribute("userIdx");
 		
-		if(error.hasErrors())
+		if(error.hasErrors()) {
 			return "content/groupBuyingPost/groupPost_add";
+		}
 		
 		if(groupBuying.getFile().getOriginalFilename().equals("")) {
 			groupBuying.setImage(null);
