@@ -65,11 +65,6 @@ public class MessageServiceImpl<T> implements MessageService {
 	@Override
 	@Transactional	
 	public Long getRoom(Long postIdx, Long senderIdx) {
-//		SharePost post = sharePostRepository.findById(postIdx).orElseThrow();
-//		User sender = userRepository.findById(senderIdx).orElseThrow();
-		
-//		System.out.println("sender ; " + sender.getUserIdx());
-//		System.out.println("post :" + post.getPostIdx());
 		
 		return messageRoomRepository.findRoomIdxByPostAndSender(postIdx, senderIdx);		
 	}	
@@ -110,10 +105,8 @@ public class MessageServiceImpl<T> implements MessageService {
 		
 		for(MessageRoom room : list) {
 			MessageInfo m = messageInfoRepository.findTop1ByRoomOrderByCreatedDateDesc(room);
-			System.out.println("m : " + m.getMessageIdx());
 			
 			boolean isRead;
-			System.out.println("get ALL ROOM userIdx : " + userIdx);
 			if(m.getSender().getUserIdx() == userIdx) {
 				isRead = true;
 			} else {

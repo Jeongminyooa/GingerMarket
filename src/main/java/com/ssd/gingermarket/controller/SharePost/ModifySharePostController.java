@@ -61,7 +61,6 @@ public class ModifySharePostController {
 		HttpSession session = req.getSession();
 		Long userIdx = (long)session.getAttribute("userIdx");
 		
-		System.out.println("postIdx : " + postIdx);
 		SharePostDto.Request updateReq = sharePostService.getPostForModify(postIdx);
 		
 		ModelAndView mav = new ModelAndView("content/sharePost/sharePost_update");
