@@ -62,7 +62,6 @@ public class ApplyDto {
 			}catch (Exception e ) {	           
 				this.authorImgUrl = "";
 			}
-			this.postAuthorIdx = apply.getGroupBuying().getAuthor().getUserIdx();
 			this.groupIdx = apply.getGroupBuying().getGroupIdx();
 			
 		}

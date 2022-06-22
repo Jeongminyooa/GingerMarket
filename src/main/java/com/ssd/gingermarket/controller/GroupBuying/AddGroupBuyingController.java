@@ -19,17 +19,14 @@ import com.ssd.gingermarket.dto.ImageDto;
 import com.ssd.gingermarket.dto.GroupBuyingDto;
 import com.ssd.gingermarket.service.GroupBuyingService;
 import com.ssd.gingermarket.service.ImageService;
-
 import lombok.RequiredArgsConstructor;
 
-//@Slf4j
 @Controller 
 @RequestMapping("/group-buying")
 @RequiredArgsConstructor
 public class AddGroupBuyingController {
 
 	private final GroupBuyingService groupBuyingService;
-
 	private final ImageService imageService;
 	
 
@@ -48,7 +45,7 @@ public class AddGroupBuyingController {
 		return category;
 	}
 
-	//공구 포스트 등록 페이지 이동
+	//공구 등록폼으로 이동
 	@GetMapping("/new-add-form")
 	public ModelAndView getAddForm(HttpServletRequest req, @ModelAttribute("postReq")GroupBuyingDto.Request groupBuying) {
 		HttpSession session = req.getSession(false);

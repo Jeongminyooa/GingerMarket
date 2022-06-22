@@ -14,17 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.ApplyDto;
 import com.ssd.gingermarket.dto.UserDto;
-import com.ssd.gingermarket.service.ApplyInfoService;
 import com.ssd.gingermarket.service.GroupBuyingService;
 import com.ssd.gingermarket.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
-//@Slf4j //로그 
 @RestController 
 @RequestMapping("/group-buying")
 @RequiredArgsConstructor
@@ -47,6 +43,7 @@ public class ViewGroupBuyingController {
 		return category;
 	}
 	
+	//공구 신청 번호 선택
 	@ModelAttribute("phone1")
 	public List<String> phone1List() {
 		List<String> phone1 = new ArrayList<>();
@@ -59,7 +56,7 @@ public class ViewGroupBuyingController {
 	}
 	
 
-	//전체 공구 포스트 조회
+	//공구 포스트 리스트 조회
 	@GetMapping("")
 	public ModelAndView getPostList(HttpServletRequest req, @RequestParam(value="page", defaultValue="0") int page) {
 		HttpSession session = req.getSession(false);
@@ -94,7 +91,7 @@ public class ViewGroupBuyingController {
 		return mav;
 	}
 	
-	//검색
+	//키워드 검색(제목, 카테고리)
 	@GetMapping(value="/search/{option}")
 	public ModelAndView getSearchList(HttpServletRequest req, @PathVariable("option") String option,
 			@RequestParam String keyword,

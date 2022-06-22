@@ -14,17 +14,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import com.ssd.gingermarket.domain.Image;
 import com.ssd.gingermarket.dto.ImageDto;
-import com.ssd.gingermarket.dto.SharePostDto;
 import com.ssd.gingermarket.dto.GroupBuyingDto;
 import com.ssd.gingermarket.service.GroupBuyingService;
 import com.ssd.gingermarket.service.ImageService;
-
 import lombok.RequiredArgsConstructor;
-//@Slf4j //로그 
+
 @Controller 
 @RequestMapping("/group-buying")
 @RequiredArgsConstructor

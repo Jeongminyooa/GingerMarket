@@ -6,20 +6,15 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable; 
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.ssd.gingermarket.domain.Apply;
 import com.ssd.gingermarket.dto.ApplyDto;
-import com.ssd.gingermarket.dto.GroupBuyingDto;
 import com.ssd.gingermarket.service.ApplyInfoService;
-import com.ssd.gingermarket.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
-//@Slf4j //로그
 @RestController 
 @RequestMapping("/group-buying")
 @RequiredArgsConstructor

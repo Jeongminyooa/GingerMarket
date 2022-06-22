@@ -29,12 +29,10 @@ public class GroupBuying extends BaseTime{
 
 		 @Column(length = 20, nullable = false)
 		 private String category;
-		 
-		 // 모집인원
+			
 		 @Column(nullable = false)
 		 private int recruitNum;
-		 
-		 // 여태까지 총 신청 인원
+
 		 @Column(nullable = false)
 		 @ColumnDefault("0")
 		 private int participateNum;
@@ -90,7 +88,7 @@ public class GroupBuying extends BaseTime{
 		 
 		 public void updateProgress(int status) 
 		 {
-			// status에 따라 progress값을 변화시킴.
+			// status(진행상황)에 따라 progress값을 변화
 			switch(status) {
 			case 0:
 				this.progress = 0;

@@ -1,13 +1,9 @@
 package com.ssd.gingermarket.controller.Apply;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +13,6 @@ import com.ssd.gingermarket.service.ApplyInfoService;
 
 import lombok.RequiredArgsConstructor;
 
-//@Slf4j //로그 
 @RestController 
 @RequestMapping("/group-buying")
 @RequiredArgsConstructor

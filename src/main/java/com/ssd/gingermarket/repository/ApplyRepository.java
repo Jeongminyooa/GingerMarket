@@ -14,7 +14,6 @@ import com.ssd.gingermarket.domain.User;
 public interface ApplyRepository extends JpaRepository<Apply, Long>{
 
 	List<Apply> findByGroupBuyingOrderByApplyIdxDesc(GroupBuying groupBuying);
-
 	Apply findByGroupBuyingAndAuthor(GroupBuying groupBuying, User author);
 
 }
