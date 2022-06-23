@@ -53,7 +53,7 @@
 				<div class="dropdown">
 				<form class="d-flex me-3" th:action="@{/group-buying/search/{option}(option='category')}" th:method="GET" >
 					<select class="form-control" th:name="keyword" id="search-category">
-						<option selected disabled>카테고리 선택</option>
+						<option value="">카테고리 선택</option>
 						<option th:each="category : ${categoryList}"
 								th:value="${category}"
 								th:text="${category}"/>
