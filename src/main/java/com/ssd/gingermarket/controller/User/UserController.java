@@ -35,20 +35,8 @@ public class UserController {
 	private final UserService userService;
 	private final ImageService imageService;
 	
-	@GetMapping("/signup")
-	public ModelAndView getSignUp() { 
-		ModelAndView mav = new ModelAndView("content/user/user_signup");
-		
-		mav.addObject("userReq", new UserDto.Request());
-		
-		List<String> phone1 = new ArrayList<>();
-		phone1.add("010");
-		phone1.add("016");
-		phone1.add("017");
-		phone1.add("018");
-		phone1.add("019");
-		mav.addObject("phone1", phone1);
-		
+	@ModelAttribute("items")
+	public List<String> categoryList(){
 		List<String> category = new ArrayList<>();
 		category.add("가전제품");
 		category.add("욕실용품");
@@ -58,9 +46,28 @@ public class UserController {
 		category.add("청소/세탁용품");
 		category.add("문구");
 		category.add("생활잡화");
-		mav.addObject("items", category);
+		return category;
+	}
+	
+	@ModelAttribute("phone1")
+	public List<String> phone1List() {
+		List<String> phone1 = new ArrayList<>();
+		phone1.add("010");
+		phone1.add("016");
+		phone1.add("017");
+		phone1.add("018");
+		phone1.add("019");
+		return phone1;
+	}
+	
+	@GetMapping("/signup")
+	public ModelAndView getSignUp() { 
+		ModelAndView mav = new ModelAndView("content/user/user_signup");
+		mav.addObject("userReq", new UserDto.Request());
+
 		return mav;
 	}
+
 	
 	@PostMapping("/checkId")
 	public String checkId(@RequestParam("id") String userId) throws Exception{ 
@@ -147,3 +154,4 @@ public class UserController {
 	}
 
 }
+
