@@ -5,7 +5,8 @@ notBlank:
   category : 카테고리를 선택해주세요.
   price : 가격은 필수로 입력해야 합니다.
   recruitNum : 모집인원은 필수로 입력해야 합니다.
-notNull:
+notNull: 
+  category : 카테고리는 필수로 선택해야 합니다.
   endDate: 마감 날짜는 필수로 입력해야 합니다.
 size:
   descr : 상세 설명은 1000자를 넘을 수 없습니다.
