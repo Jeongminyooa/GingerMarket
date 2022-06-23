@@ -1,5 +1,9 @@
-주의사항
-테스트용 ID/PW
+## 주의사항
+
+**시작 화면** 
+- localhost:8080/user/login
+
+**테스트용 ID/PW**
 
 - 게시물 작성자 <br>
 ID : dbwjd <br>
