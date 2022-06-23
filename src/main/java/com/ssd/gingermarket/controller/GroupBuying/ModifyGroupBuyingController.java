@@ -46,7 +46,7 @@ public class ModifyGroupBuyingController {
 	}
 
 
-	@GetMapping("/{groupIdx}/edit-form")
+	@GetMapping("/{groupIdx}/edit")
 	public ModelAndView getUpdateForm(HttpServletRequest req, @PathVariable Long groupIdx) { 		
 		
 		HttpSession session = req.getSession();

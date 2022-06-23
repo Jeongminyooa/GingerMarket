@@ -46,7 +46,7 @@ public class AddGroupBuyingController {
 	}
 
 	//공구 등록폼으로 이동
-	@GetMapping("/new-add-form")
+	@GetMapping("/new")
 	public ModelAndView getAddForm(HttpServletRequest req, @ModelAttribute("postReq")GroupBuyingDto.Request groupBuying) {
 		HttpSession session = req.getSession(false);
 		Long userIdx = (long)session.getAttribute("userIdx");
