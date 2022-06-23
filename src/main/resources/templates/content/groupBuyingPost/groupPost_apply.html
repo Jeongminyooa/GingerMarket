@@ -32,6 +32,11 @@
 				</div>
 				<hr>
 				
+				<div class="row pt-3 mt-1" th:if="${#lists.size(applyList)} == 0">
+					<div class="col col-lg=12">
+						신청자가 없습니다.
+					</div>
+				</div>
 				<th:block th:each="applyInfo : ${applyList}">
   				<div class="row pt-3 mt-1">
 					<div class="col">
