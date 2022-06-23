@@ -41,7 +41,7 @@ public class LoginController {
 		UserDto.Info user = userService.getUser(dto.getUserId(), dto.getPassword());
 		
 		if(user.getUserIdx() == null) 
-			out.println("<script>alert('일치하는 회원정보가 존재하지 않습니다'); location.replace('/user/signup');</script>");
+			out.println("<script>alert('일치하는 회원정보가 존재하지 않습니다'); location.replace('/user/login');</script>");
 
 		else {
 			HttpSession session = req.getSession();
