@@ -1,7 +1,5 @@
 package com.ssd.gingermarket.service;
 
-
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +20,6 @@ import com.ssd.gingermarket.domain.User;
 import com.ssd.gingermarket.dto.SharePostDto;
 import com.ssd.gingermarket.dto.SharePostDto.CardResponse;
 import com.ssd.gingermarket.dto.SharePostDto.DetailResponse;
-import com.ssd.gingermarket.dto.TestDto;
 import com.ssd.gingermarket.repository.SharePostRepository;
 import com.ssd.gingermarket.repository.UserRepository;
 

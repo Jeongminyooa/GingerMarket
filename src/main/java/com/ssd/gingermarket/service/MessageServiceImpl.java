@@ -28,7 +28,6 @@ import com.ssd.gingermarket.dto.MessageDto.Info;
 import com.ssd.gingermarket.dto.MessageDto.MessageResponse;
 import com.ssd.gingermarket.dto.SharePostDto;
 import com.ssd.gingermarket.dto.SharePostDto.DetailResponse;
-import com.ssd.gingermarket.dto.TestDto;
 import com.ssd.gingermarket.repository.MessageInfoRepository;
 import com.ssd.gingermarket.repository.MessageRoomRepository;
 import com.ssd.gingermarket.repository.SharePostRepository;

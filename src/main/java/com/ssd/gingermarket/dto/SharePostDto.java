@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ssd.gingermarket.domain.Image;
 import com.ssd.gingermarket.domain.SharePost;
-import com.ssd.gingermarket.domain.TestEntity;
 import com.ssd.gingermarket.domain.User;
 
 import lombok.AllArgsConstructor;
