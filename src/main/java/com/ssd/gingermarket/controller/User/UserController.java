@@ -8,18 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import com.ssd.gingermarket.domain.Image;
 import com.ssd.gingermarket.dto.ImageDto;
@@ -28,9 +26,7 @@ import com.ssd.gingermarket.service.ImageService;
 import com.ssd.gingermarket.service.UserService;
 
 import lombok.RequiredArgsConstructor;
-// import lombok.extern.slf4j.Slf4j;
 
-// @Slf4j //로그 
 @RestController 
 @RequestMapping("user") 
 @RequiredArgsConstructor 
@@ -66,9 +62,38 @@ public class UserController {
 		return mav;
 	}
 	
+	@PostMapping("/checkId")
+	public String checkId(@RequestParam("id") String userId) throws Exception{ 
+		String text;
+		
+		if(userService.userIdCheck(userId)==1) 
+			text="이미 존재하는 아이디입니다";
+		else if(userId.length() <5 || userId.length()>10)
+			text= "아이디 길이는 5이상 10이하여야 합니다.";
+		else
+			text= "사용가능한 아이디입니다.";
+	    return text;
+	    	
+	}
+	
+	@PostMapping("/checkName")
+	public String checkName(@RequestParam("name") String name) throws Exception{ 
+		String text;
+		
+		if(userService.nameCheck(name)==1) 
+			text="이미 존재하는 닉네임입니다";
+		else if(name.length() >10)
+			text= "닉네임 길이는 10이하여야 합니다.";
+		else
+			text= "사용가능한 닉네임입니다.";
+	    return text;
+	    	
+	}
+	
 	@PostMapping("")
 	public ModelAndView register(@Validated @ModelAttribute("userReq") UserDto.Request req, 
-			BindingResult error, HttpServletResponse response) throws Exception {
+			BindingResult error, HttpServletResponse response) 
+					throws Exception {
 		
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
@@ -78,12 +103,9 @@ public class UserController {
 		
 		String msg="";
 		
-		if(userService.userIdCheck(req.getUserId())==1) {
-			msg+="이미 존재하는 아이디입니다";
-		}
-		if(userService.nameCheck(req.getName())==1) {
-			msg+="  이미 존재하는 닉네임입니다";
-		}
+		if(userService.userIdCheck(req.getUserId())==1 || userService.nameCheck(req.getName())==1) 
+			msg+="아이디와 닉네임은 중복확인해주세요";
+
 		
 		if(!req.getFile().getOriginalFilename().equals("")) {
 			ImageDto.Request imgReq = new ImageDto.Request(req.getFile());
@@ -92,22 +114,22 @@ public class UserController {
 		}
 
 		if(!req.getPassword().equals(req.getRepeatedPassword())) {
-			msg+="  비밀번호가 일치하지 않습니다.";}
-		
+					msg+="  비밀번호가 일치하지 않습니다.";
+		}
 		if(msg!="") {
 			out.println("<script>alert('"+msg+"');location.replace('/user/signup');</script>");
 			out.flush();
 			return new ModelAndView("redirect: /user/signup");
 		}
-		else {
-			out.println("<script>alert('회원가입 되었습니다.'); location.replace('/user/login');</script>");
-			out.flush();
-			userService.addUser(req);
-			return new ModelAndView("redirect: /user/login");
-		}
+		out.println("<script>alert('회원가입 되었습니다.'); location.replace('/user/login');</script>");
+		out.flush();
+		userService.addUser(req);
+		return new ModelAndView("redirect: /user/login");
+		
 		
 	}
-	
+
+
 	@DeleteMapping("/quit")
 	public void quitUser(HttpServletRequest req, HttpServletResponse response) throws Exception { 
 		response.setContentType("text/html; charset=utf-8");
