@@ -63,6 +63,8 @@ public class GroupBuyingDto {
 		private User author;
 		private Long authorIdx;
 		
+		private int participateNum;
+		
 		public GroupBuying toEntity(){
 			return GroupBuying.builder()
 					.title(title)
@@ -93,6 +95,7 @@ public class GroupBuyingDto {
 				this.imgUrl = "";
 			}
 			this.authorIdx = groupBuying.getAuthor().getUserIdx();
+			this.participateNum = groupBuying.getParticipateNum();
 		}
 
 	}

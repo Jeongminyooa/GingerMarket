@@ -40,17 +40,24 @@
 		}
 	
 	function checkForm() {
+		let participateNum = [[${updateReq.participateNum}]];
 		let inputRecruitVal = $('#inputRecruit').val();
 		
 		if(inputRecruitVal < 2) {
 			alert('모집 인원은 2명 이상이어야 합니다.');
 			$('#inputRecruit').focus();
-			return;
-		} else if(inputRecruitVal > 10){
+			return false;
+		} else if (inputRecruitVal < participateNum) {
+			alert('해당 게시물의 현재 신청 인원은 ' + participateNum + '명 입니다.');
+			$('#inputRecruit').focus();
+			return false;
+		} 
+		else if(inputRecruitVal > 10){
 			alert('모집 인원은 10명 이하이어야 합니다.');
 			$('#inputRecruit').focus();
-			return;
+			return false;
 		}
+		
 		$('#form').submit();
 		
 	}
@@ -177,7 +184,7 @@
 				<!-- Confirm BTN -->
 				<div class="d-grid gap-2 mt-5">
 					<button type="submit" class="btn btn-outline-light w-auto" 
-						id="btn-confirm" onclick="checkForm()">완료</button>
+						id="btn-confirm" onclick="return checkForm()">완료</button>
 				</div>
 				
 			</form>
