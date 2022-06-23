@@ -40,6 +40,7 @@ public class GroupBuyingDto {
 		@Pattern(regexp = "[0-9]{0,64}", message="{pattern.number}")
 		private String recruitNum;
 
+		@Length(max=255, message="{size.website}")
 		private String website;
 		
 		@NotNull(message="{notNull.endDate}")
