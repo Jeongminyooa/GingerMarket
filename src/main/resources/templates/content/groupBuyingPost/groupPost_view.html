@@ -329,7 +329,7 @@
 				<div class="d-flex justify-content-end">
 					<!-- Button trigger modal -->
 					<button type="button" class="btn btn-sm border border-secondary me-3"
-						id="btn-update"
+						id="btn-update" th:if="${postInfo.progress} <= 1"
 						data-bs-toggle="modal" data-bs-target="#updateModal">수정하기</button>
 					<button type="button" class="btn btn-sm border border-secondary"
 						id="btn-delete" data-bs-toggle="modal"
