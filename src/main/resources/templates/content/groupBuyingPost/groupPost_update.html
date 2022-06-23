@@ -40,13 +40,24 @@
 		}
 	
 	function checkForm() {
+		let participateNum = [[${updateReq.participateNum}]];
 		let inputRecruitVal = $('#inputRecruit').val();
 		
-		if(inputRecruitVal == 0) {
-			alert('모집 인원은 1명 이상이어야 합니다.');
+		if(inputRecruitVal < 2) {
+			alert('모집 인원은 2명 이상이어야 합니다.');
 			$('#inputRecruit').focus();
-			return;
+			return false;
+		} else if (inputRecruitVal < participateNum) {
+			alert('해당 게시물의 현재 신청 인원은 ' + participateNum + '명 입니다.');
+			$('#inputRecruit').focus();
+			return false;
+		} 
+		else if(inputRecruitVal > 10){
+			alert('모집 인원은 10명 이하이어야 합니다.');
+			$('#inputRecruit').focus();
+			return false;
 		}
+		
 		$('#form').submit();
 		
 	}
@@ -135,8 +146,9 @@
 					</div>	
 				</div>
 				
+				<label for="inputDate" class="form-label">금액</label>
+				<b class="text-danger">*</b> 
 				<div class="row mb-3">
-					<label for="inputDate" class="form-label">금액</label>
 					<div class="col col-lg-4">
 						<div class="input-group">
 							<input type="text" class="form-control"
@@ -159,6 +171,7 @@
   						<path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z"/>	
 						</span>
 						</div>
+						<div class="error" th:errors="*{website}">Incorrect</div>
 				</div>
 
 				<div class="row border-top"></div>
@@ -172,7 +185,7 @@
 				<!-- Confirm BTN -->
 				<div class="d-grid gap-2 mt-5">
 					<button type="submit" class="btn btn-outline-light w-auto" 
-						id="btn-confirm" onclick="checkForm()">완료</button>
+						id="btn-confirm" onclick="return checkForm()">완료</button>
 				</div>
 				
 			</form>

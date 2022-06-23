@@ -30,6 +30,7 @@ public class GroupBuyingDto {
 		private String uploadDirLocal = "/upload/";
 		
 		@NotBlank(message="{notBlank.title}")
+		@Length(max=255, message="{size.title}")
 		private String title;
 		
 		@NotBlank(message="{notBlank.category}")
@@ -38,7 +39,8 @@ public class GroupBuyingDto {
 		@NotBlank(message="{notBlank.recruitNum}")
 		@Pattern(regexp = "[0-9]{0,64}", message="{pattern.number}")
 		private String recruitNum;
-		
+
+		@Length(max=255, message="{size.website}")
 		private String website;
 		
 		@NotNull(message="{notNull.endDate}")
@@ -61,6 +63,8 @@ public class GroupBuyingDto {
 		
 		private User author;
 		private Long authorIdx;
+		
+		private int participateNum;
 		
 		public GroupBuying toEntity(){
 			return GroupBuying.builder()
@@ -92,6 +96,7 @@ public class GroupBuyingDto {
 				this.imgUrl = "";
 			}
 			this.authorIdx = groupBuying.getAuthor().getUserIdx();
+			this.participateNum = groupBuying.getParticipateNum();
 		}
 
 	}

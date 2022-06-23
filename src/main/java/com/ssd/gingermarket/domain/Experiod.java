@@ -25,7 +25,6 @@ public class Experiod extends BaseTime{
 	 @Column(length = 22, nullable = false)
 	 private String category;
 	 
-	 @Column(nullable = false)
 	 private LocalDate endDate;
 	 
 	 @Column(nullable = false)

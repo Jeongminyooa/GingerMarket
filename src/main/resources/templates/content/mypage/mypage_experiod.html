@@ -228,6 +228,10 @@
 		</div>
 	</div>
 	<div class="col col-lg-6" id="experiodContent">
+		<div class="row pt-1 border-top" th:if="${#lists.size(experiodList)} == 0">
+			등록된 생필품 교체주기가 없습니다.
+		</div>
+		
 		<th:block th:each="experiod : ${experiodList}">
 		<div th:if="${experiod.dDay > -1}">
 			<div class="row pt-1 border-top"></div>

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
@@ -34,6 +35,40 @@
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 	<script type="text/javascript" th:src="@{/js/fileUpload.js}"></script>
 	<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
+	<script>
+	function checkUserId(){
+		let userId = $("#userId").val();
+		$.ajax({
+			url : "checkId",
+			type : 'post',
+			data : {
+				id : userId
+			},
+			success : function(data) {
+		    			alert(data)
+		     },
+			error : function() {
+				alert("error");
+			}
+		});
+	}
+	function checkName(){
+		let name = $("#name").val();
+		$.ajax({
+			url : "checkName",
+			type : 'post',
+			data : {
+				name : name
+			},
+			success : function(data) { 
+		    			alert(data)
+		     },
+			error : function() {
+				alert("error");
+			}
+		});
+	}
+	</script>
 
 </th:block>
 <body>
@@ -52,8 +87,7 @@
       					<div>아이디 <span class='text-danger'>*</span><br>
       						<input type="text" id="userId" th:field="*{userId}"/>
         					<span class='text-danger' th:errors="*{userId}"></span>
-        					
-        		
+        					<button type="button" class="btn btn-primary" id="idCheckBtn" onclick="checkUserId()"><p>중복확인</p></button>
 						</div>
     					<div>비밀번호 <span class='text-danger' >*</span><br>
     						<input type="password" id="password" th:field="*{password}">
@@ -79,6 +113,7 @@
     						닉네임 <span class='text-danger'>*</span><br>
     							<input type="text" id="name"  th:field="*{name}">
        						<span class='text-danger' th:errors="*{name}"></span>
+       						<button type="button" class="btn btn-primary" id="nameConfirmbtn" onclick="checkName()"><p>중복확인</p></button>
     					</div>
     					<div>주소<br>			
     					 	<input type ="hidden" th:field="*{addr}" id="addr"/> 

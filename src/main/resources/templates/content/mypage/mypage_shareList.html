@@ -8,6 +8,11 @@
 </div>
 <!-- list -->
 <div id="listContent">
+	<div class="row pt-1 border-top" th:if="${#lists.size(shareList)} == 0">
+		<div class="col col-lg=12">
+			해당하는 게시글이 없습니다.
+		</div>
+	</div>
 	<th:block th:each="share : ${shareList}">
 		<div class="row pt-1 border-top"></div>
 		<div class="row p-3">
