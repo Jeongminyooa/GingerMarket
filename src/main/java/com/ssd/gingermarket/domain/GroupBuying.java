@@ -86,18 +86,7 @@ public class GroupBuying extends BaseTime{
 		 
 		 public void updateProgress(int status) 
 		 {
-			// status(진행상황)에 따라 progress값을 변화
-			switch(status) {
-			case 0:
-				this.progress = 0;
-				break;
-			case 1:
-				this.progress = 1;
-				break;
-			case 2:
-				this.progress = 2;
-				break;
-			}
+			 this.progress = status;
 		 }
 		 
 		 public void updatePostImg(Image image) {

@@ -30,12 +30,12 @@
 					  
 					   <div class="mb-3">
 					  	<label for="message" class="form-label">메시지</label>
-					  	<textarea class="form-control" th:field="*{message}" aria-label="With textarea"
+					  	<textarea class="form-control" id="message" th:field="*{message}" aria-label="With textarea"
 						placeholder="신청메시지를 작성해주세요!" rows="5"></textarea>	
 						</div>
 	
 					<div class="mb-1 pt-3 text-center">
-						<button type="submit" class="apply_btn w-75" >신청하기</button>
+						<button type="button" class="apply_btn w-75"onclick="submitApplyForm()" >신청하기</button>
 					</div>           		
 		        </form>
 		      </div> 

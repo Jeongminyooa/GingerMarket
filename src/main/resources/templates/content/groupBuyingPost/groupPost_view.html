@@ -37,6 +37,36 @@
 		<th:block th:include="@{/content/groupBuyingPost/modal_apply}"></th:block>
 		
 		<script th:inline="javascript">
+		/*apply modal 입력값 체크*/
+		function submitApplyForm() {
+			let form = $('#addApply');
+	
+			//전화번호
+			let $phone2 = $('#phone2');
+			let $phone3 = $('#phone3');
+			
+			if($phone2.val() == "") {
+				$phone2.focus();
+				alert('핸드폰 번호를 입력해주세요.');
+				return;
+			}
+			
+			if($phone3.val() == "") {
+				$phone3.focus();
+				alert('핸드폰 번호를 입력해주세요.');
+				return;
+			}
+			
+			//
+			if($('#message').val().length > 255) {
+	    		alert("메세지는 255자를 넘길 수 없습니다.");
+	    		return;
+			}
+			
+			form.submit();
+			alert('신청이 완료되었습니다.');
+		}
+
 			let status = false;
 		
 			/* 댓글 비동기 통신 */
