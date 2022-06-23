@@ -14,16 +14,16 @@ import com.ssd.gingermarket.service.ApplyInfoService;
 import lombok.RequiredArgsConstructor;
 
 @RestController 
-@RequestMapping("/group-buying")
+@RequestMapping("/apply")
 @RequiredArgsConstructor
 public class ViewApplyController {
 	private final ApplyInfoService applyInfoService;
 
 
 	//공구 신청 조회 (작성자)
-	@GetMapping("/{groupIdx}/apply")
+	@GetMapping("/{groupIdx}")
 	public ModelAndView getApplyList(HttpServletRequest req, @PathVariable Long groupIdx) {
-		HttpSession session = req.getSession(false);
+		HttpSession session = req.getSession();
 		Long userIdx = (long)session.getAttribute("userIdx");
 		
 		ModelAndView mav = new ModelAndView("content/groupBuyingPost/groupPost_apply");

@@ -16,19 +16,19 @@ import com.ssd.gingermarket.service.ApplyInfoService;
 import lombok.RequiredArgsConstructor;
 
 @RestController 
-@RequestMapping("/group-buying")
+@RequestMapping("/apply")
 @RequiredArgsConstructor
 public class AddApplyController {
 
 	private final ApplyInfoService applyInfoService;
 
 	// 공구 신청 등록 (사용자)
-	@PostMapping("/{groupIdx}/apply-form")
+	@PostMapping("/{groupIdx}")
 	public RedirectView addApply(HttpServletRequest req,
 			@PathVariable("groupIdx") Long groupIdx,
 			@ModelAttribute("applyInfo") ApplyDto.Info apply) {
 		
-		HttpSession session = req.getSession(false);
+		HttpSession session = req.getSession();
 		Long userIdx = (long)session.getAttribute("userIdx");
 				
 		applyInfoService.addApply(apply, userIdx, groupIdx);

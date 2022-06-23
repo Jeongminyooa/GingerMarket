@@ -409,7 +409,7 @@
 					</div>
 				
 					<div th:if="${postInfo.authorIdx} == ${userIdx}" class="d-grid gap-2 mt-5 pt-3">
-						<a th:href="@{/group-buying/{groupIdx}/apply(groupIdx=${postInfo.groupIdx})}" class="btn btn-outline-light w-100" 
+						<a th:href="@{/apply/{groupIdx}(groupIdx=${postInfo.groupIdx})}" class="btn btn-outline-light w-100" 
 							 role="button" id="btn-apply">조회하기</a>
 					</div>
 				
