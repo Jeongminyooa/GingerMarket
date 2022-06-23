@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 public class CommentDto {
-
+	
 	@NoArgsConstructor
 	@AllArgsConstructor
 	@Data

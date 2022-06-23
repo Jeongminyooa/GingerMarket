@@ -94,7 +94,7 @@ public class CommentInfoServiceImpl implements CommentInfoService {
 				co.getUpdateDate(),
 				(co.getIsDeleted().equals("N") ? false : true),
 				co.getAuthor().getUserIdx(),
-				(co.getAuthor().getImage() == null ? null : co.getAuthor().getImage().getUrl()),
+				(co.getAuthor().getImage() == null ? null : "/upload/" + co.getAuthor().getImage().getUrl()),
 				co.getAuthor().getName(),
 				ofList(co.getChildCommentList(), author.getUserIdx()),
 				(author.getUserIdx() == co.getAuthor().getUserIdx() ? true : false)))
@@ -117,7 +117,7 @@ public class CommentInfoServiceImpl implements CommentInfoService {
 				ch.getUpdateDate(),
 				(ch.getIsDeleted().equals("N") ? false : true),
 				ch.getAuthor().getUserIdx(),
-				(ch.getAuthor().getImage() == null ? null : ch.getAuthor().getImage().getUrl()),
+				(ch.getAuthor().getImage() == null ? null : "/upload/" + ch.getAuthor().getImage().getUrl()),
 				ch.getAuthor().getName(),
 				(postAuthorIdx == ch.getAuthor().getUserIdx() ? true : false)
 				))
